@@ -22,7 +22,8 @@ import butterknife.Bind;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @Bind(R.id.input_name) EditText _nameText;
+    @Bind(R.id.input_fname) EditText _fnameText;
+    @Bind(R.id.input_lname) EditText _lnameText;
     @Bind(R.id.input_email) EditText _emailText;
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.btn_signup) Button _signupButton;
@@ -66,16 +67,13 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
+        String fname = _fnameText.getText().toString();
+        String lname = _lnameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
-       /* RequestParams params= new RequestParams();
-        params.put("name", name);
-        params.put("email",email);
-        params.put("password", password);
-        invokeWS(params);*/
+
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -89,46 +87,7 @@ public class SignupActivity extends AppCompatActivity {
                 }, 3000);
     }
 
-    /*public void invokeWS(RequestParams params){
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://localhost:8080/user/signUp", params,
-                new AsyncHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(String response){
-                        progressDialog.dismiss();
-                        try{
-                            JSONObject responseObject= new JSONObject(response);
-                            if(responseObject.getBoolean("status")){
-                                Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                errorMsg.setText(responseObject.getString("error_msg"));
-                                Toast.makeText(getApplicationContext(), responseObject.getString("error_msg"), Toast.LENGTH_LONG).show();
-                            }
 
-                        }catch (JSONException e){
-                            Toast.makeText(getApplicationContext(),"Error Occured [Server's JSON Response might be invalid!]", Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Throwable error, String content){
-                        progressDialog.dismiss();
-                        if(statusCode==404){
-                            Toast.makeText(getApplicationContext(), "Sorry! Unable to Register!", Toast.LENGTH_LONG).show();
-                        }
-                        else if(statusCode==500){
-                            Toast.makeText(getApplicationContext(), "Server Issue!", Toast.LENGTH_LONG).show();
-                        }
-                        else
-                            Toast.makeText(getApplicationContext(), "Unexpected Error! [Most common error: Device not connected to internet!]", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-        );
-    }*/
 
 
     public void onSignupSuccess() {
@@ -141,7 +100,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Sign Up failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }
@@ -149,15 +108,23 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
+        String fname = _fnameText.getText().toString();
+        String lname = _lnameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+        if (fname.isEmpty() || fname.length() < 3) {
+            _fnameText.setError("at least 3 characters");
             valid = false;
         } else {
-            _nameText.setError(null);
+            _fnameText.setError(null);
+        }
+
+        if (lname.isEmpty() || lname.length() < 3) {
+            _lnameText.setError("at least 3 characters");
+            valid = false;
+        } else {
+            _lnameText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
