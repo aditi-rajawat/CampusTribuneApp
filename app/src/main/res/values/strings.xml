@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Campus Tribune</string>
+    <string name="menu_action_post">Posts</string>
+    <string name="menu_action_event">Events</string>
+    <string name="submenu_action_create_event">Create</string>
+    <string name="submenu_action_view_allevents">View All</string>
+    <string name="menu_action_profile">Profile</string>
+    <string name="menu_action_search">Search</string>
+    <string name="menu_action_settings">Settings</string>
+</resources>

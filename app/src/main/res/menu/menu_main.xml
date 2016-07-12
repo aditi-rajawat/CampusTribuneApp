@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_main_post"
+        android:title="@string/menu_action_post"/>
+    <item
+        android:id="@+id/menu_main_event"
+        android:title="@string/menu_action_event">
+
+        <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item
+                android:id="@+id/submenu_event_create"
+                android:title="@string/submenu_action_create_event"/>
+
+            <item
+                android:id="@+id/submenu_event_viewall"
+                android:title="@string/submenu_action_view_allevents"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_main_profile"
+        android:title="@string/menu_action_profile"/>
+    <item
+        android:id="@+id/menu_main_search"
+        android:title="@string/menu_action_search"/>
+    <item
+        android:id="@+id/menu_main_settings"
+        android:title="@string/menu_action_settings"/>
+</menu>
