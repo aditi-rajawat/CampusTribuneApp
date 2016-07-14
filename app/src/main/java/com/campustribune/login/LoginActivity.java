@@ -103,12 +103,15 @@ public class LoginActivity extends AppCompatActivity {
                         .getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("authToken", user.getToken());
+                editor.putString("loggedInUserId", user.getId());
+                editor.putString("loggedInUserEmail", user.getEmail());
                 editor.commit();
-                //Code to check if the token has been saved
+                //Code to retrieve the user details stored in shared preferences
                 SharedPreferences settingsout = PreferenceManager
                         .getDefaultSharedPreferences(getApplicationContext());
                 String auth_token_string = settingsout.getString("authToken", "");
-                System.out.println("Auth Token received from sp:" + auth_token_string);
+                String user_id= settingsout.getString("loggedInUserId", "");
+                System.out.println("Auth Token received from sp for userId:"+user_id+" : " + auth_token_string);
                 progressDialog.hide();
                 try {
                     if (statusCode == 200) {
