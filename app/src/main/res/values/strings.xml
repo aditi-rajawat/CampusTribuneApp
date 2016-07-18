@@ -7,4 +7,8 @@
     <string name="menu_action_profile">Profile</string>
     <string name="menu_action_search">Search</string>
     <string name="menu_action_settings">Settings</string>
+    <string name="menu_action_logout">Logout</string>
+    <string name="menu_action_refresh">Refresh</string>
+    <string name="submenu_action_search">Search</string>
+    <string name="submenu_action_view_userprofile">User Profile</string>
 </resources>

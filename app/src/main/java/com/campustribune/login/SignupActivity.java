@@ -68,17 +68,12 @@ public class SignupActivity extends AppCompatActivity {
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _loginLink.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        // Start the Signup activity
-                        Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
-                        SignupActivity.this.startActivity(loginIntent);
-                        SignupActivity.this.finish();
-                    }
-                });
+                Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
+                SignupActivity.this.startActivity(loginIntent);
+                SignupActivity.this.finish();
             }
+
         });
 
     }
@@ -92,8 +87,6 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         _signupButton.setEnabled(false);
-
-
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();

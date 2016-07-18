@@ -105,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("authToken", user.getToken());
                 editor.putString("loggedInUserId", user.getId());
                 editor.putString("loggedInUserEmail", user.getEmail());
+                editor.putString("loggedInUserName", user.getFirstName()+" "+user.getLastName());
                 editor.commit();
                 //Code to retrieve the user details stored in shared preferences
                 SharedPreferences settingsout = PreferenceManager

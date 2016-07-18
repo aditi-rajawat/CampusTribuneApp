@@ -17,13 +17,6 @@
                 android:title="@string/submenu_action_view_allevents"/>
         </menu>
     </item>
-    <item
-        android:id="@+id/menu_main_profile"
-        android:title="@string/menu_action_profile"/>
-    <item
-        android:id="@+id/menu_main_search"
-        android:title="@string/menu_action_search"/>
-    <item
-        android:id="@+id/menu_main_settings"
-        android:title="@string/menu_action_settings"/>
+
+
 </menu>

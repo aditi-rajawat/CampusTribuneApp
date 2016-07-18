@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.campustribune.login.SignupActivity;
+import com.campustribune.R;
 
 public class LaunchActivity extends Activity {
 

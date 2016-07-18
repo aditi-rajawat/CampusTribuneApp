@@ -1,0 +1,25 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.campustribune.frontpage.FrontPageActivity">
+
+
+    <item android:id="@+id/action_refresh"
+        android:title="Refresh"
+        app:showAsAction="always"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_action_refresh"/>
+    <item
+        android:id="@+id/submenu_search"
+        android:title="@string/submenu_action_search"/>
+
+    <item
+        android:id="@+id/submenu_userprofile"
+        android:title="@string/submenu_action_view_userprofile"/>
+
+
+
+</menu>
+
+
+

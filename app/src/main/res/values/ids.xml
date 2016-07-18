@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menu_action_search" type="id">Search</item>
+    <item name="menu_action_refresh" type="id">Refresh</item>
+    <item name="menu_action_settings" type="id">Settings</item>
+    <item name="checkbox_notifications" type="id" />
+    <item name="checkbox_allow_email" type="id" />
+
+
+</resources>
