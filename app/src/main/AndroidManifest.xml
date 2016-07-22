@@ -3,6 +3,9 @@
     package="com.campustribune">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +25,8 @@
         <activity android:name="com.campustribune.login.SignupActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name="com.campustribune.frontpage.FrontPageActivity" android:theme="@style/AppTheme.Dark"/>
         <activity android:name="com.campustribune.userProfile.UserProfileActivity" android:theme="@style/AppTheme.Dark"/>
+        <activity android:name="com.campustribune.post.activity.CreatePostActivity" android:theme="@style/AppTheme.WithActionBar"/>
+        <activity android:name="com.campustribune.post.activity.ViewPostActivity" android:theme="@style/AppTheme.WithActionBar"/>
     </application>
 
 </manifest>
