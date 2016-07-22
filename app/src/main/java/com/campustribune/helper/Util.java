@@ -19,8 +19,8 @@ import java.util.UUID;
 
 public class Util {
 
-    public static final String MY_ACCESS_KEY_ID = "AKIAIPPAFYVI3NYPMHAA";
-    public static final String MY_SECRET_KEY = "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";
+    public static final String MY_ACCESS_KEY_ID = "";
+    public static final String MY_SECRET_KEY = "";
     public static final String BUCKET = "ctpost";
 
     private static AmazonS3Client s3;
