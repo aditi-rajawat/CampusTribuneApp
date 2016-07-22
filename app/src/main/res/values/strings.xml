@@ -11,6 +11,7 @@
     <string name="menu_action_refresh">Refresh</string>
     <string name="submenu_action_search">Search</string>
     <string name="submenu_action_view_userprofile">User Profile</string>
+    <string name="submenu_action_create_post">Create Post</string>
     <string name="selectCategory">Select Category</string>
     <string-array name="category_options">
         <item>Technology</item>
