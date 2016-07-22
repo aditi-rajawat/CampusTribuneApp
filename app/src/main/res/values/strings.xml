@@ -11,4 +11,11 @@
     <string name="menu_action_refresh">Refresh</string>
     <string name="submenu_action_search">Search</string>
     <string name="submenu_action_view_userprofile">User Profile</string>
+    <string name="selectCategory">Select Category</string>
+    <string-array name="category_options">
+        <item>Technology</item>
+        <item>Sports</item>
+        <item>Administration</item>
+        <item>Arts</item>
+    </string-array>
 </resources>
