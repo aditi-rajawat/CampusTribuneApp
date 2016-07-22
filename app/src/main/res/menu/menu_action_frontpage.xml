@@ -17,7 +17,9 @@
         android:id="@+id/submenu_userprofile"
         android:title="@string/submenu_action_view_userprofile"/>
 
-
+    <item
+        android:id="@+id/submenu_createpost"
+        android:title="@string/submenu_action_create_post"/>
 
 </menu>
 
