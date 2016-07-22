@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#939393">
+
+    <TextView
+        android:id="@+id/commentContent"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="#000000"/>
+
+    <EditText
+        android:id="@+id/commentContentEdit"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="#990033"
+        android:textSize="6pt"
+        android:visibility="gone"
+        ></EditText>
+
+    <LinearLayout
+        android:id="@+id/editCommentbuttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_below="@+id/commentContentEdit">
+
+        <Button
+            android:id="@+id/button_save_comment"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:text="Save"
+            android:textSize="4pt"
+            android:textColor="#3333ff"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <View
+            android:layout_width="0.8dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.02" >
+        </View>
+
+        <Button
+            android:id="@+id/button_cancel_comment"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:textSize="4pt"
+            android:text="Cancel"
+            android:textColor="#3333ff"
+            style="?android:attr/borderlessButtonStyle" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/commentsbuttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/commentContent">
+
+        <ImageButton
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_report_problem_white_24dp"
+            android:id="@+id/reportComment"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <Button
+            android:id="@+id/comment_button_edit"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:text="Edit"
+            android:textColor="#3333ff"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <Button
+            android:id="@+id/comment_button_delete"
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:text="Delete"
+            android:textColor="#3333ff"
+            style="?android:attr/borderlessButtonStyle" />
+
+    </LinearLayout>
+</RelativeLayout>

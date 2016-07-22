@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textContents">
+
+        <TextView
+            android:id="@+id/createdUser"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textStyle="italic"
+            android:textColor="#000000"></TextView>
+
+    <TextView
+        android:id="@+id/PostTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="#990033"
+        android:layout_below="@+id/createdUser"></TextView>
+
+        <EditText
+            android:id="@+id/PostTitleEdit"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:textColor="#990033"
+            android:textSize="6pt"
+            android:visibility="gone"
+            android:layout_below="@+id/createdUser"
+            ></EditText>
+
+        <TextView
+            android:id="@+id/PostContent"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#000000"
+            android:layout_below="@+id/PostTitle"></TextView>
+
+        <EditText
+            android:id="@+id/PostContentEdit"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#000000"
+            android:textSize="6pt"
+            android:visibility="gone"
+            android:layout_below="@+id/PostTitleEdit"></EditText>
+
+        <LinearLayout
+            android:id="@+id/editPostbuttonLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_below="@+id/PostContentEdit">
+
+            <Button
+                android:id="@+id/button_save_post"
+                android:layout_width="60dp"
+                android:layout_height="35dp"
+                android:text="Save"
+                android:textSize="6pt"
+                android:textColor="#3333ff"
+                style="?android:attr/borderlessButtonStyle" />
+
+            <View
+                android:layout_width="0.8dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.02" >
+            </View>
+
+            <Button
+                android:id="@+id/button_cancel_post"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:textSize="6pt"
+                android:text="Cancel"
+                android:textColor="#3333ff"
+                style="?android:attr/borderlessButtonStyle" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textContents">
+
+        <Button
+            android:id="@+id/gotourl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="6pt"
+            android:textColor="#3333ff"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <ImageView
+            android:id="@+id/postImage"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:layout_below="@+id/gotourl"/>
+    </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

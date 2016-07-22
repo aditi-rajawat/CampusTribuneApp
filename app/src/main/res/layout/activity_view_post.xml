@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#cccccc"
+    tools:context="com.campustribune.post.activity.ViewPostActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+   <fragment
+        android:id="@+id/viewPost_fragment"
+        android:name="com.campustribune.post.fragment.ViewPostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        tools:layout="@layout/fragment_view_post" />
+
+   <fragment
+        android:id="@+id/viewPostButtons_fragment"
+        android:name="com.campustribune.post.fragment.ViewPostButtonsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       tools:layout="@layout/fragment_view_post_buttons"
+       android:layout_below="@+id/viewPost_fragment"
+       android:layout_alignParentStart="true" />
+
+    <fragment
+       android:id="@+id/comments_fragment"
+       android:name="com.campustribune.post.fragment.CommentListFragment"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+       tools:layout="@layout/fragment_comments_list"
+       android:layout_below="@+id/viewPostButtons_fragment" />
+
+</RelativeLayout>

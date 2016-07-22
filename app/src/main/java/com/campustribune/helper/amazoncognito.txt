@@ -1,0 +1,24 @@
+/ Initialize the Amazon Cognito credentials provider
+CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+    getApplicationContext(),
+    "us-east-1:ac51005f-00fb-4e21-bd24-eedd36717ac3", // Identity Pool ID
+    Regions.US_EAST_1 // Region
+);
+
+Store User Data
+
+// Initialize the Cognito Sync client
+CognitoSyncManager syncClient = new CognitoSyncManager(
+   getApplicationContext(),
+   Regions.US_EAST_1, // Region
+   credentialsProvider);
+
+// Create a record in a dataset and synchronize with the server
+Dataset dataset = syncClient.openOrCreateDataset("myDataset");
+dataset.put("myKey", "myValue");
+dataset.synchronize(new DefaultSyncCallback() {
+    @Override
+    public void onSuccess(Dataset dataset, List newRecords) {
+        //Your handler code here
+    }
+});

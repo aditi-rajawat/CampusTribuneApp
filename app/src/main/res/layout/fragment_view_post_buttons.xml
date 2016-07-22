@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/votescore"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:textSize="12pt"
+            android:textColor="#000000"></TextView>
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <ImageButton
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_thumb_down_white_24dp"
+            android:id="@+id/downvote" />
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <ImageButton
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_thumb_up_white_24dp"
+            android:id="@+id/upvote"/>
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <ImageButton
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_report_problem_white_24dp"
+            android:id="@+id/report"/>
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <ImageButton
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_add_white_24dp"
+            android:id="@+id/follow"/>
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:text="Edit"
+            android:textColor="#3333ff"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05" >
+        </View>
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:text="Delete"
+            android:textColor="#3333ff"
+            style="?android:attr/borderlessButtonStyle" />
+
+    </LinearLayout>
+</LinearLayout>
