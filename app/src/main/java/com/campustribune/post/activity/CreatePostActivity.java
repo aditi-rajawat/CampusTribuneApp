@@ -2,7 +2,6 @@ package com.campustribune.post.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -16,10 +15,8 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +32,7 @@ import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.helper.Util;
+import com.campustribune.BaseActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -61,7 +59,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 /**
  * Created by snshr on 7/14/2016.
  */
-public class CreatePostActivity extends Activity {
+public class CreatePostActivity extends BaseActivity {
 
     ProgressDialog progressDialog;
     @Bind(R.id.alertbox)
@@ -102,6 +100,7 @@ public class CreatePostActivity extends Activity {
         token = "Token "+settingsout.getString("authToken", "");
         userId= settingsout.getString("loggedInUserId", "");
         ButterKnife.bind(this);
+
         progressDialog = new ProgressDialog(CreatePostActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         createBtn.setOnClickListener(new View.OnClickListener() {

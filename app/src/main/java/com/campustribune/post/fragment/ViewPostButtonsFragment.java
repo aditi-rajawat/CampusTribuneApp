@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.campustribune.R;
 import com.campustribune.beans.Post;
+import com.campustribune.beans.PostUser;
 import com.campustribune.post.activity.CreatePostActivity;
 import com.campustribune.post.activity.ViewPostActivity;
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -84,9 +86,11 @@ public class ViewPostButtonsFragment extends Fragment{
         token = "Token "+settingsout.getString("authToken", "");
         userId= settingsout.getString("loggedInUserId", "");
 
+
         viewPostFragment = (ViewPostFragment)getFragmentManager().findFragmentById(R.id.viewPost_fragment);
 
         ButterKnife.bind(this, view);
+        updateViewWithUserPref(Integer.valueOf(post_id));
         voteScoreText.setText(String.valueOf(post.getVoteScore()));
 
 
@@ -103,6 +107,8 @@ public class ViewPostButtonsFragment extends Fragment{
                    }
                    upvoteBtn.setColorFilter(Color.argb(255, 0, 153, 51)); // Green Tint
                    downvoteBtn.setEnabled(false);
+                   updateUserPref("upvote",Integer.valueOf(post_id));
+
                } else {
                    try {
                        callVoteWS("2", userId);
@@ -113,6 +119,7 @@ public class ViewPostButtonsFragment extends Fragment{
                    }
                    upvoteBtn.setColorFilter(Color.argb(255, 255, 255, 255)); // White Tint
                    downvoteBtn.setEnabled(true);
+                   updateUserPref("upvote", Integer.valueOf(post_id));
                }
            }
        });
@@ -131,6 +138,7 @@ public class ViewPostButtonsFragment extends Fragment{
                     }
                     downvoteBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
                     upvoteBtn.setEnabled(false);
+                    updateUserPref("downvote", Integer.valueOf(post_id));
 
                 } else {
                     try {
@@ -142,6 +150,7 @@ public class ViewPostButtonsFragment extends Fragment{
                     }
                     downvoteBtn.setColorFilter(Color.argb(255, 255, 255, 255)); // White Tint
                     upvoteBtn.setEnabled(true);
+                    updateUserPref("downvote", Integer.valueOf(post_id));
                 }
             }
         });
@@ -159,6 +168,7 @@ public class ViewPostButtonsFragment extends Fragment{
                 }
                 reportBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
                 reportBtn.setEnabled(false);
+                updateUserPref("reportpost", Integer.valueOf(post_id));
             }
         });
 
@@ -173,7 +183,7 @@ public class ViewPostButtonsFragment extends Fragment{
                     e.printStackTrace();
                 }
                 followBtn.setColorFilter(Color.argb(255, 0, 102, 255)); // Blue Tint
-
+                updateUserPref("follow", Integer.valueOf(post_id));
             }
         });
 
@@ -220,10 +230,10 @@ public class ViewPostButtonsFragment extends Fragment{
 
     private void callFollowWS(String postId,String userId) throws JSONException, UnsupportedEncodingException {
         JSONObject params = new JSONObject();
-        params.put("id",post_id);
+        params.put("id", post_id);
         String URL = "follow/byUser/"+userId;
         System.out.println(URL);
-        invokeFollowWS(URL,params);
+        invokeFollowWS(URL, params);
     }
 
     private void callDeleteWS(String postId) throws JSONException, UnsupportedEncodingException {
@@ -320,7 +330,7 @@ public class ViewPostButtonsFragment extends Fragment{
     public void invokeDeleteWS(String URL) throws UnsupportedEncodingException {
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("authorization",token);
-        client.delete(BASEURL+"post/" + URL, new AsyncHttpResponseHandler() {
+        client.delete(BASEURL + "post/" + URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 System.out.println(statusCode);
@@ -334,7 +344,7 @@ public class ViewPostButtonsFragment extends Fragment{
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                System.out.println("Inside failure" +statusCode);
+                System.out.println("Inside failure" + statusCode);
                 error.printStackTrace();
                 if (statusCode == 404) {
                     Toast.makeText(getContext(), "Delete  Post failed", Toast.LENGTH_LONG).show();
@@ -349,4 +359,64 @@ public class ViewPostButtonsFragment extends Fragment{
 
         });
     }
+
+    private void updateUserPref(String actionType,Integer id){
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(getContext());
+        Gson gson = new Gson();
+        PostUser postUser = new PostUser();
+        if(settings.contains("userPostActions")){
+            String postuser_json = settings.getString("userPostActions", "");
+            postUser  = gson.fromJson(postuser_json, PostUser.class);
+        }
+        if(actionType.equalsIgnoreCase("follow")){
+            if(postUser.getFollowingPosts().contains(id))
+                postUser.getFollowingPosts().remove(id);
+            else
+                postUser.getFollowingPosts().add(id);
+
+        }else if(actionType.equalsIgnoreCase("upvote")){
+            if(postUser.getUpVotedPosts().contains(id))
+                postUser.getUpVotedPosts().remove(id);
+            else
+                postUser.getUpVotedPosts().add(id);
+        }else if(actionType.equalsIgnoreCase("downvote")){
+            if(postUser.getDownVotedPosts().contains(id))
+                postUser.getDownVotedPosts().remove(id);
+            else
+                postUser.getDownVotedPosts().add(id);
+        }else if(actionType.equalsIgnoreCase("reportpost")){
+            postUser.getReportedPosts().add(id);
+        }
+        String postuser_json = gson.toJson(postUser);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("userPostActions", postuser_json);
+        editor.commit();
+    }
+
+    private void updateViewWithUserPref(Integer id){
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(getContext());
+        Gson gson = new Gson();
+        PostUser postUser = new PostUser();
+        if(settings.contains("userPostActions")){
+            String postuser_json = settings.getString("userPostActions", "");
+            postUser  = gson.fromJson(postuser_json, PostUser.class);
+            if(postUser.getFollowingPosts().contains(id)) {
+                followBtn.setColorFilter(Color.argb(255, 0, 102, 255)); // Blue Tint
+            }if(postUser.getUpVotedPosts().contains(id)){
+                upvoteBtn.setColorFilter(Color.argb(255, 0, 153, 51)); // Green Tint
+                downvoteBtn.setEnabled(false);
+            }if(postUser.getDownVotedPosts().contains(id)) {
+                downvoteBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
+                upvoteBtn.setEnabled(false);
+            }if(postUser.getReportedPosts().contains(id)) {
+                reportBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
+                reportBtn.setEnabled(false);
+            }
+        }
+
+    }
+
+
 }

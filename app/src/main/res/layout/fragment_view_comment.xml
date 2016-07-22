@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#939393">
+    >
 
     <TextView
         android:id="@+id/commentContent"
@@ -10,14 +10,13 @@
         android:layout_column="0"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textColor="#000000"/>
+        />
 
     <EditText
         android:id="@+id/commentContentEdit"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textStyle="bold"
-        android:textColor="#990033"
         android:textSize="6pt"
         android:visibility="gone"
         ></EditText>
@@ -68,7 +67,8 @@
             android:layout_width="38dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_report_problem_white_24dp"
-            android:id="@+id/reportComment"/>
+            android:id="@+id/reportComment"
+            android:background="@null"/>
 
         <View
             android:layout_width="1dp"

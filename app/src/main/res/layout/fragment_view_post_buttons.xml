@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:textStyle="bold"
             android:textSize="12pt"
-            android:textColor="#000000"></TextView>
+            ></TextView>
 
         <View
             android:layout_width="6dp"
@@ -27,7 +27,8 @@
             android:layout_width="38dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_thumb_down_white_24dp"
-            android:id="@+id/downvote" />
+            android:id="@+id/downvote"
+            android:background="@null"/>
 
         <View
             android:layout_width="6dp"
@@ -39,7 +40,8 @@
             android:layout_width="38dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_thumb_up_white_24dp"
-            android:id="@+id/upvote"/>
+            android:id="@+id/upvote"
+            android:background="@null"/>
 
         <View
             android:layout_width="6dp"
@@ -51,7 +53,8 @@
             android:layout_width="38dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_report_problem_white_24dp"
-            android:id="@+id/report"/>
+            android:id="@+id/report"
+            android:background="@null"/>
 
         <View
             android:layout_width="6dp"
@@ -63,7 +66,8 @@
             android:layout_width="38dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_add_white_24dp"
-            android:id="@+id/follow"/>
+            android:id="@+id/follow"
+            android:background="@null"/>
 
         <View
             android:layout_width="6dp"

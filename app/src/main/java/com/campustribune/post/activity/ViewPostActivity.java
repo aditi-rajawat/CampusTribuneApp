@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.post.fragment.CommentListFragment;
@@ -27,7 +29,7 @@ import cz.msebera.android.httpclient.Header;
 /**
  * Created by snshr on 7/14/2016.
  */
-public class ViewPostActivity extends FragmentActivity{
+public class ViewPostActivity extends BaseActivity {
 
  public String post_id;
  public Post post = new Post();

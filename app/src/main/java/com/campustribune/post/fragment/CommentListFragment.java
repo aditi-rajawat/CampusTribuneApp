@@ -27,8 +27,10 @@ import android.widget.Toast;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.PostComment;
+import com.campustribune.beans.PostUser;
 import com.campustribune.post.activity.ViewPostActivity;
 import com.campustribune.post.adapter.CommentListAdapter;
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -130,6 +132,7 @@ public class CommentListFragment extends Fragment{
         saveEditCommentBtn = (Button) showComment.findViewById(R.id.button_save_comment);
         cancelEditCommentBtn = (Button) showComment.findViewById(R.id.button_cancel_comment);
         commentText.setText(comment.getCommentContent());
+        updateViewWithUserPref(Integer.valueOf(comment.getId()));
         editCommentBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("Edit clicked");
@@ -175,6 +178,7 @@ public class CommentListFragment extends Fragment{
                 commentTextEdit.setVisibility(v.GONE);
                 editCommentBtnLayout.setVisibility(v.GONE);
                 reloadFragment();
+                updateUserPref("reportcomment",Integer.valueOf(comment.getId()));
             }
         });
 
@@ -298,13 +302,14 @@ public class CommentListFragment extends Fragment{
                 System.out.println("Inside onSuccess" + statusCode);
                 //try {
                 if (statusCode == 200) {
-                    CommentListFragment.this.setCommentListsObj(responseBody,"firstload");
+                    CommentListFragment.this.setCommentListsObj(responseBody, "firstload");
                 } else {
                     System.out.println("Inside onSuccess else");
                     Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
                 }
 
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject responseBody) {
                 System.out.println("Inside onFailue" + statusCode);
@@ -482,22 +487,22 @@ public class CommentListFragment extends Fragment{
     public void invokeDeleteCommentWS(String URL) throws UnsupportedEncodingException {
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("authorization",token);
-        client.delete(BASEURL+"comment/" + URL, new AsyncHttpResponseHandler() {
+        client.delete(BASEURL + "comment/" + URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 System.out.println(statusCode);
-                    if (statusCode == 200) {
-                        Toast.makeText(getContext(), "Comment Deleted Successfully!!", Toast.LENGTH_LONG).show();
-                        CommentListFragment.this.reloadCommentsWS(post_id);
-                    } else {
-                        Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();
-                    }
+                if (statusCode == 200) {
+                    Toast.makeText(getContext(), "Comment Deleted Successfully!!", Toast.LENGTH_LONG).show();
+                    CommentListFragment.this.reloadCommentsWS(post_id);
+                } else {
+                    Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();
+                }
 
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                System.out.println("Inside failure" +statusCode);
+                System.out.println("Inside failure" + statusCode);
                 error.printStackTrace();
                 if (statusCode == 404) {
                     Toast.makeText(getContext(), "Delete  Comment failed", Toast.LENGTH_LONG).show();
@@ -511,5 +516,39 @@ public class CommentListFragment extends Fragment{
 
 
         });
+    }
+
+    private void updateUserPref(String actionType,Integer id){
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(getContext());
+        Gson gson = new Gson();
+        PostUser postUser = new PostUser();
+        if(settings.contains("userPostActions")){
+            String postuser_json = settings.getString("userPostActions", "");
+            postUser  = gson.fromJson(postuser_json, PostUser.class);
+        }
+        if(actionType.equalsIgnoreCase("reportcomment")){
+            postUser.getReportedComments().add(id);
+        }
+        String postuser_json = gson.toJson(postUser);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("userPostActions", postuser_json);
+        editor.commit();
+    }
+
+    private void updateViewWithUserPref(Integer id){
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(getContext());
+        Gson gson = new Gson();
+        PostUser postUser = new PostUser();
+        if(settings.contains("userPostActions")){
+            String postuser_json = settings.getString("userPostActions", "");
+            postUser  = gson.fromJson(postuser_json, PostUser.class);
+            if(postUser.getReportedComments().contains(id)) {
+                reportCommentBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
+                reportCommentBtn.setEnabled(false);
+            }
+        }
+
     }
 }
