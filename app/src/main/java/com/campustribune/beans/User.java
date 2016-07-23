@@ -1,5 +1,7 @@
 package com.campustribune.beans;
 
+import java.util.ArrayList;
+
 /**
  * Created by sandyarathidas on 7/13/16.
  */
@@ -9,6 +11,33 @@ public class User {
     String lastName;
     String email;
     String token;
+    Boolean isNotifyFlag;
+    Boolean isRecommendFlag;
+    ArrayList<Post> postList= new ArrayList();
+
+    public ArrayList<Post> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(ArrayList<Post> postList) {
+        this.postList = postList;
+    }
+
+    public Boolean getIsNotifyFlag() {
+        return isNotifyFlag;
+    }
+
+    public void setIsNotifyFlag(Boolean isNotifyFlag) {
+        this.isNotifyFlag = isNotifyFlag;
+    }
+
+    public Boolean getIsRecommendFlag() {
+        return isRecommendFlag;
+    }
+
+    public void setIsRecommendFlag(Boolean isRecommendFlag) {
+        this.isRecommendFlag = isRecommendFlag;
+    }
 
     public void setId(String id) {
         this.id = id;

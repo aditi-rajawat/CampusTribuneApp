@@ -14,8 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campustribune.R;
+import com.campustribune.beans.Post;
 import com.campustribune.beans.User;
-import com.campustribune.frontpage.FrontPageActivity;
+import com.campustribune.frontpage2.FrontPageActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.btn_login) Button _loginButton;
     @Bind(R.id.link_signup) TextView _signupLink;
+    public static ArrayList<Post> postList = new ArrayList<Post>();
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,10 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                System.out.println("userid: " + user.getId());
-                System.out.println("user email: " + user.getEmail());
-
-
                 SharedPreferences settings = PreferenceManager
                         .getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = settings.edit();
@@ -106,6 +105,8 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("loggedInUserId", user.getId());
                 editor.putString("loggedInUserEmail", user.getEmail());
                 editor.putString("loggedInUserName", user.getFirstName()+" "+user.getLastName());
+                editor.putBoolean("loggedInUserNotifications", user.getIsNotifyFlag());
+                editor.putBoolean("loggedInUserRecommendations",user.getIsRecommendFlag());
                 editor.commit();
                 //Code to retrieve the user details stored in shared preferences
                 SharedPreferences settingsout = PreferenceManager
@@ -117,7 +118,8 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     if (statusCode == 200) {
                         Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        // Navigate to login screen
+                        System.out.println("List SIZEEE in LOGIN"+user.getPostList().size());
+                        postList=user.getPostList();
                         navigatetoFrontpageActivity();
                     } else {
                         Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();

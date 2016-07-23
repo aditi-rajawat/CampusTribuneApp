@@ -11,9 +11,6 @@ import android.widget.Toast;
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
-import com.campustribune.post.fragment.CommentListFragment;
-import com.campustribune.post.fragment.ViewPostButtonsFragment;
-import com.campustribune.post.fragment.ViewPostFragment;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -36,7 +33,7 @@ public class ViewPostActivity extends BaseActivity {
 
     String token;
 
-    public String BASEURL="http://192.168.0.14:8080/";
+    public String BASEURL="http://10.0.0.227:8080/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

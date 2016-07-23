@@ -1,5 +1,7 @@
 package com.campustribune.beans;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by snshr on 7/11/2016.
  */
@@ -16,6 +18,29 @@ public class Post {
     private int reportScore;
     private String createdOn;
     private String lastEditedOn;
+
+    public Post(String headline, String content, String imgURL, Bitmap image) {
+        this.headline = headline;
+        this.content = content;
+        this.imgURL = imgURL;
+        this.image = image;
+    }
+
+    public Post(String headline, String content, String imgURL) {
+        this.headline = headline;
+        this.content = content;
+        this.imgURL = imgURL;
+    }
+
+    public Post(String headline, String content) {
+        this.headline = headline;
+        this.content = content;
+    }
+
+    public Post() {
+    }
+
+    public Bitmap image;
 
     public int getId() {
         return id;
@@ -112,4 +137,5 @@ public class Post {
     public void setLastEditedOn(String lastEditedOn) {
         this.lastEditedOn = lastEditedOn;
     }
+
 }

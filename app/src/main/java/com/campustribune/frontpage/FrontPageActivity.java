@@ -71,12 +71,12 @@ public class FrontPageActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(String... params) {
            SyncHttpClient client = new SyncHttpClient();
-            SharedPreferences settingsout = PreferenceManager
+            SharedPreferences sharedPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getApplicationContext());
-            String auth_token_string = settingsout.getString("authToken", "");
-            String userId = settingsout.getString("loggedInUserId", "");
+            String auth_token_string = sharedPreferences.getString("authToken", "");
+            String userId = sharedPreferences.getString("loggedInUserId", "");
             client.addHeader("authorization","Token "+auth_token_string);
-            client.get(FEED_URL+"userId", new JsonHttpResponseHandler(){
+            client.get(FEED_URL+userId, new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] header, JSONArray responseArray){
                     try{

@@ -23,7 +23,7 @@
         </activity>
         <activity android:name="com.campustribune.login.LoginActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name="com.campustribune.login.SignupActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="com.campustribune.frontpage.FrontPageActivity" android:theme="@style/AppTheme.Dark"/>
+        <activity android:name="com.campustribune.frontpage2.FrontPageActivity" android:theme="@style/AppTheme.Dark"/>
         <activity android:name="com.campustribune.userProfile.UserProfileActivity" android:theme="@style/AppTheme.Dark"/>
         <activity android:name="com.campustribune.BaseActivity" android:theme="@style/AppTheme.Dark"/>
         <activity android:name="com.campustribune.post.activity.CreatePostActivity" android:theme="@style/AppTheme.Dark"/>

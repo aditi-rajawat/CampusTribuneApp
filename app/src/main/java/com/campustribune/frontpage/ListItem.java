@@ -12,7 +12,6 @@ public class ListItem {
     private int userId;
     private String image;
     private Bitmap bitMapImage;
-
     public String getHeadline() {
         return headline;
     }
