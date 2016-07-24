@@ -111,7 +111,7 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         //Please remember to change the below url to your system ip where the backend runs
-        client.post(this, "http://10.0.0.227:8080/user/signUp", entity, "application/json", new JsonHttpResponseHandler() {
+        client.post(this, "http://10.0.2.2:8080/user/signUp", entity, "application/json", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 progressDialog.hide();

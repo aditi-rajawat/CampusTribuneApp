@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@color/gradientEndColor">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/edit_event_comment"
+        android:background="@drawable/edittextstyle"
+        android:hint="@string/event_edit_comment_string"
+        android:textSize="15dp"
+        android:textColor="@color/editTextHintColor"
+        android:textColorHint="@color/editTextHintColor"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/edit_event_comment"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/event_edit_comment"
+        android:textColor="@color/gradientEndColor"
+        android:id="@+id/edit_event_comment_action"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/edit_event_comment"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/edit_event_comment_action"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/event_delete_comment"
+        android:textColor="@color/gradientEndColor"
+        android:id="@+id/delete_event_comment_action"/>
+
+</RelativeLayout>

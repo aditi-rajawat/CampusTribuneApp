@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+    <ImageButton
+        android:id="@+id/popup_close_action"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:background="@color/colorPrimaryDark"
+        android:src="@drawable/ic_action_close"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/popup_close_action"
+        android:layout_marginTop="15dp"
+        android:id="@+id/new_event_comment"
+        android:background="@drawable/edittextstyle"
+        android:hint="@string/event_new_comment"
+        android:textSize="15dp"
+        android:textColor="@color/editTextHintColor"
+        android:textColorHint="@color/editTextHintColor"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/popup_close_action"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/new_event_comment"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/event_add_comment"
+        android:textColor="@color/gradientEndColor"
+        android:id="@+id/add_event_comment_action"/>
+
+    <ListView
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/new_event_comment"
+        android:layout_marginTop="10dp"
+        android:id="@+id/list_event_comments"/>
+
+</RelativeLayout>
+

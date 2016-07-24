@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <EditText
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:id="@+id/edit_event_title"
+        android:background="@drawable/edittextstyle"
+        android:hint="@string/edit_event_title"
+        android:textSize="18dp"
+        android:textColor="@color/editTextHintColor"
+        android:textColorHint="@color/editTextHintColor"
+        android:gravity="top|left"/>
+
+    <EditText
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/edit_event_title"
+        android:inputType="textMultiLine"
+        android:id="@+id/edit_event_desc"
+        android:background="@drawable/edittextstyle"
+        android:hint="@string/edit_event_desc"
+        android:textSize="18dp"
+        android:textColor="@color/editTextHintColor"
+        android:textColorHint="@color/editTextHintColor"
+        android:gravity="top|left"/>
+
+    <Spinner
+        android:id="@+id/edit_event_categories"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/edit_event_desc"
+        android:background="@drawable/edittextstyle"/>
+
+    <EditText
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/edit_event_categories"
+        android:id="@+id/edit_event_url"
+        android:background="@drawable/edittextstyle"
+        android:hint="@string/edit_event_url"
+        android:textSize="18dp"
+        android:textColor="@color/editTextHintColor"
+        android:textColorHint="@color/editTextHintColor"
+        android:gravity="top|left"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/edit_event_url"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/cancel_button_label"
+        android:textColor="@color/gradientEndColor"
+        android:id="@+id/edit_event_cancel_button"
+        android:layout_gravity="left"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/edit_event_cancel_button"
+        android:layout_below="@+id/edit_event_url"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/next_button_label"
+        android:textColor="@color/gradientEndColor"
+        android:id="@+id/edit_event_next_button"
+        android:layout_gravity="right"/>
+
+</RelativeLayout>

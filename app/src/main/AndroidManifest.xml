@@ -7,27 +7,88 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- Added by Aditi on 07/23/2016 START -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- Added by Aditi on 07/23/2016 END -->
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Added by Aditi on 07/23/2016 START -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+        <!-- Added by Aditi on 07/23/2016 END -->
+
         <activity
             android:name=".LaunchActivity"
             android:theme="@style/AppTheme.WithActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.campustribune.login.LoginActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="com.campustribune.login.SignupActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="com.campustribune.frontpage2.FrontPageActivity" android:theme="@style/AppTheme.Dark"/>
-        <activity android:name="com.campustribune.userProfile.UserProfileActivity" android:theme="@style/AppTheme.Dark"/>
-        <activity android:name="com.campustribune.BaseActivity" android:theme="@style/AppTheme.Dark"/>
-        <activity android:name="com.campustribune.post.activity.CreatePostActivity" android:theme="@style/AppTheme.Dark"/>
-        <activity android:name="com.campustribune.post.activity.ViewPostActivity" android:theme="@style/AppTheme.Dark"/>
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".login.SignupActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".frontpage2.FrontPageActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".userProfile.UserProfileActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".BaseActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".post.activity.CreatePostActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".post.activity.ViewPostActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".event.MapsActivity"
+            android:label="@string/title_activity_maps" />
+
+        <!-- Added by Aditi on 07/23/2016 START -->
+        <activity
+            android:name=".event.activity.CreateEventActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".event.activity.ViewEventActivity"
+            android:theme="@style/AppTheme.WithActionBar" />
+        <activity
+            android:name=".event.activity.ViewAllEventsActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <!-- Added by Aditi on 07/23/2016 END -->
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

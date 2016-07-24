@@ -11,4 +11,10 @@
     <color name="pink">#FFB6C1</color>
     <color name="indigo">#4B0082</color>
 
+    <!-- Added by Aditi on 07/23/2016 START -->
+    <color name="gradientStartColor">#C8C8C8</color>
+    <color name="gradientEndColor">#FFFFFF</color>
+    <color name="editTextHintColor">#4b4a4a</color>
+    <!-- Added by Aditi on 07/23/2016 END -->
+
 </resources>

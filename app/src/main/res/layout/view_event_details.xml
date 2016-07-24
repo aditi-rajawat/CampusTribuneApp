@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <TextView
+        android:id="@+id/view_event_title"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:text="San Jose State Final Sports at City Center"/>
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_event_edit_title"
+        android:background="@drawable/edittextstyle"
+        android:hint="@string/edit_event_title"
+        android:textSize="18dp"
+        android:textColor="@color/editTextHintColor"
+        android:textColorHint="@color/editTextHintColor"
+        android:gravity="top|left"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/view_event_description"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/view_event_title"
+        android:layout_marginTop="15dp"
+        android:textSize="20dp"
+        android:text="This is an event happening for the first time in San Jose.\n
+        Every student of San Jose State are cordinally invited to support their favourite team. Breakfast and lunch will be served at the lawn. See you guys there!"/>
+
+    <EditText
+        android:layout_marginTop="15dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/view_event_edit_title"
+        android:inputType="textMultiLine"
+        android:id="@+id/view_event_edit_desc"
+        android:background="@drawable/edittextstyle"
+        android:hint="@string/edit_event_desc"
+        android:textSize="18dp"
+        android:textColor="@color/editTextHintColor"
+        android:textColorHint="@color/editTextHintColor"
+        android:gravity="top|left"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/event_image_1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/view_event_title"
+        android:layout_toLeftOf="@+id/view_event_description"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/background"/>
+
+    <ImageButton
+        android:id="@+id/event_upvote"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/view_event_description"
+        android:layout_alignParentLeft="true"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:tag="not_upvoted"
+        android:src="@drawable/ic_thumb_up_white_24dp"/>
+
+    <ImageButton
+        android:id="@+id/event_downvote"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/event_upvote"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentLeft="true"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:tag="not_downvoted"
+        android:src="@drawable/ic_thumb_down_white_24dp"/>
+
+    <ImageButton
+        android:id="@+id/event_addToCalendar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/view_event_description"
+        android:layout_toRightOf="@+id/event_upvote"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_action_addtocalendar"/>
+
+    <ImageButton
+        android:id="@+id/event_follow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/view_event_description"
+        android:layout_toRightOf="@+id/event_addToCalendar"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:tag="not_follow"
+        android:src="@drawable/ic_add_white_24dp"/>
+
+    <ImageButton
+        android:id="@+id/event_going"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/view_event_description"
+        android:layout_toRightOf="@+id/event_follow"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:tag="not_going"
+        android:src="@drawable/ic_action_markgoing"/>
+
+    <ImageButton
+        android:id="@+id/event_notgoing"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/view_event_description"
+        android:layout_toRightOf="@+id/event_going"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:tag="not_notgoing"
+        android:src="@drawable/ic_action_marknotgoing"/>
+
+    <ImageButton
+        android:id="@+id/event_add_comment"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/view_event_description"
+        android:layout_toRightOf="@+id/event_notgoing"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_action_addcomment"/>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/view_event_location_map"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/event_downvote"/>
+
+</RelativeLayout>

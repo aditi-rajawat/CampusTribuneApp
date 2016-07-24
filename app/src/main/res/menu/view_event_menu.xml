@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="com.campustribune.event.activity.ViewEventActivity">
+
+    <item android:id="@+id/view_event_home_action"
+        android:title="@string/action_view_event_home"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/view_event_back_action"
+        android:icon="@drawable/ic_action_back"
+        android:title="@string/action_view_event_back"
+        app:showAsAction="always"
+        android:visible="false"/>
+
+    <item android:id="@+id/view_event_edit_action"
+        android:title="@string/action_view_event_edit"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/view_event_editsave_action"
+        android:title="@string/action_view_event_editsave"
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item android:id="@+id/view_event_report_action"
+        android:title="@string/action_view_event_report"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/view_event_delete_action"
+        android:title="@string/action_view_event_delete"
+        app:showAsAction="never"/>
+
+</menu>

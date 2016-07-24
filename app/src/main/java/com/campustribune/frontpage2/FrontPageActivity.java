@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
+import com.campustribune.event.activity.CreateEventActivity;
+import com.campustribune.event.activity.ViewAllEventsActivity;
 import com.campustribune.login.LoginActivity;
 import com.campustribune.post.activity.CreatePostActivity;
 import com.campustribune.post.activity.ViewPostActivity;
@@ -113,6 +115,12 @@ public class FrontPageActivity extends AppCompatActivity {
                 Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
                 goToCreatePostPage();
                 return true;
+            case R.id.submenu_createevent:      // Added by Aditi on 07/23/2016 START
+                goToCreateEventPage();
+                return true;
+            case R.id.submenu_viewallevents:
+                goToViewAllEventsPage();
+                return true;                   // Added by Aditi on 07/23/2016 END
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
@@ -127,6 +135,18 @@ public class FrontPageActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), CreatePostActivity.class);
         startActivity(intent);
     }
+
+    // Added by Aditi on 07/23/2016 START
+    private void goToCreateEventPage(){
+        Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToViewAllEventsPage(){
+        Intent intent = new Intent(getApplicationContext(), ViewAllEventsActivity.class);
+        startActivity(intent);
+    }
+    // Added by Aditi on 07/23/2016 END
 
     public List<Post> fill_with_data(ArrayList<Post> postList) throws ExecutionException, InterruptedException {
         System.out.println("SIZEEEEE"+postList.size());

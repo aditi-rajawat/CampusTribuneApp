@@ -2,8 +2,6 @@
     <string name="app_name">Campus Tribune</string>
     <string name="menu_action_post">Posts</string>
     <string name="menu_action_event">Events</string>
-    <string name="submenu_action_create_event">Create</string>
-    <string name="submenu_action_view_allevents">View All</string>
     <string name="menu_action_profile">Profile</string>
     <string name="menu_action_search">Search</string>
     <string name="menu_action_settings">Settings</string>
@@ -12,6 +10,10 @@
     <string name="submenu_action_search">Search</string>
     <string name="submenu_action_view_userprofile">User Profile</string>
     <string name="submenu_action_create_post">Create Post</string>
+    <!-- Added by Aditi on 07/23/2016 START -->
+    <string name="submenu_action_create_event">Create Event</string>
+    <string name="submenu_action_view_all_events">View Events</string>
+    <!-- Added by Aditi on 07/23/2016 END -->
     <string name="selectCategory">Select Category</string>
     <string-array name="category_options">
         <item>Technology</item>
@@ -19,4 +21,52 @@
         <item>Administration</item>
         <item>Arts</item>
     </string-array>
+
+    <!-- Added by Aditi on 07/23/2016 START -->
+
+    <string name="activity_default_label"></string>
+    <string name="edit_event_title">Event Title</string>
+    <string name="edit_event_desc">Event Description</string>
+    <string name="edit_event_url">Event URL</string>
+    <string name="cancel_button_label">Cancel</string>
+    <string name="next_button_label">Next</string>
+    <string name="previous_button_label">Previous</string>
+    <string name="create_button_label">Create</string>
+    <string name="rsvp_button_label">RSVP</string>
+    <string name="report_button_label">Report</string>
+    <string name="pick_start_date">Start Date</string>
+    <string name="pick_end_date">End Date</string>
+    <string name="pick_start_time">Start Time</string>
+    <string name="pick_end_time">End Time</string>
+    <string name="default_entered_title">Title not recorded, try again!</string>
+    <string name="pick_location">Pick a Location</string>
+    <string name="capture_photo">Take a Photo</string>
+    <string name="add_photo">Add Photo</string>
+    <string-array name="categories">
+        <item>---Select Category---</item>
+        <item>Technology</item>
+        <item>Sports</item>
+        <item>Entertainment</item>
+        <item>Art and Culture</item>
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="event_new_comment">Enter a comment</string>
+    <string name="event_add_comment">Add</string>
+    <string name="event_edit_comment_string">Enter new comment</string>
+    <string name="event_edit_comment">Save</string>
+    <string name="event_delete_comment">Delete</string>
+    <string-array name="eventMoreOptions">
+        <item>Edit</item>
+        <item>Report</item>
+        <item>Delete</item>
+    </string-array>
+    <string name="action_view_event_home">Home</string>
+    <string name="action_view_event_back">Back</string>
+    <string name="action_view_event_edit">Edit</string>
+    <string name="action_view_event_editsave">Save</string>
+    <string name="action_view_event_report">Report</string>
+    <string name="action_view_event_delete">Delete</string>
+
+    <!-- Added by Aditi on 07/23/2016 END -->
+
 </resources>

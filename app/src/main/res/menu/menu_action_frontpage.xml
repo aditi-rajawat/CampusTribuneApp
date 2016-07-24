@@ -21,6 +21,16 @@
         android:id="@+id/submenu_createpost"
         android:title="@string/submenu_action_create_post"/>
 
+    <!-- Added by Aditi on 07/23/2016 START -->
+    <item
+        android:id="@+id/submenu_createevent"
+        android:title="@string/submenu_action_create_event"/>
+
+    <item
+        android:id="@+id/submenu_viewallevents"
+        android:title="@string/submenu_action_view_all_events"/>
+    <!-- Added by Aditi on 07/23/2016 END -->
+
 </menu>
 
 
