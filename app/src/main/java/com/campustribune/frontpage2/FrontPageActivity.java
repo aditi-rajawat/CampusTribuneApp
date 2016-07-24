@@ -1,7 +1,9 @@
 package com.campustribune.frontpage2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -11,18 +13,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.login.LoginActivity;
+import com.campustribune.post.activity.CreatePostActivity;
+import com.campustribune.post.activity.ViewPostActivity;
 import com.campustribune.userProfile.UserProfileActivity;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import cz.msebera.android.httpclient.Header;
 import java.util.concurrent.ExecutionException;
 
 public class FrontPageActivity extends AppCompatActivity {
 
+    String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +59,7 @@ public class FrontPageActivity extends AppCompatActivity {
                 new Recycler_View_Adapter.OnItemClickListener(){
                     @Override public void onItemClick(Post post) {
                         Toast.makeText(getBaseContext(), "Item Clicked", Toast.LENGTH_LONG).show();
-                        navigateToViewPostActivity();
+                        navigateToViewPostActivity(post.getId());
                 }
 
             });
@@ -61,10 +73,18 @@ public class FrontPageActivity extends AppCompatActivity {
         System.out.println("Setting up the animation!");
         recyclerView.setItemAnimator(itemAnimator);*/
 
+        SharedPreferences settingsout = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        token = "Token "+settingsout.getString("authToken", "");
+        String userId= settingsout.getString("loggedInUserId", "");
+
+        invokeGetUserActionsWS(userId);
     }
 
-    private void navigateToViewPostActivity() {
-
+    private void navigateToViewPostActivity(Integer postId) {
+        Intent viewPostPage = new Intent(FrontPageActivity.this, ViewPostActivity.class);
+        viewPostPage.putExtra("post_id", String.valueOf(postId));
+        FrontPageActivity.this.startActivity(viewPostPage);
 
     }
 
@@ -88,6 +108,11 @@ public class FrontPageActivity extends AppCompatActivity {
                 return true;
             case R.id.submenu_search:
                 Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.submenu_createpost:
+                Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
+                goToCreatePostPage();
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
@@ -95,6 +120,11 @@ public class FrontPageActivity extends AppCompatActivity {
 
     private void goToUserProfilePage(){
         Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToCreatePostPage(){
+        Intent intent = new Intent(getApplicationContext(), CreatePostActivity.class);
         startActivity(intent);
     }
 
@@ -109,6 +139,46 @@ public class FrontPageActivity extends AppCompatActivity {
             data.add(post);
         }
         return data;
+    }
+
+    public void invokeGetUserActionsWS(String userId){
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("authorization", token);
+        client.get("http://192.168.0.14:8080/post/getUserActions/"+userId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
+                try {
+                    if (statusCode == 200) {
+                        System.out.println(responseBody.toString());
+                        SharedPreferences settings = PreferenceManager
+                                .getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("userPostActions", responseBody.toString());
+                        editor.commit();
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject responseBody) {
+                error.printStackTrace();
+                if (statusCode == 409) {
+                    Toast.makeText(getApplicationContext(), "Get user actions failed", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
 }

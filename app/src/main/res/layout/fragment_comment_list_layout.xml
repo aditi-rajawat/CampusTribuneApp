@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:textStyle="italic"
         android:typeface="sans"
-        android:textSize="8pt"
         android:layout_below="@id/commentVal"/>
 
 </RelativeLayout>

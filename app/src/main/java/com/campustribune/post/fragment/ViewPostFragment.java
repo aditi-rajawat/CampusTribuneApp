@@ -30,6 +30,7 @@ import com.campustribune.post.activity.ViewPostActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.squareup.picasso.Picasso;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -118,13 +119,32 @@ public class ViewPostFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Save Post Clicked", Toast.LENGTH_LONG).show();
                 try {
-                    callSaveWS(headlineEdit.getText().toString(), contentEdit.getText().toString());
+                    String headlineVal = headlineEdit.getText().toString();String contentVal=contentEdit.getText().toString();
+                    //callSaveWS(headlineEdit.getText().toString(), contentEdit.getText().toString());
+                    if(headlineVal.trim().equalsIgnoreCase("") || headlineVal!=null && (headlineVal.trim().length()<10||headlineVal.trim().length()>50)){
+                        headlineEdit.setError("Post Headline is mandatory!!Allowed character length is 10-50 characters");
+                    }else if(contentVal.trim().equalsIgnoreCase("") || contentVal!=null && (contentVal.trim().length()<10||contentVal.trim().length()>1500)) {
+                        contentEdit.setError("Post Content is mandatory!!Allowed character length is 10-1500 characters");
+                    }else{
+                        callSaveWS(headlineEdit.getText().toString(), contentEdit.getText().toString());
+                        content.setVisibility(v.VISIBLE);
+                        contentEdit.setVisibility(v.GONE);
+                        headline.setVisibility(v.VISIBLE);
+                        headlineEdit.setVisibility(v.GONE);
+                        btnLayout.setVisibility(v.GONE);
+                        Fragment frg = null;
+                        frg = getFragmentManager().findFragmentById(R.id.viewPost_fragment);
+                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(frg);
+                        ft.attach(frg);
+                        ft.commit();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                content.setVisibility(v.VISIBLE);
+                /*content.setVisibility(v.VISIBLE);
                 contentEdit.setVisibility(v.GONE);
                 headline.setVisibility(v.VISIBLE);
                 headlineEdit.setVisibility(v.GONE);
@@ -134,7 +154,7 @@ public class ViewPostFragment extends Fragment {
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(frg);
                 ft.attach(frg);
-                ft.commit();
+                ft.commit();*/
             }
         });
        cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -219,14 +239,15 @@ public class ViewPostFragment extends Fragment {
         if(post.getWebLink()!=null && post.getWebLink().length()>0){
             url.setText("Go to "+post.getWebLink());
         }else{
-            url.setVisibility(ImageView.GONE);
+            url.setVisibility(View.GONE);
         }
 
         if(post.getImgURL()!=null && post.getImgURL().length()>0) {
-            // Create an object for subclass of AsyncTask
+            /*// Create an object for subclass of AsyncTask
             GetImage task = new GetImage();
             // Execute the task
-            task.execute(new String[]{post.getImgURL()});
+            task.execute(new String[]{post.getImgURL()});*/
+            Picasso.with(getContext()).load(post.getImgURL()).into(postImage);
         }else{
             postImage.setVisibility(ImageView.GONE);
         }
@@ -265,65 +286,6 @@ public class ViewPostFragment extends Fragment {
         });
     }
 
-    private class GetImage extends AsyncTask<String, Void, Bitmap> {
 
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-            Bitmap map = null;
-            map = downloadImage(urls[0]);
-            return map;
-        }
-
-        // Sets the Bitmap returned by doInBackground
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            postImage.setImageBitmap(result);
-            System.out.println("finished");
-        }
-
-        // Creates Bitmap from InputStream and returns it
-        private Bitmap downloadImage(String url) {
-            Bitmap bitmap = null;
-            InputStream stream = null;
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inSampleSize = 1;
-
-            try {
-                stream = getHttpConnection(url);
-                bitmap = BitmapFactory.
-                        decodeStream(stream, null, bmOptions);
-                stream.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        // Makes HttpURLConnection and returns InputStream
-        private InputStream getHttpConnection(String urlString)
-                throws IOException {
-            InputStream stream = null;
-            URL url = new URL(urlString);
-            URLConnection connection = url.openConnection();
-
-            try {
-                HttpsURLConnection httpConnection = (HttpsURLConnection) connection;
-                httpConnection.setRequestMethod("GET");
-                httpConnection.connect();
-
-                if (httpConnection.getResponseCode() == HttpsURLConnection.HTTP_OK ||
-                        httpConnection.getResponseCode() == HttpsURLConnection.HTTP_NOT_MODIFIED ) {
-
-                    stream = httpConnection.getInputStream();
-                } else { // just in case..
-
-                    //log.d("Surprize HTTP status was: " ,httpConnection.getResponseCode());
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return stream;
-        }
-    }
 
 }

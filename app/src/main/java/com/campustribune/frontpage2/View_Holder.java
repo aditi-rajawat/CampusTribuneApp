@@ -32,7 +32,8 @@ public class View_Holder extends RecyclerView.ViewHolder {
     public void bind(final Post post, final Recycler_View_Adapter.OnItemClickListener listener) {
         title.setText(post.getHeadline());
         description.setText(post.getContent());
-        if(post.getImgURL()!=null)
+
+        if(post.getImgURL()!=null && post.getWebLink().length()>0)
             Picasso.with(itemView.getContext()).load(post.getImgURL()).into(image);
         else
             image.setVisibility(View.GONE);

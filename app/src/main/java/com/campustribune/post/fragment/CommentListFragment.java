@@ -186,16 +186,27 @@ public class CommentListFragment extends Fragment{
             public void onClick(View v) {
                 System.out.println("Save clicked");
                 try {
-                    callSaveCommentWS(commentTextEdit.getText().toString(), comment);
+                    //callSaveCommentWS(commentTextEdit.getText().toString(), comment);
+                    String commentStr=commentTextEdit.getText().toString();
+                    if(commentStr.trim().equalsIgnoreCase("") || commentStr!=null && (commentStr.trim().length()<10||commentStr.trim().length()>50)){
+                        commentTextEdit.setError("Please enter a comment to save!!Allowed character length is 10-500 characters");
+                    }else{
+                        callSaveCommentWS(commentTextEdit.getText().toString(), comment);
+                        commentText.setVisibility(View.VISIBLE);
+                        commentTextEdit.setVisibility(View.GONE);
+                        editCommentBtnLayout.setVisibility(View.GONE);
+                        showComment.hide();
+                        reloadFragment();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                commentText.setVisibility(View.VISIBLE);
+                /*commentText.setVisibility(View.VISIBLE);
                 commentTextEdit.setVisibility(View.GONE);
                 editCommentBtnLayout.setVisibility(View.GONE);
-                reloadFragment();
+                reloadFragment();*/
             }
         });
 
@@ -222,16 +233,20 @@ public class CommentListFragment extends Fragment{
 
     public void createCommentClick() throws JSONException, UnsupportedEncodingException {
         String comment = commentValue.getText().toString();
-        saveBtn.setEnabled(false);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Comment...");
-        progressDialog.show();
+        if(comment.trim().equalsIgnoreCase("") || comment!=null && (comment.trim().length()<10||comment.trim().length()>50)){
+            commentValue.setError("Please enter a comment to save!!Allowed character length is 10-500 characters");
+        }else{
+            saveBtn.setEnabled(false);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Creating Comment...");
+            progressDialog.show();
 
-        JSONObject params = new JSONObject();
-        params.put("postId", post_id);
-        params.put("commentContent", comment);
-        params.put("userId", userId);
-        invokeCreateCommentWS(params);
+            JSONObject params = new JSONObject();
+            params.put("postId", post_id);
+            params.put("commentContent", comment);
+            params.put("userId", userId);
+            invokeCreateCommentWS(params);
+        }
     }
 
     private void callSaveCommentWS(String commentTextVal,PostComment com) throws JSONException, UnsupportedEncodingException {

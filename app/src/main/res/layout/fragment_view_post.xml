@@ -17,7 +17,6 @@
         android:layout_width="wrap_content"
         android:textStyle="bold"
         android:textSize="9pt"
-        android:textColor="#990033"
         ></TextView>
 
         <EditText
@@ -25,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textStyle="bold"
-            android:textColor="#990033"
             android:textSize="6pt"
             android:visibility="gone"
             ></EditText>
