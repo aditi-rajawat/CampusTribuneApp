@@ -1,14 +1,18 @@
 package com.campustribune.event.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.event.adapter.ViewEventAdapter;
+import com.campustribune.event.utility.Constants;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -22,11 +26,12 @@ import cz.msebera.android.httpclient.HttpStatus;
 /**
  * Created by aditi on 08/07/16.
  */
-public class ViewAllEventsActivity extends FragmentActivity implements ViewEventAdapter.ViewEachEventInterface{
+public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdapter.ViewEachEventInterface{
 
     private static ArrayList<Event> listOfEvents = new ArrayList<>();
     private static ViewEventAdapter adapter=null;
     ListView eventsListContainer=null;
+    String token=null;
 
     public static void updateEventList(Event oldEvent, Event updatedEvent) {
         if(listOfEvents!=null && listOfEvents.size()>0){
@@ -54,14 +59,20 @@ public class ViewAllEventsActivity extends FragmentActivity implements ViewEvent
         setContentView(R.layout.view_all_events);
 
         eventsListContainer = (ListView)findViewById(R.id.view_all_events_container);
+
+        // Retrieve the user token
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        this.token = new String("Token "+settings.getString("authToken", "").toString());
+
         invokews();
     }
 
     private void invokews(){
         AsyncHttpClient httpClient = new AsyncHttpClient();
+        httpClient.addHeader("authorization", this.token);
         System.out.println("Invoking GET list of events REST API...");
 
-        httpClient.get("http://10.0.2.2:8080/events/", new AsyncHttpResponseHandler() {
+        httpClient.get(Constants.baseAPIForEvents+"/", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if(statusCode == 200){

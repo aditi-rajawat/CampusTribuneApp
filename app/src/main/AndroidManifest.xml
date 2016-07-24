@@ -80,7 +80,7 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".event.activity.ViewEventActivity"
-            android:theme="@style/AppTheme.WithActionBar" />
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".event.activity.ViewAllEventsActivity"
             android:theme="@style/AppTheme.Dark" />

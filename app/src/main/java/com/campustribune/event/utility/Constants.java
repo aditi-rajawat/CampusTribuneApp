@@ -7,8 +7,5 @@ public class Constants {
 
     public static final int MAX_LENGTH_EVENT_TITLE = 50;
     public static final int MAX_LENGTH_EVENT_DESC = 500;
-    public static final String userName = "arajawat";
-    public static final String userName_1="mike_12";
-    public static final String userName_2 = "rachael_91";
-    public static final String localBackendSystemIP = "10.0.0.27:8080";
+    public static final String baseAPIForEvents = "http://10.0.2.2:8080/events";
 }

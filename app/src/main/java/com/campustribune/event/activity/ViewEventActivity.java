@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,11 +26,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.beans.EventComment;
 import com.campustribune.event.adapter.EventCommentsAdapter;
-import com.campustribune.event.utility.Constants;
 import com.campustribune.event.utility.EventRestCallThread;
 import com.campustribune.event.utility.Utility;
 import com.campustribune.helper.ImageUploader;
@@ -46,7 +48,7 @@ import java.util.List;
  * Created by aditi on 16/07/16.
  * Reference to setup calendar account on an emulator: http://samuelhaddad.com/2015/06/16/add-a-calendar-on-android-emulator/
  */
-public class ViewEventActivity extends Activity implements OnMapReadyCallback, EventCommentsAdapter.CommentsUpdator {
+public class ViewEventActivity extends BaseActivity implements OnMapReadyCallback, EventCommentsAdapter.CommentsUpdator {
 
     Event event = null;
     Event copyOfEvent=null;
@@ -54,12 +56,20 @@ public class ViewEventActivity extends Activity implements OnMapReadyCallback, E
     ProgressDialog progressDialog=null;
     static EventCommentsAdapter adapter=null;
     Menu mymenu = null;
+    String token=null;
+    String userId=null;
+
     private static final int ADD_TO_CALENDAR_REQUEST=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_event_details);
+
+        //Retrieve the user token
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        this.token = new String("Token "+settings.getString("authToken", "").toString());
+        this.userId = new String(settings.getString("loggedInUserId", "").toString());
 
         event = (Event)getIntent().getSerializableExtra("new_event");
         previousActivity = getIntent().getStringExtra("prev_activity");
@@ -267,7 +277,7 @@ public class ViewEventActivity extends Activity implements OnMapReadyCallback, E
         switch (item.getItemId()){
             case R.id.view_event_home_action:
             {
-                EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("create"), event);
+                EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("create"), event, this.token);
                 myRestClient.start();
                 // Add code to navigate to the front page
                 ViewEventActivity.this.finish();
@@ -281,9 +291,9 @@ public class ViewEventActivity extends Activity implements OnMapReadyCallback, E
                     event.setUpdateEvent(true);
 
                 if(event.isUpdateEvent() || event.isUpdateComments() || event.isDeleteComments()) {
-                    event.setUpdatedBy(Constants.userName);
+                    event.setUpdatedBy(this.userId);
                     if (event.getId() != null && event.getCreatedBy() != null && (!event.getCreatedBy().isEmpty())) {
-                        EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event);
+                        EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event, this.token);
                         myRestClient.start();
                         event.setListOfDeletedComments(null);
                         ViewAllEventsActivity.updateEventList(copyOfEvent, event);
@@ -355,7 +365,7 @@ public class ViewEventActivity extends Activity implements OnMapReadyCallback, E
             case R.id.view_event_delete_action:
             {
                 if(event.getId()!=null){
-                    EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("delete"), event);
+                    EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("delete"), event, this.token);
                     myRestClient.start();
                     ViewAllEventsActivity.removeFromList(copyOfEvent);
 
@@ -416,7 +426,7 @@ public class ViewEventActivity extends Activity implements OnMapReadyCallback, E
             public void onClick(View v) {
                 View rootView = v.getRootView();
                 EditText comment = (EditText) rootView.findViewById(R.id.new_event_comment);
-                EventComment eventComment = new EventComment(comment.getText().toString(), Constants.userName_1);
+                EventComment eventComment = new EventComment(comment.getText().toString(), ViewEventActivity.this.userId);
                 if (event != null) {
                     event.addComment(eventComment);
                     adapter.notifyDataSetChanged();

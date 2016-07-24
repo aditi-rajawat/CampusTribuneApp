@@ -25,11 +25,13 @@ public class EventRestCallThread extends Thread {
     private Event event;
     private Context ctx;
     private String operationFlag = new String();
+    String token=null;
 
-    public EventRestCallThread(Context ctx, String operationFlag, Event event){
+    public EventRestCallThread(Context ctx, String operationFlag, Event event, String token){
         this.ctx = ctx;
         this.operationFlag = operationFlag;
         this.event = event;
+        this.token = new String(token.toString());
     }
 
     public Event getEvent() {
@@ -61,8 +63,9 @@ public class EventRestCallThread extends Thread {
             System.out.println("Create Event Request ----> " + objectMapper.writeValueAsString(this.event));
             StringEntity entity = new StringEntity(objectMapper.writeValueAsString(this.event));
             SyncHttpClient httpClient = new SyncHttpClient();
+            httpClient.addHeader("authorization", this.token);
 
-             httpClient.post(ctx, "http://10.0.2.2:8080/events/", entity, "application/json", new JsonHttpResponseHandler() {
+             httpClient.post(ctx, Constants.baseAPIForEvents+"/", entity, "application/json", new JsonHttpResponseHandler() {
 
                  @Override
                  public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -80,7 +83,9 @@ public class EventRestCallThread extends Thread {
             ObjectMapper objectMapper = new ObjectMapper();
             StringEntity entity = new StringEntity(objectMapper.writeValueAsString(this.event));
             SyncHttpClient httpClient = new SyncHttpClient();
-            String api = "http://10.0.2.2:8080/events/"+this.event.getId();
+            httpClient.addHeader("authorization", this.token);
+
+            String api = Constants.baseAPIForEvents+"/"+this.event.getId();
 
             httpClient.put(ctx, api, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
@@ -103,8 +108,10 @@ public class EventRestCallThread extends Thread {
 
     private void deleteEvent(){
         try{
-            String api = "http://10.0.2.2:8080/events/"+this.event.getId();
+            String api = Constants.baseAPIForEvents+"/"+this.event.getId();
             SyncHttpClient httpClient = new SyncHttpClient();
+            httpClient.addHeader("authorization", this.token);
+
             httpClient.delete(ctx, api, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

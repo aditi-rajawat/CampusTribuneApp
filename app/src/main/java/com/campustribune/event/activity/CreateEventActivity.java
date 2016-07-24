@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.event.fragment.CreateEventMoreDetails;
@@ -65,7 +68,7 @@ import java.util.Date;
 import butterknife.ButterKnife;
 
 
-public class CreateEventActivity extends FragmentActivity implements CreateEventTitleNDesc.NextButtonListener,
+public class CreateEventActivity extends BaseActivity implements CreateEventTitleNDesc.NextButtonListener,
         CreateEventMoreDetails.EventTitleListener, CreateEventMoreDetails.AllButtonsListener, GoogleApiClient.OnConnectionFailedListener,
         AdapterView.OnItemSelectedListener{
 
@@ -78,6 +81,7 @@ public class CreateEventActivity extends FragmentActivity implements CreateEvent
     Event event = new Event();
     AmazonS3Client myS3Client=null;
     Uri selectedImgUri=null;
+    String userId = null;
 
     final static int PLACE_PICKER_REQUEST=1;
     final static int CAPTURE_IMAGE_REQUEST=2;
@@ -93,6 +97,10 @@ public class CreateEventActivity extends FragmentActivity implements CreateEvent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Retrieve the user Id
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        this.userId = new String(settings.getString("loggedInUserId", "").toString());
 
         //Intialize the GoogleAPIClient
         myGoogleAPIClient = new GoogleApiClient.Builder(this)
@@ -446,7 +454,7 @@ public class CreateEventActivity extends FragmentActivity implements CreateEvent
             endTime = ((TextView) rootView.findViewById(R.id.chosen_end_time)).getText().toString();
             event.setEndDate(convertToDateTime(endDate, endTime));
 
-            event.setCreatedBy(Constants.userName);
+            event.setCreatedBy(this.userId);
             DateTime dt = new DateTime(DateTimeZone.UTC);
             event.setCreatedOn(dt.toString(ISODateTimeFormat.dateTime().withZoneUTC()));
 
