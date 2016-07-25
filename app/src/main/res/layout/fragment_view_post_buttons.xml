@@ -69,7 +69,7 @@
             android:id="@+id/follow"
             android:background="#3399ff"
             android:text="Follow"
-            android:drawableLeft="@drawable/ic_add_white_24dp"
+            android:drawableStart="@drawable/ic_add_white_18dp"
             android:textSize="5pt"
             android:textColor="#FFFFFF"
             android:textAlignment="center"
