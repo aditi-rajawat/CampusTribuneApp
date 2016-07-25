@@ -65,6 +65,7 @@ public class EventRestCallThread extends Thread {
             SyncHttpClient httpClient = new SyncHttpClient();
             httpClient.addHeader("authorization", this.token);
 
+
              httpClient.post(ctx, Constants.baseAPIForEvents+"/", entity, "application/json", new JsonHttpResponseHandler() {
 
                  @Override

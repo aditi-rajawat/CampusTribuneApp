@@ -3,7 +3,6 @@ package com.campustribune.userProfile;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.User;
+import com.campustribune.helper.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -60,6 +60,10 @@ public class UserProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userprofile);
+        /*Intent in = getIntent();
+        Uri uriData = in.getData();
+        System.out.println("URI DATA" + uriData);*/
+
         ButterKnife.bind(this);
 
 
@@ -133,7 +137,7 @@ public class UserProfileActivity extends BaseActivity {
         String auth_token_string = sharedPreferences.getString("authToken", "");
         String userId = sharedPreferences.getString("loggedInUserId", "");
         client.addHeader("authorization","Token "+auth_token_string);
-        client.post(this, "http://10.0.0.209:8080/user/user-profile/"+userId, entity, "application/json", new JsonHttpResponseHandler() {
+        client.post(this, Util.SERVER_URL+"user/user-profile/"+userId, entity, "application/json", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 try {

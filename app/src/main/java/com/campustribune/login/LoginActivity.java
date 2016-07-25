@@ -17,6 +17,7 @@ import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.User;
 import com.campustribune.frontpage2.FrontPageActivity;
+import com.campustribune.helper.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -88,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         client.setBasicAuth(username, password);
-        client.get("http://192.168.0.14:8080/user/login", new JsonHttpResponseHandler() {
+        client.get(Util.SERVER_URL+"user/login", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 User user = new User();
@@ -149,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     /*@Override

@@ -48,6 +48,14 @@
                 android:hint="Last Name" />
         </android.support.design.widget.TextInputLayout>
 
+        <!--<Spinner
+            android:id="@+id/university_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="University"/>-->
+
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -60,6 +68,21 @@
                 android:inputType="textEmailAddress"
                 android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
+
+        <!--  University dropdown
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_university"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="University" />
+        </android.support.design.widget.TextInputLayout>-->
+
+
 
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout

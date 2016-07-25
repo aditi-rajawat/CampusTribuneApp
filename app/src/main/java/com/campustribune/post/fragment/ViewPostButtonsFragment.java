@@ -19,13 +19,12 @@ import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.PostUser;
 import com.campustribune.frontpage2.FrontPageActivity;
-import com.campustribune.post.activity.CreatePostActivity;
+import com.campustribune.helper.Util;
 import com.campustribune.post.activity.ViewPostActivity;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
@@ -61,7 +60,7 @@ public class ViewPostButtonsFragment extends Fragment{
 
     public Post post = new Post();
     ViewPostFragment viewPostFragment;
-    public String BASEURL="http://192.168.0.14:8080/";
+    public String BASEURL= Util.SERVER_URL;
     String post_id;
     String userId;
     String token;

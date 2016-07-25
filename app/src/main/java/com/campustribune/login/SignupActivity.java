@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campustribune.R;
+import com.campustribune.helper.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -43,6 +44,8 @@ public class SignupActivity extends AppCompatActivity {
     Button _signupButton;
     @Bind(R.id.link_login)
     TextView _loginLink;
+    //@Bind(R.id.university_spinner)
+    //Spinner _universitySpinner;
 
 
     @Override
@@ -50,6 +53,8 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+        //addItemsOnUniversitySpinner();
+        //addListenerOnSpinnerItemSelection();
         progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         _signupButton.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +82,18 @@ public class SignupActivity extends AppCompatActivity {
         });
 
     }
+
+    /*private void addListenerOnSpinnerItemSelection() {
+        _universitySpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+    }
+
+    private void addItemsOnUniversitySpinner() {
+        List<String> list = new ArrayList<String>();
+        list.add("San Jose State University");
+        list.add("University of North Carolina");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+        _universitySpinner.setAdapter(dataAdapter);
+    }*/
 
     public void signup() throws JSONException, UnsupportedEncodingException {
         Log.d(TAG, "Signup");
@@ -111,7 +128,7 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         //Please remember to change the below url to your system ip where the backend runs
-        client.post(this, "http://192.168.0.14:8080/user/signUp", entity, "application/json", new JsonHttpResponseHandler() {
+        client.post(this, Util.SERVER_URL + "user/signUp", entity, "application/json", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 progressDialog.hide();
@@ -120,8 +137,7 @@ public class SignupActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "You are successfully registered!!", Toast.LENGTH_LONG).show();
                         Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
                         SignupActivity.this.startActivity(loginIntent);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Error on on success!" + responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -138,11 +154,9 @@ public class SignupActivity extends AppCompatActivity {
                 if (statusCode == 404) {
                     Toast.makeText(getBaseContext(), "Sign Up failed", Toast.LENGTH_LONG).show();
 
-                }
-                else if (statusCode == 500) {
+                } else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
                 _signupButton.setEnabled(true);
@@ -155,14 +169,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    /*public void onSignupSuccess() {
-        _signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
-        // Added by Aditi on 07/09
-        Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
-        SignupActivity.this.startActivity(loginIntent);
-        SignupActivity.this.finish();
-    }*/
 
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Sign Up failed", Toast.LENGTH_LONG).show();

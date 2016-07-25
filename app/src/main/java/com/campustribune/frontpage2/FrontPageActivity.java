@@ -13,11 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
+import com.campustribune.helper.Util;
 import com.campustribune.login.LoginActivity;
 import com.campustribune.post.activity.CreatePostActivity;
 import com.campustribune.post.activity.ViewPostActivity;
@@ -31,8 +31,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import cz.msebera.android.httpclient.Header;
 import java.util.concurrent.ExecutionException;
+
+import cz.msebera.android.httpclient.Header;
 
 public class FrontPageActivity extends AppCompatActivity {
 
@@ -164,7 +165,7 @@ public class FrontPageActivity extends AppCompatActivity {
     public void invokeGetUserActionsWS(String userId){
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("authorization", token);
-        client.get("http://192.168.0.14:8080/post/getUserActions/"+userId, new JsonHttpResponseHandler() {
+        client.get(Util.SERVER_URL+"post/getUserActions/"+userId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 try {

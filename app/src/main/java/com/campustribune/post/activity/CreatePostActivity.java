@@ -79,7 +79,7 @@ public class CreatePostActivity extends BaseActivity {
     @Bind(R.id.upload)
     Button uploadBtn;
 
-    public String BASEURL="http://192.168.0.14:8080/";
+    public String BASEURL=Util.SERVER_URL;
     AmazonS3Client s3Client;
     String path;
     PutObjectRequest por;

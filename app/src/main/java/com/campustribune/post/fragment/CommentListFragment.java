@@ -28,6 +28,7 @@ import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.PostComment;
 import com.campustribune.beans.PostUser;
+import com.campustribune.helper.Util;
 import com.campustribune.post.activity.ViewPostActivity;
 import com.campustribune.post.adapter.CommentListAdapter;
 import com.google.gson.Gson;
@@ -75,7 +76,7 @@ public class CommentListFragment extends Fragment{
 
     private CommentListAdapter cListAdapter;
 
-    public String BASEURL="http://192.168.0.14:8080/";
+    public String BASEURL= Util.SERVER_URL;
     String post_id;
     @Override
     public void onAttach(Activity activity) {

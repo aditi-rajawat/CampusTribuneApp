@@ -4,13 +4,12 @@ package com.campustribune.post.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
+import com.campustribune.helper.Util;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -33,7 +32,7 @@ public class ViewPostActivity extends BaseActivity {
 
     String token;
 
-    public String BASEURL="http://192.168.0.14:8080/";
+    public String BASEURL= Util.SERVER_URL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
