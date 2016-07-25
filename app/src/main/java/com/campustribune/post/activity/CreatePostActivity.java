@@ -357,6 +357,7 @@ public class CreatePostActivity extends BaseActivity {
 
     }
 
+
     public void invokeWS(JSONObject params) throws UnsupportedEncodingException {
 
         StringEntity entity = new StringEntity(params.toString());

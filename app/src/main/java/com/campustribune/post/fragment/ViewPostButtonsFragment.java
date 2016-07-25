@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.PostUser;
+import com.campustribune.frontpage2.FrontPageActivity;
 import com.campustribune.post.activity.CreatePostActivity;
 import com.campustribune.post.activity.ViewPostActivity;
 import com.google.gson.Gson;
@@ -90,6 +91,11 @@ public class ViewPostButtonsFragment extends Fragment{
         viewPostFragment = (ViewPostFragment)getFragmentManager().findFragmentById(R.id.viewPost_fragment);
 
         ButterKnife.bind(this, view);
+
+        if(!userId.equalsIgnoreCase(post.getUserId())){
+            deleteBtn.setVisibility(View.INVISIBLE);
+            editBtn.setVisibility(View.INVISIBLE);
+        }
         updateViewWithUserPref(Integer.valueOf(post_id));
         voteScoreText.setText(String.valueOf(post.getVoteScore()));
 
@@ -242,6 +248,12 @@ public class ViewPostButtonsFragment extends Fragment{
         invokeDeleteWS(URL);
     }
 
+    public void goToFrontPage(){
+        Intent frontPage = new Intent(getContext(), FrontPageActivity.class);
+        frontPage.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(frontPage);
+    }
+
     public void setPostObj(JSONObject respBody){
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -336,6 +348,7 @@ public class ViewPostButtonsFragment extends Fragment{
                 System.out.println(statusCode);
                 if (statusCode == 200) {
                     Toast.makeText(getContext(), "Post Deleted Successfully!!", Toast.LENGTH_LONG).show();
+                    ViewPostButtonsFragment.this.goToFrontPage();
                 } else {
                     Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();
                 }

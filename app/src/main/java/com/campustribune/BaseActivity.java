@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.campustribune.event.activity.CreateEventActivity;
+import com.campustribune.event.activity.ViewAllEventsActivity;
+import com.campustribune.frontpage2.FrontPageActivity;
 import com.campustribune.post.activity.CreatePostActivity;
 import com.campustribune.userProfile.UserProfileActivity;
 
@@ -28,6 +31,7 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(fullView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
     }
 
@@ -48,13 +52,23 @@ public class BaseActivity extends AppCompatActivity {
                 Toast.makeText(this,"User-profile menu was clicked",Toast.LENGTH_SHORT).show();
                 goToUserProfilePage();
                 return true;
-            case R.id.submenu_search:
+            /*case R.id.submenu_search:
                 Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
-                return true;
+                return true;*/
             case R.id.submenu_createpost:
-                Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Create Post button was clicked", Toast.LENGTH_SHORT).show();
                 goToCreatePostPage();
                 return true;
+            case R.id.submenu_frontPage:
+                Toast.makeText(this,"Front Page button was clicked", Toast.LENGTH_SHORT).show();
+                goToFrontPage();
+                return true;
+            case R.id.submenu_createevent:      // Added by Aditi on 07/23/2016 START
+                goToCreateEventPage();
+                return true;
+            case R.id.submenu_viewallevents:
+                goToViewAllEventsPage();
+                return true;                   // Added by Aditi on 07/23/2016 END
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
@@ -69,5 +83,23 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), CreatePostActivity.class);
         startActivity(intent);
     }
+
+    private void goToFrontPage(){
+        Intent frontPage = new Intent(BaseActivity.this, FrontPageActivity.class);
+        frontPage.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(frontPage);
+    }
+
+    // Added by Aditi on 07/23/2016 START
+    private void goToCreateEventPage(){
+        Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToViewAllEventsPage(){
+        Intent intent = new Intent(getApplicationContext(), ViewAllEventsActivity.class);
+        startActivity(intent);
+    }
+    // Added by Aditi on 07/23/2016 END
 
 }

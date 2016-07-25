@@ -133,6 +133,10 @@ public class CommentListFragment extends Fragment{
         cancelEditCommentBtn = (Button) showComment.findViewById(R.id.button_cancel_comment);
         commentText.setText(comment.getCommentContent());
         updateViewWithUserPref(Integer.valueOf(comment.getId()));
+        if(!userId.equalsIgnoreCase(comment.getUserId())){
+            deleteCommentBtn.setVisibility(View.INVISIBLE);
+            editCommentBtn.setVisibility(View.INVISIBLE);
+        }
         editCommentBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 System.out.println("Edit clicked");

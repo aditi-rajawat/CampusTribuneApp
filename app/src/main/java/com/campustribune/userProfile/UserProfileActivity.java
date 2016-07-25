@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -28,7 +29,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 /**
  * Created by sandyarathidas on 7/14/16.
  */
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends BaseActivity {
     @Bind(R.id.textview_username)
     TextView usernameTextView;
     @Bind(R.id.textview_email)
@@ -132,7 +133,7 @@ public class UserProfileActivity extends AppCompatActivity {
         String auth_token_string = sharedPreferences.getString("authToken", "");
         String userId = sharedPreferences.getString("loggedInUserId", "");
         client.addHeader("authorization","Token "+auth_token_string);
-        client.post(this, "http://10.0.0.227:8080/user/user-profile/"+userId, entity, "application/json", new JsonHttpResponseHandler() {
+        client.post(this, "http://10.0.0.209:8080/user/user-profile/"+userId, entity, "application/json", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 try {

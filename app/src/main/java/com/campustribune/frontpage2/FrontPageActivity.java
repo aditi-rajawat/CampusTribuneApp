@@ -108,9 +108,9 @@ public class FrontPageActivity extends AppCompatActivity {
                 Toast.makeText(this,"User-profile menu was clicked",Toast.LENGTH_SHORT).show();
                 goToUserProfilePage();
                 return true;
-            case R.id.submenu_search:
+            /*case R.id.submenu_search:
                 Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
-                return true;
+                return true;*/
             case R.id.submenu_createpost:
                 Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
                 goToCreatePostPage();

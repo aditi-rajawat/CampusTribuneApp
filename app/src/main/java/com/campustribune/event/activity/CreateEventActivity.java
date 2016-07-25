@@ -443,8 +443,10 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
         String startDate, endDate, startTime, endTime;
 
         if(validateEventSecondPage(rootView)) {
-            this.progressDialog.setMessage("Creating event..");
-            this.progressDialog.show();
+            if(this.progressDialog!=null) {
+                this.progressDialog.setMessage("Creating event..");
+                this.progressDialog.show();
+            }
 
             startDate = ((TextView) rootView.findViewById(R.id.chosen_start_date)).getText().toString();
             startTime = ((TextView) rootView.findViewById(R.id.chosen_start_time)).getText().toString();
@@ -478,7 +480,8 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
             viewEventIntent.putExtra("new_event", event);
             viewEventIntent.putExtra("prev_activity", new String("CreateEventActivity"));
 
-            this.progressDialog.hide();
+            if(this.progressDialog!=null)
+                this.progressDialog.hide();
 
             CreateEventActivity.this.startActivity(viewEventIntent);
             CreateEventActivity.this.finish();

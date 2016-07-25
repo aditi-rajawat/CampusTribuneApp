@@ -66,6 +66,7 @@
     <string name="action_view_event_editsave">Save</string>
     <string name="action_view_event_report">Report</string>
     <string name="action_view_event_delete">Delete</string>
+    <string name="submenu_action_front_page">Home</string>
 
     <!-- Added by Aditi on 07/23/2016 END -->
 

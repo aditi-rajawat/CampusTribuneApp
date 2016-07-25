@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         client.setBasicAuth(username, password);
-        client.get("http://10.0.2.2:8080/user/login", new JsonHttpResponseHandler() {
+        client.get("http://192.168.0.14:8080/user/login", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 User user = new User();

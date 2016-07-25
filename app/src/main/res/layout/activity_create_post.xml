@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_row="1"
                 android:layout_column="0"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:text="Headline: "
@@ -52,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_row="2"
                 android:layout_column="0"
+                android:layout_rowSpan="2"
                 android:orientation="horizontal">
 
                 <TextView
@@ -63,11 +65,10 @@
                 <EditText
                     android:id="@+id/content"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
-                    />
+                    android:layout_height="180dp"/>
 
             </LinearLayout>
 
@@ -75,7 +76,7 @@
                 android:id="@+id/urlLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="3"
+                android:layout_row="4"
                 android:layout_column="0"
                 android:orientation="horizontal">
 
@@ -100,7 +101,7 @@
                 android:id="@+id/imageurlLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="4"
+                android:layout_row="5"
                 android:layout_column="0"
                 android:orientation="horizontal">
 
@@ -125,7 +126,7 @@
                 android:id="@+id/uploadLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="5"
+                android:layout_row="6"
                 android:layout_column="0"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -145,7 +146,7 @@
                 android:id="@+id/categoryLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="6"
+                android:layout_row="7"
                 android:layout_column="0"
                 android:orientation="horizontal">
 
@@ -176,7 +177,7 @@
                 android:id="@+id/createBtnLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="7"
+                android:layout_row="8"
                 android:layout_column="0"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">

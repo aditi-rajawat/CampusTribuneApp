@@ -33,7 +33,7 @@ public class ViewPostActivity extends BaseActivity {
 
     String token;
 
-    public String BASEURL="http://10.0.0.227:8080/";
+    public String BASEURL="http://192.168.0.14:8080/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

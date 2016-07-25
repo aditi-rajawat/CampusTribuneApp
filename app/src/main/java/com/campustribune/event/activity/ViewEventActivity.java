@@ -34,9 +34,11 @@ import com.campustribune.event.adapter.EventCommentsAdapter;
 import com.campustribune.event.utility.EventRestCallThread;
 import com.campustribune.event.utility.Utility;
 import com.campustribune.helper.ImageUploader;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
@@ -391,6 +393,12 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(event.getLatitude(), event.getLongitude()))
+                .zoom(8)
+                .build();
+        googleMap.clear();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(event.getLatitude(), event.getLongitude()))
                 .title(event.getTitle()));
