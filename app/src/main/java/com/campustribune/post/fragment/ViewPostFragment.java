@@ -61,6 +61,8 @@ public class ViewPostFragment extends Fragment {
 
     @Bind(R.id.createdUser)
     TextView creator;
+    @Bind (R.id.AlertText)
+    TextView alert;
     @Bind(R.id.PostTitle)
     TextView headline;
     @Bind(R.id.PostContent)
@@ -235,6 +237,10 @@ public class ViewPostFragment extends Fragment {
         content.setText(post.getContent());
         creator.setText("Created By "+post.getUserId());
         System.out.println("URL is "+post.getImgURL());
+
+        if(post.isAlert()){
+            alert.setVisibility(View.VISIBLE);
+        }
 
         if(post.getWebLink()!=null && post.getWebLink().length()>0){
             url.setText("Go to "+post.getWebLink());

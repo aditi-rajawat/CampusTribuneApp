@@ -20,7 +20,7 @@
         <View
             android:layout_width="6dp"
             android:layout_height="1dp"
-            android:layout_weight="0.05" >
+            android:layout_weight="0.05">
         </View>
 
         <ImageButton
@@ -28,7 +28,8 @@
             android:layout_height="36dp"
             android:src="@drawable/ic_thumb_down_white_24dp"
             android:id="@+id/downvote"
-            android:background="@null"/>
+            android:background="@null"
+            android:paddingLeft="5dp"/>
 
         <View
             android:layout_width="6dp"
@@ -58,42 +59,49 @@
 
         <View
             android:layout_width="6dp"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_weight="0.05" >
         </View>
 
-        <ImageButton
-            android:layout_width="38dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_add_white_24dp"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
             android:id="@+id/follow"
-            android:background="@null"/>
+            android:background="#3399ff"
+            android:text="Follow"
+            android:drawableLeft="@drawable/ic_add_white_24dp"
+            android:textSize="5pt"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+           />
 
         <View
             android:layout_width="6dp"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_weight="0.05" >
         </View>
 
         <Button
             android:id="@+id/button_edit"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="45dp"
             android:text="Edit"
+            android:textSize="5.5pt"
             android:textColor="#3333ff"
             style="?android:attr/borderlessButtonStyle" />
 
         <View
             android:layout_width="1dp"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_weight="0.05" >
         </View>
 
         <Button
             android:id="@+id/button_delete"
-            android:layout_width="80dp"
+            android:layout_width="70dp"
             android:layout_height="45dp"
             android:text="Delete"
+            android:textSize="5.5pt"
             android:textColor="#3333ff"
             style="?android:attr/borderlessButtonStyle" />
 

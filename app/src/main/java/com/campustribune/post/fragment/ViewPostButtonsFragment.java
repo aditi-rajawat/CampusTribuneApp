@@ -51,7 +51,7 @@ public class ViewPostButtonsFragment extends Fragment{
     @Bind(R.id.report)
     ImageButton reportBtn;
     @Bind(R.id.follow)
-    ImageButton followBtn;
+    Button followBtn;
     @Bind(R.id.button_edit)
     Button editBtn;
     @Bind(R.id.button_delete)
@@ -188,7 +188,11 @@ public class ViewPostButtonsFragment extends Fragment{
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                followBtn.setColorFilter(Color.argb(255, 0, 102, 255)); // Blue Tint
+                /*followBtn.setColorFilter(Color.argb(255, 0, 102, 255)); // Blue Tint*/
+                if(followBtn.getText().equals("Follow"))
+                    followBtn.setText("Unfollow");
+                else
+                    followBtn.setText("Follow");
                 updateUserPref("follow", Integer.valueOf(post_id));
             }
         });
@@ -416,7 +420,8 @@ public class ViewPostButtonsFragment extends Fragment{
             String postuser_json = settings.getString("userPostActions", "");
             postUser  = gson.fromJson(postuser_json, PostUser.class);
             if(postUser.getFollowingPosts().contains(id)) {
-                followBtn.setColorFilter(Color.argb(255, 0, 102, 255)); // Blue Tint
+//                followBtn.setColorFilter(Color.argb(255, 0, 102, 255)); // Blue Tint
+                  followBtn.setText("Unfollow");
             }if(postUser.getUpVotedPosts().contains(id)){
                 upvoteBtn.setColorFilter(Color.argb(255, 0, 153, 51)); // Green Tint
                 downvoteBtn.setEnabled(false);

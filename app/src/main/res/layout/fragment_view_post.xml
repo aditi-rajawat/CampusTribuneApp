@@ -11,12 +11,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/textContents">
 
+        <TextView
+            android:id="@+id/AlertText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#ff0000"
+            android:visibility="gone"
+            android:text="This is an alert!!"
+            ></TextView>
+
     <TextView
         android:id="@+id/PostTitle"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textStyle="bold"
         android:textSize="9pt"
+        android:textColor="#996600"
+        android:layout_below="@+id/AlertText"
         ></TextView>
 
         <EditText
@@ -26,6 +37,8 @@
             android:textStyle="bold"
             android:textSize="6pt"
             android:visibility="gone"
+            android:textColor="#996600"
+            android:layout_below="@+id/AlertText"
             ></EditText>
 
         <TextView
@@ -36,10 +49,11 @@
 
         <EditText
             android:id="@+id/PostContentEdit"
-            android:layout_height="wrap_content"
+            android:layout_height="85dp"
             android:layout_width="wrap_content"
             android:textSize="6pt"
             android:visibility="gone"
+            android:inputType="textMultiLine"
             android:layout_below="@+id/PostTitleEdit"></EditText>
 
         <LinearLayout
