@@ -19,6 +19,8 @@ public class View_Holder extends RecyclerView.ViewHolder {
     TextView title;
     TextView description;
     ImageView image;
+    ImageView alert;
+    TextView owner;
 
     View_Holder(View itemView) {
         super(itemView);
@@ -26,13 +28,18 @@ public class View_Holder extends RecyclerView.ViewHolder {
         title = (TextView) itemView.findViewById(R.id.title);
         description = (TextView) itemView.findViewById(R.id.description);
         image = (ImageView) itemView.findViewById(R.id.imageView);
+        alert=(ImageView) itemView.findViewById(R.id.alertFlag);
+        owner=(TextView) itemView.findViewById(R.id.ownername);
 
     }
 
     public void bind(final Post post, final Recycler_View_Adapter.OnItemClickListener listener) {
         title.setText(post.getHeadline());
         description.setText(post.getContent());
+        owner.setText("Created By "+post.getUserId());
 
+        if(post.isAlert())
+            alert.setVisibility(View.VISIBLE);
 
         if(post.getImgURL()!=null && post.getImgURL().length()>0)
             Picasso.with(itemView.getContext()).load(post.getImgURL()).into(image);

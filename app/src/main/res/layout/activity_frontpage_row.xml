@@ -25,7 +25,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
             />
@@ -49,6 +49,37 @@
             android:maxLines="3"
             android:textColor="@color/black"/>
 
+        <TextView
+            android:id="@+id/ownername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description"
+            android:text="Created By"
+            android:textStyle="italic"
+            android:maxLines="1"
+            android:textSize="6pt"
+            android:textColor="@color/black"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_weight="0.05"
+            android:paddingLeft="10dp">
+        </View>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_notifications_white_18dp"
+            android:background="#ff0000"
+            android:visibility="invisible"
+            android:id="@+id/alertFlag"
+            android:layout_below="@+id/description"
+            android:layout_toEndOf="@+id/ownername"
+            />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
