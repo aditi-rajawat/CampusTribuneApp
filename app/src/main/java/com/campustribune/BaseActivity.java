@@ -43,11 +43,14 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(frontPage);
             }
         });
+        invalidateOptionsMenu();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_action_frontpage, menu);
+        MenuItem ref = (MenuItem) menu.findItem(R.id.action_refresh);
+        ref.setVisible(false);
         return true;
     }
 
@@ -55,9 +58,9 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Take appropriate action for each action item click
         switch (menuItem.getItemId()) {
-            case R.id.menu_action_refresh:
+            /*case R.id.menu_action_refresh:
                 Toast.makeText(this, "Refresh button was clicked", Toast.LENGTH_SHORT).show();
-                return true;
+                return true;*/
             case R.id.submenu_userprofile:
                 Toast.makeText(this,"User-profile menu was clicked",Toast.LENGTH_SHORT).show();
                 goToUserProfilePage();

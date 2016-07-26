@@ -42,8 +42,9 @@
                 <EditText
                     android:id="@+id/headline"
                     android:ems="10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                     />
 
             </LinearLayout>
 
@@ -54,21 +55,25 @@
                 android:layout_row="2"
                 android:layout_column="0"
                 android:layout_rowSpan="2"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:text="Content: "
                     android:layout_width="70dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
                 </TextView>
 
                 <EditText
                     android:id="@+id/content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="260dp"
                     android:ems="10"
                     android:gravity="left|top"
                     android:inputType="textMultiLine"
-                    android:layout_height="180dp"/>
+                    android:background="@drawable/posttitlecontentbox"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="7dp"/>
 
             </LinearLayout>
 
@@ -89,7 +94,7 @@
 
                 <EditText
                     android:id="@+id/url"
-                    android:layout_width="wrap_content"
+                    android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
 
@@ -114,7 +119,7 @@
 
                 <EditText
                     android:id="@+id/imageUrl"
-                    android:layout_width="wrap_content"
+                    android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
 
@@ -139,6 +144,7 @@
                     android:textColor="#3333ff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="50dp"
                     style="?android:attr/borderlessButtonStyle"/>
             </LinearLayout>
 
@@ -159,7 +165,7 @@
 
                 <Spinner
                     android:id="@+id/category"
-                    android:layout_width="232dp"
+                    android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/btn_dropdown"
                     android:ems="10"
@@ -180,6 +186,7 @@
                 android:layout_row="8"
                 android:layout_column="0"
                 android:layout_gravity="center_horizontal"
+                android:paddingLeft="40dp"
                 android:orientation="horizontal">
                 <Button
                     android:id="@+id/create"

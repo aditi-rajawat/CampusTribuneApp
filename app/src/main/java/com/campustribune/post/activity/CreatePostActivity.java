@@ -131,6 +131,8 @@ public class CreatePostActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_action_frontpage, menu);
         MenuItem cp = (MenuItem) menu.findItem(R.id.submenu_createpost);
         cp.setVisible(false);
+        MenuItem ref = (MenuItem) menu.findItem(R.id.action_refresh);
+        ref.setVisible(false);
         return true;
     }
 

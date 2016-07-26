@@ -33,7 +33,7 @@
         <EditText
             android:id="@+id/PostTitleEdit"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:textStyle="bold"
             android:textSize="6pt"
             android:visibility="gone"
@@ -49,11 +49,13 @@
 
         <EditText
             android:id="@+id/PostContentEdit"
-            android:layout_height="85dp"
-            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_width="match_parent"
             android:textSize="6pt"
             android:visibility="gone"
             android:inputType="textMultiLine"
+            android:background="@drawable/posttitlecontentbox"
+            android:gravity="top|left"
             android:layout_below="@+id/PostTitleEdit"></EditText>
 
         <LinearLayout
