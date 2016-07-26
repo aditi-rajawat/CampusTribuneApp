@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -31,8 +32,17 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(fullView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_action_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent frontPage = new Intent(BaseActivity.this, FrontPageActivity.class);
+                frontPage.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(frontPage);
+            }
+        });
     }
 
     @Override
@@ -56,12 +66,7 @@ public class BaseActivity extends AppCompatActivity {
                 Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
                 return true;*/
             case R.id.submenu_createpost:
-                Toast.makeText(this,"Create Post button was clicked", Toast.LENGTH_SHORT).show();
                 goToCreatePostPage();
-                return true;
-            case R.id.submenu_frontPage:
-                Toast.makeText(this,"Front Page button was clicked", Toast.LENGTH_SHORT).show();
-                goToFrontPage();
                 return true;
             case R.id.submenu_createevent:      // Added by Aditi on 07/23/2016 START
                 goToCreateEventPage();
@@ -84,11 +89,6 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToFrontPage(){
-        Intent frontPage = new Intent(BaseActivity.this, FrontPageActivity.class);
-        frontPage.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(frontPage);
-    }
 
     // Added by Aditi on 07/23/2016 START
     private void goToCreateEventPage(){

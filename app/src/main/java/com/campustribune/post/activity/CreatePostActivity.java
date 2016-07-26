@@ -18,6 +18,8 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Patterns;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -103,6 +105,8 @@ public class CreatePostActivity extends BaseActivity {
 
         progressDialog = new ProgressDialog(CreatePostActivity.this,
                 R.style.AppTheme_Dark_Dialog);
+
+        invalidateOptionsMenu();
         createBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 try {
@@ -121,6 +125,15 @@ public class CreatePostActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_action_frontpage, menu);
+        MenuItem cp = (MenuItem) menu.findItem(R.id.submenu_createpost);
+        cp.setVisible(false);
+        return true;
+    }
+
 
     public void uploadImage(){
         Intent intent = new Intent();
