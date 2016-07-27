@@ -21,6 +21,7 @@ import com.campustribune.helper.Util;
 import com.campustribune.login.LoginActivity;
 import com.campustribune.post.activity.CreatePostActivity;
 import com.campustribune.post.activity.ViewPostActivity;
+import com.campustribune.post.activity.ViewPostsByCategoryListActivity;
 import com.campustribune.userProfile.UserProfileActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -122,6 +123,9 @@ public class FrontPageActivity extends AppCompatActivity {
             case R.id.submenu_viewallevents:
                 goToViewAllEventsPage();
                 return true;                   // Added by Aditi on 07/23/2016 END
+            case R.id.submenu_viewpostsbycategory:
+                goToViewPostsByCategoryPage();
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
@@ -148,6 +152,10 @@ public class FrontPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
     // Added by Aditi on 07/23/2016 END
+    private void goToViewPostsByCategoryPage(){
+        Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryListActivity.class);
+        startActivity(intent);
+    }
 
     public List<Post> fill_with_data(ArrayList<Post> postList) throws ExecutionException, InterruptedException {
         System.out.println("SIZEEEEE"+postList.size());

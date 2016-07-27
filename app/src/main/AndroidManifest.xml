@@ -90,6 +90,12 @@
             android:name=".event.activity.ViewAllEventsActivity"
             android:theme="@style/AppTheme.Dark" />
         <!-- Added by Aditi on 07/23/2016 END -->
+        <activity
+            android:name=".post.activity.ViewPostsByCategoryListActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".post.activity.ViewPostsByCategoryActivity"
+            android:theme="@style/AppTheme.Dark" />
 
         <activity
             android:name=".MapsActivity"

@@ -1,8 +1,6 @@
 package com.campustribune;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +14,7 @@ import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
 import com.campustribune.frontpage2.FrontPageActivity;
 import com.campustribune.post.activity.CreatePostActivity;
+import com.campustribune.post.activity.ViewPostsByCategoryListActivity;
 import com.campustribune.userProfile.UserProfileActivity;
 
 /**
@@ -77,6 +76,9 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.submenu_viewallevents:
                 goToViewAllEventsPage();
                 return true;                   // Added by Aditi on 07/23/2016 END
+            case R.id.submenu_viewpostsbycategory:
+                goToViewPostsByCategoryPage();
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
@@ -104,5 +106,10 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
     // Added by Aditi on 07/23/2016 END
+    private void goToViewPostsByCategoryPage(){
+        Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryListActivity.class);
+        startActivity(intent);
+    }
+
 
 }

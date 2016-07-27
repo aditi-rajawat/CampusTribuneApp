@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 
 public class Util {
 
-    public static final String SERVER_URL="http://10.0.0.227:8080/";
+    public static final String SERVER_URL="http://10.0.0.189:8080/";
     public static final String MY_ACCESS_KEY_ID = "AKIAJWLGMHFKQRG7PZFA";
     public static final String MY_SECRET_KEY = "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";
     public static final String BUCKET = "ctpost";

@@ -30,7 +30,9 @@
         android:id="@+id/submenu_viewallevents"
         android:title="@string/submenu_action_view_all_events"/>
     <!-- Added by Aditi on 07/23/2016 END -->
-
+    <item
+        android:id="@+id/submenu_viewpostsbycategory"
+        android:title="@string/submenu_action_view_posts_by_category"/>
 </menu>
 
 
