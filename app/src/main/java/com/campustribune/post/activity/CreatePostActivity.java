@@ -89,6 +89,7 @@ public class CreatePostActivity extends BaseActivity {
     URL picurl;
     String userId;
     String token;
+    String university;
     boolean uploadComplete = false;
 
     @Override
@@ -101,6 +102,7 @@ public class CreatePostActivity extends BaseActivity {
                 .getDefaultSharedPreferences(getApplicationContext());
         token = "Token "+settingsout.getString("authToken", "");
         userId= settingsout.getString("loggedInUserId", "");
+        university=settingsout.getString("loggedInUserUniversity","");
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(CreatePostActivity.this,
@@ -359,6 +361,7 @@ public class CreatePostActivity extends BaseActivity {
             params.put("content", content);
             params.put("webLink", webLink);
             params.put("userId",userId);
+            params.put("university",university);
             if(imgURL!=null&&imgURL.length()>0) {
                 params.put("imgURL", picurl.toString());
             }else{
@@ -393,6 +396,8 @@ public class CreatePostActivity extends BaseActivity {
                         Intent viewPostPage = new Intent(CreatePostActivity.this, ViewPostActivity.class);
                         viewPostPage.putExtra("post_id",String.valueOf(post.getId()));
                         CreatePostActivity.this.startActivity(viewPostPage);
+                    } else if(statusCode==412){
+                        Toast.makeText(getApplicationContext(), "The post contains spam!!!", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Error on on success!" + responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
@@ -416,7 +421,9 @@ public class CreatePostActivity extends BaseActivity {
 
                 } else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                } else {
+                }  else if(statusCode==412){
+                    Toast.makeText(getApplicationContext(), "The post contains spam!!!", Toast.LENGTH_LONG).show();
+                }  else {
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
                 createBtn.setEnabled(true);

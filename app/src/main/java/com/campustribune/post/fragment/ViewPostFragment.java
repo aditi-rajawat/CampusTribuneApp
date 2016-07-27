@@ -257,6 +257,8 @@ public class ViewPostFragment extends Fragment {
                 try {
                     if (statusCode == 200) {
                         ViewPostFragment.this.setPostObj(responseBody);
+                    }  else if(statusCode==412){
+                        Toast.makeText(getContext(), "The post contains spam!!!", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
@@ -272,6 +274,8 @@ public class ViewPostFragment extends Fragment {
                     Toast.makeText(getContext(), "View Post failed", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {
                     Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }  else if(statusCode==412){
+                    Toast.makeText(getContext(), "The post contains spam!!!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
