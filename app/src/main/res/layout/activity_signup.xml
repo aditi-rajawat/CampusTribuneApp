@@ -9,17 +9,15 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="30dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
         <ImageView android:src="@drawable/changelogo"
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
             android:layout_gravity="center_horizontal" />
-
-
 
 
         <!-- First Name Label -->
@@ -48,13 +46,37 @@
                 android:hint="Last Name" />
         </android.support.design.widget.TextInputLayout>
 
-        <!--<Spinner
-            android:id="@+id/university_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:hint="University"/>-->
+       <android.support.design.widget.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="16dp"
+               android:layout_marginBottom="8dp"
+               android:orientation="horizontal">
+               <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" University "
+                    android:fontFamily="Roboto Regular"
+                    android:textSize="18sp"
+                    android:id="@+id/UniversityLabel"/>
+               <Spinner
+                    android:id="@+id/university_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:entries="@array/university_options"
+                    android:spinnerMode="dropdown"
+                    android:fontFamily="Roboto Regular"
+                    android:dropDownWidth="250dp"
+                    android:minWidth="250dp"/>
+           </LinearLayout>
+       </android.support.design.widget.TextInputLayout>
+
+
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout
@@ -69,18 +91,6 @@
                 android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
 
-        <!--  University dropdown
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_university"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="University" />
-        </android.support.design.widget.TextInputLayout>-->
 
 
 
@@ -111,9 +121,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Already a member? Login"
+            android:text="@string/LoginOnSignUp"
             android:gravity="center"
-            android:textSize="16dip"/>
+            android:textSize="16dip"
+            />
 
     </LinearLayout>
 </ScrollView>
