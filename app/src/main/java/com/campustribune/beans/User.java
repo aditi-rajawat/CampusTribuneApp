@@ -11,9 +11,33 @@ public class User {
     String lastName;
     String email;
     String token;
+    String university;
     Boolean isNotifyFlag;
     Boolean isRecommendFlag;
     ArrayList<Post> postList= new ArrayList();
+    ArrayList<String> subscriptionList = new ArrayList<>();
+
+    public ArrayList<String> getSubscriptionList() {
+        return subscriptionList;
+    }
+
+    public void setSubscriptionList(ArrayList<String> subscriptionList) {
+        this.subscriptionList = subscriptionList;
+    }
+
+
+
+
+
+
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
 
     public ArrayList<Post> getPostList() {
         return postList;
