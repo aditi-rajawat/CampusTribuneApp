@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 /**
  * Created by snshr on 7/11/2016.
  */
-public class Post {
+public class Post  {
     private int id;
     private String headline;
     private String content;

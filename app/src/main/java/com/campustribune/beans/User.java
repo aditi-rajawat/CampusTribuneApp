@@ -6,39 +6,60 @@ import java.util.ArrayList;
  * Created by sandyarathidas on 7/13/16.
  */
 public class User {
-    String id;
-    String firstName;
-    String lastName;
-    String email;
-    String token;
-    String university;
-    Boolean isNotifyFlag;
-    Boolean isRecommendFlag;
-    ArrayList<Post> postList= new ArrayList();
-    ArrayList<String> subscriptionList = new ArrayList<>();
-    ArrayList<Event> eventList= new ArrayList();
 
-    public ArrayList<Event> getEventList() {
-        return eventList;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String token;
+    private String university;
+
+    private Boolean isNotifyFlag;
+    private Boolean isRecommendFlag;
+
+    private ArrayList<Post> postList= new ArrayList();
+    private ArrayList<String> subscriptionList = new ArrayList<>();
+    //private ArrayList<Event> eventList= new ArrayList();
+
+    public String getId() {
+        return id;
     }
 
-    public void setEventList(ArrayList<Event> eventList) {
-        this.eventList = eventList;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public ArrayList<String> getSubscriptionList() {
-        return subscriptionList;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setSubscriptionList(ArrayList<String> subscriptionList) {
-        this.subscriptionList = subscriptionList;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public String getToken() {
+        return token;
+    }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getUniversity() {
         return university;
@@ -46,14 +67,6 @@ public class User {
 
     public void setUniversity(String university) {
         this.university = university;
-    }
-
-    public ArrayList<Post> getPostList() {
-        return postList;
-    }
-
-    public void setPostList(ArrayList<Post> postList) {
-        this.postList = postList;
     }
 
     public Boolean getIsNotifyFlag() {
@@ -72,43 +85,30 @@ public class User {
         this.isRecommendFlag = isRecommendFlag;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public ArrayList<Post> getPostList() {
+        return postList;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPostList(ArrayList<Post> postList) {
+        this.postList = postList;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public ArrayList<String> getSubscriptionList() {
+        return subscriptionList;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSubscriptionList(ArrayList<String> subscriptionList) {
+        this.subscriptionList = subscriptionList;
     }
 
-    public void setAuthToken(String authToken) {
-        this.token = authToken;
+    /*public ArrayList<Event> getEventList() {
+        return eventList;
     }
 
-    public String getId() {
-        return id;
-    }
+    public void setEventList(ArrayList<Event> eventList) {
+        this.eventList = eventList;
+    }*/
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public String getLastName() {
-        return lastName;
-    }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getToken() {
-        return token;
-    }
 }

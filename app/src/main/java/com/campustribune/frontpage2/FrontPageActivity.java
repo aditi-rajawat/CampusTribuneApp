@@ -69,19 +69,10 @@ public class FrontPageActivity extends AppCompatActivity {
             });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-       /* RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        itemAnimator.setAddDuration(1000);
-        itemAnimator.setRemoveDuration(100);
-        System.out.println("Setting up the animation!");
-        recyclerView.setItemAnimator(itemAnimator);*/
-
-        SharedPreferences settingsout = PreferenceManager
+        SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
-        token = "Token "+settingsout.getString("authToken", "");
-        String userId= settingsout.getString("loggedInUserId", "");
-
+        token = "Token "+sharedPreferences.getString("authToken", "");
+        String userId= sharedPreferences.getString("loggedInUserId", "");
         invokeGetUserActionsWS(userId);
     }
 
@@ -101,13 +92,11 @@ public class FrontPageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        // Take appropriate action for each action item click
         switch (menuItem.getItemId()) {
             case R.id.menu_action_refresh:
                 Toast.makeText(this, "Refresh button was clicked", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.submenu_userprofile:
-                Toast.makeText(this,"User-profile menu was clicked",Toast.LENGTH_SHORT).show();
                 goToUserProfilePage();
                 return true;
             /*case R.id.submenu_search:
@@ -158,12 +147,10 @@ public class FrontPageActivity extends AppCompatActivity {
     }
 
     public List<Post> fill_with_data(ArrayList<Post> postList) throws ExecutionException, InterruptedException {
-        System.out.println("SIZEEEEE"+postList.size());
         List<Post> data = new ArrayList<>();
         Iterator<Post> listIterator = postList.iterator();
         Post post= new Post();
         while(listIterator.hasNext()){
-            System.out.println(" ADDING DATA///");
             post = listIterator.next();
             data.add(post);
         }

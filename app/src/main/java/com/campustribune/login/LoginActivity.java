@@ -156,32 +156,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
-    }*/
-
     @Override
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
-    /*public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
-        // Added by Aditi on 07/09
-        Intent frontPageIntent = new Intent(LoginActivity.this, FrontPageActivity.class);
-        LoginActivity.this.startActivity(frontPageIntent);
-        LoginActivity.this.finish();
-    }*/
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();

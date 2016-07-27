@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * Created by aditi on 08/07/16.
  */
-public class Event implements Serializable {
+public class Event implements Serializable{
 
     private UUID id;
     private String title;
