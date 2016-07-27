@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,15 +84,21 @@ public class UserProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userprofile);
+        ImageView backgroundImageView =(ImageView)findViewById(R.id.background);
         ButterKnife.bind(this);
         sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
         name = sharedPreferences.getString("loggedInUserName", "");
-        userid= sharedPreferences.getString("loggedInUserId", "");
+        userid = sharedPreferences.getString("loggedInUserId", "");
         email = sharedPreferences.getString("loggedInUserEmail", "");
         university = sharedPreferences.getString("loggedInUserUniversity", "");
         notifyFlag = sharedPreferences.getBoolean("loggedInUserNotifications", true);
         notifyReco = sharedPreferences.getBoolean("loggedInUserRecommendations", true);
+
+        if(university.equalsIgnoreCase("University of North Carolina"))
+            backgroundImageView.setBackgroundResource(R.drawable.uncc_background);
+        else if(university.equalsIgnoreCase("San Jose State University"))
+            backgroundImageView.setBackgroundResource(R.drawable.sjsu_background);
 
 
 

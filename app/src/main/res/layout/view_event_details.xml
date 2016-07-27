@@ -68,7 +68,7 @@
         android:layout_alignParentRight="true"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:src="@drawable/background"/>
+        android:src="@drawable/sjsu_background"/>
 
     <ImageButton
         android:id="@+id/event_upvote"
