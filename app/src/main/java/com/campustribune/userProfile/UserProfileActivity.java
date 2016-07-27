@@ -96,9 +96,9 @@ public class UserProfileActivity extends BaseActivity {
         notifyReco = sharedPreferences.getBoolean("loggedInUserRecommendations", true);
 
         if(university.equalsIgnoreCase("University of North Carolina"))
-            backgroundImageView.setBackgroundResource(R.drawable.uncc_background);
+            backgroundImageView.setBackgroundResource(R.drawable.background_uncc);
         else if(university.equalsIgnoreCase("San Jose State University"))
-            backgroundImageView.setBackgroundResource(R.drawable.sjsu_background);
+            backgroundImageView.setBackgroundResource(R.drawable.background_sjsu);
 
 
 

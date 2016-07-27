@@ -7,7 +7,7 @@
         android:id="@+id/activity_main_startPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/sjsu_background"
+        android:src="@drawable/background_sjsu"
         android:scaleType="centerCrop"
      />
 
