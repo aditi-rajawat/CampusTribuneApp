@@ -7,8 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +47,8 @@ public class SignupActivity extends AppCompatActivity {
     Button _signupButton;
     @Bind(R.id.link_login)
     TextView _loginLink;
-    //@Bind(R.id.university_spinner)
-    //Spinner _universitySpinner;
+    @Bind(R.id.university_spinner)
+    Spinner _universitySpinner;
 
 
     @Override
@@ -53,8 +56,20 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
-        //addItemsOnUniversitySpinner();
-        //addListenerOnSpinnerItemSelection();
+
+        String[] universities= getResources().getStringArray(R.array.university_options);
+        ArrayAdapter<CharSequence> adapter= new ArrayAdapter<CharSequence>(getApplicationContext(), android.R.layout.simple_spinner_item, universities){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView)v).setTextSize(18);
+                ((TextView)v).setTextColor(getResources().getColor(R.color.editTextHintColor));
+                return v;
+            }
+        };
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        _universitySpinner.setAdapter(adapter);
+        _universitySpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
         progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         _signupButton.setOnClickListener(new View.OnClickListener() {
@@ -83,17 +98,6 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    /*private void addListenerOnSpinnerItemSelection() {
-        _universitySpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-    }
-
-    private void addItemsOnUniversitySpinner() {
-        List<String> list = new ArrayList<String>();
-        list.add("San Jose State University");
-        list.add("University of North Carolina");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
-        _universitySpinner.setAdapter(dataAdapter);
-    }*/
 
     public void signup() throws JSONException, UnsupportedEncodingException {
         Log.d(TAG, "Signup");
@@ -112,13 +116,16 @@ public class SignupActivity extends AppCompatActivity {
         String lname = _lnameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String university = _universitySpinner.getSelectedItem().toString();
 
+        System.out.println("UNIVERSITY"+ university);
 
         JSONObject params = new JSONObject();
         params.put("firstName", fname);
         params.put("lastName", lname);
         params.put("email", email);
         params.put("password", password);
+        params.put("university", university);
         invokeWS(params);
 
     }

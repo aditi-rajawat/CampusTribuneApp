@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.btn_login) Button _loginButton;
     @Bind(R.id.link_signup) TextView _signupLink;
     public static ArrayList<Post> postList = new ArrayList<Post>();
+    public static ArrayList<String> subscriptionList = new ArrayList();
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,22 +106,27 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("authToken", user.getToken());
                 editor.putString("loggedInUserId", user.getId());
                 editor.putString("loggedInUserEmail", user.getEmail());
+                editor.putString("loggedInUserUniversity", user.getUniversity());
                 editor.putString("loggedInUserName", user.getFirstName()+" "+user.getLastName());
                 editor.putBoolean("loggedInUserNotifications", user.getIsNotifyFlag());
-                editor.putBoolean("loggedInUserRecommendations",user.getIsRecommendFlag());
+                System.out.println("CHECK NOTIFY FLAG HERE " + user.getIsNotifyFlag());
+                editor.putBoolean("loggedInUserRecommendations", user.getIsRecommendFlag());
+                System.out.println("CHECK RECO FLAG HERE " + user.getIsRecommendFlag());
                 editor.commit();
                 //Code to retrieve the user details stored in shared preferences
                 SharedPreferences settingsout = PreferenceManager
                         .getDefaultSharedPreferences(getApplicationContext());
                 String auth_token_string = settingsout.getString("authToken", "");
                 String user_id= settingsout.getString("loggedInUserId", "");
+
                 System.out.println("Auth Token received from sp for userId:"+user_id+" : " + auth_token_string);
                 progressDialog.hide();
                 try {
                     if (statusCode == 200) {
                         Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        System.out.println("List SIZEEE in LOGIN"+user.getPostList().size());
+                        System.out.println("List SIZEEE in LOGIN" + user.getPostList().size());
                         postList=user.getPostList();
+                        subscriptionList=user.getSubscriptionList();
                         navigatetoFrontpageActivity();
                     } else {
                         Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
