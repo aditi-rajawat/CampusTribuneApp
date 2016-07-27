@@ -16,6 +16,15 @@ public class User {
     Boolean isRecommendFlag;
     ArrayList<Post> postList= new ArrayList();
     ArrayList<String> subscriptionList = new ArrayList<>();
+    ArrayList<Event> eventList= new ArrayList();
+
+    public ArrayList<Event> getEventList() {
+        return eventList;
+    }
+
+    public void setEventList(ArrayList<Event> eventList) {
+        this.eventList = eventList;
+    }
 
     public ArrayList<String> getSubscriptionList() {
         return subscriptionList;

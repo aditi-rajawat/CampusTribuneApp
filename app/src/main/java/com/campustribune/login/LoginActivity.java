@@ -109,9 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("loggedInUserUniversity", user.getUniversity());
                 editor.putString("loggedInUserName", user.getFirstName()+" "+user.getLastName());
                 editor.putBoolean("loggedInUserNotifications", user.getIsNotifyFlag());
-                System.out.println("CHECK NOTIFY FLAG HERE " + user.getIsNotifyFlag());
                 editor.putBoolean("loggedInUserRecommendations", user.getIsRecommendFlag());
-                System.out.println("CHECK RECO FLAG HERE " + user.getIsRecommendFlag());
                 editor.commit();
                 //Code to retrieve the user details stored in shared preferences
                 SharedPreferences settingsout = PreferenceManager
