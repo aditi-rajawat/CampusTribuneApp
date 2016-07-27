@@ -67,7 +67,21 @@
     <string name="action_view_event_report">Report</string>
     <string name="action_view_event_delete">Delete</string>
     <string name="submenu_action_front_page">Home</string>
+    <string name="category1">Sports</string>
+    <string name="category2">Administration</string>
+    <string name="category3">Technology</string>
+    <string name="category4">Arts and Culture</string>
+    <string name="category5">Entertainment</string>
+    <string name="LoginOnSignUp">Already a member? <b>Login</b></string>
 
     <!-- Added by Aditi on 07/23/2016 END -->
+
+    <string-array name="university_options">
+        <item>-----Select University----</item>
+        <item>San Jose State University</item>
+        <item>Santa Clara University</item>
+        <item>University of North Carolina</item>
+        <item>University of Florida</item>
+    </string-array>
 
 </resources>
