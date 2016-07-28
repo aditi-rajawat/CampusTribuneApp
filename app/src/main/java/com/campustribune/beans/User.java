@@ -19,7 +19,7 @@ public class User {
 
     private ArrayList<Post> postList= new ArrayList();
     private ArrayList<String> subscriptionList = new ArrayList<>();
-    //private ArrayList<Event> eventList= new ArrayList();
+    private ArrayList<Event> eventList= new ArrayList();
 
     public String getId() {
         return id;
@@ -101,13 +101,13 @@ public class User {
         this.subscriptionList = subscriptionList;
     }
 
-    /*public ArrayList<Event> getEventList() {
+    public ArrayList<Event> getEventList() {
         return eventList;
     }
 
     public void setEventList(ArrayList<Event> eventList) {
         this.eventList = eventList;
-    }*/
+    }
 
 
 
