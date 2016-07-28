@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.campustribune.R;
-import com.campustribune.beans.Post;
 import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
 import com.campustribune.helper.Util;
@@ -30,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -45,11 +45,11 @@ public class FrontPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_front_page);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        List<Post> postData= new ArrayList();
+        List<Data> frontPageData= new ArrayList();
         System.out.println("Started Activity for front page");
 
         try {
-            postData = fill_with_data(LoginActivity.postList);
+            frontPageData = fill_with_data(LoginActivity.frontPageList);
             System.out.println("Started loading Data");
 
         } catch (ExecutionException e) {
@@ -59,11 +59,15 @@ public class FrontPageActivity extends AppCompatActivity {
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        Recycler_View_Adapter adapter = new Recycler_View_Adapter(postData, getApplication(),
+        Recycler_View_Adapter adapter = new Recycler_View_Adapter(frontPageData, getApplication(),
                 new Recycler_View_Adapter.OnItemClickListener(){
-                    @Override public void onItemClick(Post post) {
+                    @Override public void onItemClick(Data data) {
                         Toast.makeText(getBaseContext(), "Item Clicked", Toast.LENGTH_LONG).show();
-                        navigateToViewPostActivity(post.getId());
+                        if(data.getItemTitle().equalsIgnoreCase("Post"))
+                            navigateToViewPostActivity(data.getItemId());
+                        /*else if(data.getItemTitle().equalsIgnoreCase("Event"))
+                            navigateToViewEventActivity(data.getItemId());*/
+
                 }
 
             });
@@ -76,9 +80,17 @@ public class FrontPageActivity extends AppCompatActivity {
         invokeGetUserActionsWS(userId);
     }
 
-    private void navigateToViewPostActivity(Integer postId) {
+   /* private void navigateToViewEventActivity(String itemId) {
+
+        Intent viewEventIntent = new Intent(FrontPageActivity.this, ViewEventActivity.class);
+        viewEventIntent.putExtra("new_event", event);
+        viewEventIntent.putExtra("prev_activity", new String("FrontPageActivity"));
+        FrontPageActivity.this.startActivity(viewEventIntent);
+    }*/
+
+    private void navigateToViewPostActivity(String itemId) {
         Intent viewPostPage = new Intent(FrontPageActivity.this, ViewPostActivity.class);
-        viewPostPage.putExtra("post_id", String.valueOf(postId));
+        viewPostPage.putExtra("post_id", itemId);
         FrontPageActivity.this.startActivity(viewPostPage);
 
     }
@@ -146,15 +158,17 @@ public class FrontPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public List<Post> fill_with_data(ArrayList<Post> postList) throws ExecutionException, InterruptedException {
-        List<Post> data = new ArrayList<>();
-        Iterator<Post> listIterator = postList.iterator();
-        Post post= new Post();
+    public List<Data> fill_with_data(ArrayList<Data> dataList) throws ExecutionException, InterruptedException {
+        Collections.shuffle(dataList);
+        List<Data> frontPageDataList = new ArrayList<>();
+        Iterator<Data> listIterator = dataList.iterator();
+        Data data= new Data();
         while(listIterator.hasNext()){
-            post = listIterator.next();
-            data.add(post);
+            data = listIterator.next();
+            System.out.println("LOADING ITEM TYPE: "+data.getItemType());
+            frontPageDataList.add(data);
         }
-        return data;
+        return frontPageDataList;
     }
 
     public void invokeGetUserActionsWS(String userId){
