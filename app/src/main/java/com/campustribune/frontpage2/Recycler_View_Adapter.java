@@ -20,14 +20,14 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<View_Holder> {
 
 
     private final OnItemClickListener listener;
-    List<Post> list = Collections.emptyList();
+    List<Data> list = Collections.emptyList();
     Context context;
 
     public interface OnItemClickListener {
-        void onItemClick(Post post);
+        void onItemClick(Data data);
     }
 
-    public Recycler_View_Adapter(List<Post> list, Context context, OnItemClickListener listener) {
+    public Recycler_View_Adapter(List<Data> list, Context context, OnItemClickListener listener) {
         this.list = list;
         this.context = context;
         this.listener=listener;
@@ -60,7 +60,7 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<View_Holder> {
     }
 
     // Insert a new item to the RecyclerView on a predefined position
-    public void insert(int position, Post data) {
+    public void insert(int position, Data data) {
         list.add(position, data);
         notifyItemInserted(position);
     }
