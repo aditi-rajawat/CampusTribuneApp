@@ -55,11 +55,14 @@ public class View_Holder extends RecyclerView.ViewHolder {
 
             System.out.println("THIS IS AN ALERT");
             alert.setVisibility(View.VISIBLE);
+        }else{
+            alert.setVisibility(View.GONE);
         }
 
-        if(data.getItemImageURL()!=null && data.getItemImageURL().length()>0)
+        if(data.getItemImageURL()!=null && data.getItemImageURL().length()>0) {
+            image.setVisibility(View.VISIBLE);
             Picasso.with(itemView.getContext()).load(data.getItemImageURL()).into(image);
-        else {
+        }else {
             image.setVisibility(View.GONE);
         }
         itemView.setOnClickListener(new View.OnClickListener() {
