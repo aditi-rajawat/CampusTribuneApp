@@ -41,8 +41,12 @@
             android:padding="5dp"
             android:paddingTop="2.5dp"
             android:paddingBottom="2.5dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
         <TextView
-            android:layout_width="164dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/posted"
@@ -53,7 +57,19 @@
             android:textColor="@color/black"
             android:padding="5dp"
             android:paddingTop="2.5dp"
-            android:paddingBottom="2.5dp" />
+            android:paddingBottom="2.5dp"
+            android:paddingLeft="8dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_error_outline_white_18dp"
+            android:background="#ff0000"
+            android:visibility="invisible"
+            android:id="@+id/alertFlag"
+            android:layout_below="@+id/description"
+            android:layout_toEndOf="@+id/ownername"
+            android:paddingRight="2dp" />
+    </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

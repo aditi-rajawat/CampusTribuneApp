@@ -19,6 +19,7 @@ public class ViewPostsByCategoryListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryActivity.class);
+                intent.putExtra("category","Administration");
                 startActivity(intent);
             }
         });
@@ -27,6 +28,7 @@ public class ViewPostsByCategoryListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryActivity.class);
+                intent.putExtra("category","Technology");
                 startActivity(intent);
             }
         });
@@ -35,6 +37,7 @@ public class ViewPostsByCategoryListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryActivity.class);
+                intent.putExtra("category","Sports");
                 startActivity(intent);
             }
         });
@@ -43,6 +46,7 @@ public class ViewPostsByCategoryListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryActivity.class);
+                intent.putExtra("category","Arts");
                 startActivity(intent);
             }
         });
