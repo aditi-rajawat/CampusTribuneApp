@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                System.out.println("LOGGED IN UNIVER SITY "+user.getUniversity());
                 SharedPreferences settings = PreferenceManager
                         .getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = settings.edit();
@@ -158,35 +159,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void mapEventListToFrontPageData(ArrayList<Event> eventList) {
-        for(Event event:eventList){
-            Data data = new Data();
-            data.setItemId(String.valueOf((event.getId())));
-            data.setItemTitle(event.getTitle());
-            data.setItemContent(event.getDescription());
-            data.setItemImageURL(event.getEventImageS3URL());
-            data.setItemOwnerId(event.getCreatedBy());
-            data.setItemCategory(event.getCategory());
-            data.setIsItemAlert(false);
-            data.setItemType("Event");
-            frontPageList.add(data);
+        if(eventList!=null){
+            for(Event event:eventList){
+                Data data = new Data();
+                data.setItemId(String.valueOf((event.getId())));
+                data.setItemTitle(event.getTitle());
+                data.setItemContent(event.getDescription());
+                data.setItemImageURL(event.getEventImageS3URL());
+                data.setItemOwnerId(event.getCreatedBy());
+                data.setItemCategory(event.getCategory());
+                data.setIsItemAlert(false);
+                data.setItemType("Event");
+                frontPageList.add(data);
+            }
         }
+
 
     }
 
     private void mapPostListToFrontPagData(ArrayList<Post> postList) {
-
-        for(Post post:postList){
-            Data data = new Data();
-            data.setItemId(String.valueOf((post.getId())));
-            data.setItemTitle(post.getHeadline());
-            data.setItemContent(post.getContent());
-            data.setItemImageURL(post.getImgURL());
-            data.setItemOwnerId(post.getUserId());
-            data.setItemCategory(post.getCategory());
-            data.setIsItemAlert(post.isAlert());
-            data.setItemType("Post");
-            frontPageList.add(data);
+        if(postList!=null){
+            for(Post post:postList){
+                Data data = new Data();
+                data.setItemId(String.valueOf((post.getId())));
+                data.setItemTitle(post.getHeadline());
+                data.setItemContent(post.getContent());
+                data.setItemImageURL(post.getImgURL());
+                data.setItemOwnerId(post.getUserId());
+                data.setItemCategory(post.getCategory());
+                data.setIsItemAlert(post.isAlert());
+                data.setItemType("Post");
+                frontPageList.add(data);
+            }
         }
+
+
 
 
     }

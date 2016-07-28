@@ -95,11 +95,14 @@ public class UserProfileActivity extends BaseActivity {
         notifyFlag = sharedPreferences.getBoolean("loggedInUserNotifications", true);
         notifyReco = sharedPreferences.getBoolean("loggedInUserRecommendations", true);
 
-        if(university.equalsIgnoreCase("University of North Carolina"))
+        if(university.equalsIgnoreCase("UNCC")) {
             backgroundImageView.setBackgroundResource(R.drawable.background_uncc);
-        else if(university.equalsIgnoreCase("San Jose State University"))
+            university="University of North Carolina";
+        }
+        else if(university.equalsIgnoreCase("SJSU")) {
             backgroundImageView.setBackgroundResource(R.drawable.background_sjsu);
-
+            university="San Jose State University";
+        }
 
 
 
@@ -258,7 +261,7 @@ public class UserProfileActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    triggerUpdate(isNotificationFlagSet, isRecommendationFlagSet, isCategory1Selected, isCategory2Selected, isCategory3Selected, isCategory4Selected, isCategory5Selected);
+                    triggerUpdate(allowNotificationCompoundButton.isChecked(), allowEmailCompoundButton.isChecked(), isCategory1Selected, isCategory2Selected, isCategory3Selected, isCategory4Selected, isCategory5Selected);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -300,6 +303,8 @@ public class UserProfileActivity extends BaseActivity {
             catlist.add(getResources().getString(R.string.category4));
         if(isCategory5Selected)
             catlist.add(getResources().getString(R.string.category5));
+
+        LoginActivity.subscriptionList=catlist;
 
         JSONObject userJSON= new JSONObject();
         userJSON.put("id",userid);

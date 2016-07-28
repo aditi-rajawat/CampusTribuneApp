@@ -63,7 +63,7 @@ public class FrontPageActivity extends AppCompatActivity {
                 new Recycler_View_Adapter.OnItemClickListener(){
                     @Override public void onItemClick(Data data) {
                         Toast.makeText(getBaseContext(), "Item Clicked", Toast.LENGTH_LONG).show();
-                        if(data.getItemTitle().equalsIgnoreCase("Post"))
+                        if(data.getItemType().equalsIgnoreCase("Post"))
                             navigateToViewPostActivity(data.getItemId());
                         /*else if(data.getItemTitle().equalsIgnoreCase("Event"))
                             navigateToViewEventActivity(data.getItemId());*/

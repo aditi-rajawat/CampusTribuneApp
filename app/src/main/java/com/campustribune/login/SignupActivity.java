@@ -116,7 +116,16 @@ public class SignupActivity extends AppCompatActivity {
         String lname = _lnameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
-        String university = _universitySpinner.getSelectedItem().toString();
+        String universityFullName = _universitySpinner.getSelectedItem().toString();
+        String university="";
+        if(universityFullName.equalsIgnoreCase("San Jose State University"))
+            university="SJSU";
+        else if(universityFullName.equalsIgnoreCase("University of North Carolina"))
+            university="UNCC";
+        else if(universityFullName.equalsIgnoreCase("Santa Clara University"))
+            university="SCU";
+        else if(universityFullName.equalsIgnoreCase("University of Florida"))
+            university="UFL";
 
         System.out.println("UNIVERSITY"+ university);
 
