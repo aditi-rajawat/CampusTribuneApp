@@ -14,8 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campustribune.R;
+import com.campustribune.beans.Event;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.User;
+import com.campustribune.frontpage2.Data;
 import com.campustribune.frontpage2.FrontPageActivity;
 import com.campustribune.helper.Util;
 import com.loopj.android.http.AsyncHttpClient;
@@ -40,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.btn_login) Button _loginButton;
     @Bind(R.id.link_signup) TextView _signupLink;
-    public static ArrayList<Post> postList = new ArrayList<Post>();
+    public static ArrayList<Data> frontPageList = new ArrayList<Data>();
     public static ArrayList<String> subscriptionList = new ArrayList();
     
     @Override
@@ -90,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         client.setBasicAuth(username, password);
-        client.get(Util.SERVER_URL+"user/login", new JsonHttpResponseHandler() {
+        client.get(Util.SERVER_URL + "user/login", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 User user = new User();
@@ -107,24 +109,24 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("loggedInUserId", user.getId());
                 editor.putString("loggedInUserEmail", user.getEmail());
                 editor.putString("loggedInUserUniversity", user.getUniversity());
-                editor.putString("loggedInUserName", user.getFirstName()+" "+user.getLastName());
+                editor.putString("loggedInUserName", user.getFirstName() + " " + user.getLastName());
                 editor.putBoolean("loggedInUserNotifications", user.getIsNotifyFlag());
                 editor.putBoolean("loggedInUserRecommendations", user.getIsRecommendFlag());
                 editor.commit();
                 //Code to retrieve the user details stored in shared preferences
-                SharedPreferences settingsout = PreferenceManager
+                SharedPreferences sharedPreferences = PreferenceManager
                         .getDefaultSharedPreferences(getApplicationContext());
-                String auth_token_string = settingsout.getString("authToken", "");
-                String user_id= settingsout.getString("loggedInUserId", "");
+                String auth_token_string = sharedPreferences.getString("authToken", "");
+                String user_id = sharedPreferences.getString("loggedInUserId", "");
 
-                System.out.println("Auth Token received from sp for userId:"+user_id+" : " + auth_token_string);
+                System.out.println("Auth Token received from sp for userId:" + user_id + " : " + auth_token_string);
                 progressDialog.hide();
                 try {
                     if (statusCode == 200) {
                         Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        System.out.println("List SIZEEE in LOGIN" + user.getPostList().size());
-                        postList=user.getPostList();
-                        subscriptionList=user.getSubscriptionList();
+                        mapPostListToFrontPagData(user.getPostList());
+                        mapEventListToFrontPageData(user.getEventList());
+                        subscriptionList = user.getSubscriptionList();
                         navigatetoFrontpageActivity();
                     } else {
                         Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
@@ -153,6 +155,40 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void mapEventListToFrontPageData(ArrayList<Event> eventList) {
+        for(Event event:eventList){
+            Data data = new Data();
+            data.setItemId(String.valueOf((event.getId())));
+            data.setItemTitle(event.getTitle());
+            data.setItemContent(event.getDescription());
+            data.setItemImageURL(event.getEventImageS3URL());
+            data.setItemOwnerId(event.getCreatedBy());
+            data.setItemCategory(event.getCategory());
+            data.setIsItemAlert(false);
+            data.setItemType("Event");
+            frontPageList.add(data);
+        }
+
+    }
+
+    private void mapPostListToFrontPagData(ArrayList<Post> postList) {
+
+        for(Post post:postList){
+            Data data = new Data();
+            data.setItemId(String.valueOf((post.getId())));
+            data.setItemTitle(post.getHeadline());
+            data.setItemContent(post.getContent());
+            data.setItemImageURL(post.getImgURL());
+            data.setItemOwnerId(post.getUserId());
+            data.setItemCategory(post.getCategory());
+            data.setIsItemAlert(post.isAlert());
+            data.setItemType("Post");
+            frontPageList.add(data);
+        }
+
+
     }
 
 
