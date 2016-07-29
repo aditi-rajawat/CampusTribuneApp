@@ -59,7 +59,7 @@ public class ViewPostByCategoriesAdapter extends ArrayAdapter<Post> {
             imgPostImage = (ImageView) rowView.findViewById(R.id.news_image);
             txtContent = (TextView) rowView.findViewById(R.id.description);
             txtPostUserId = (TextView) rowView.findViewById(R.id.posted);
-            alertImage = (ImageView) rowView.findViewById(R.id.imageView);
+            alertImage = (ImageView) rowView.findViewById(R.id.alertFlag);
 
             if(post.isAlert())
                 alertImage.setVisibility(View.VISIBLE);
@@ -76,7 +76,7 @@ public class ViewPostByCategoriesAdapter extends ArrayAdapter<Post> {
             txtHeadline = (TextView) rowView.findViewById(R.id.heading);
             txtContent = (TextView) rowView.findViewById(R.id.description);
             txtPostUserId = (TextView) rowView.findViewById(R.id.posted);
-            alertImage = (ImageView) rowView.findViewById(R.id.imageView);
+            alertImage = (ImageView) rowView.findViewById(R.id.alertFlag);
 
             if(post.isAlert())
                 alertImage.setVisibility(View.VISIBLE);
