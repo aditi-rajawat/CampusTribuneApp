@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.link_signup) TextView _signupLink;
     public static ArrayList<Data> frontPageList = new ArrayList<Data>();
     public static ArrayList<String> subscriptionList = new ArrayList();
+
+    public static ArrayList<Event> staticEventList= new ArrayList<Event>();
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (statusCode == 200) {
                         Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
                         mapPostListToFrontPagData(user.getPostList());
+                        staticEventList=user.getEventList();
                         mapEventListToFrontPageData(user.getEventList());
                         subscriptionList = user.getSubscriptionList();
                         navigatetoFrontpageActivity();

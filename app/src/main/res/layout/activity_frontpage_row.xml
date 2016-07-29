@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
-    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
+    android:padding="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -15,28 +15,32 @@
         android:layout_width="4dp"
         android:layout_height="match_parent"/>
 
-
     <RelativeLayout
         android:id="@+id/cardRelative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/label_category"
+        <LinearLayout
+            android:id="@+id/label_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_blue_dark"
-            android:minHeight="0dp"/>
+            android:minHeight="8dp">
 
-
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/label_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_blue_dark"
+                android:minHeight="0dp"/>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="fill_parent"
             android:layout_height="120dp"
-            android:scaleType="centerCrop"/>
-
+            android:scaleType="centerCrop"
+            android:layout_below="@+id/label_container"/>
 
 
         <TextView
@@ -47,6 +51,7 @@
             android:layout_below="@+id/imageView"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:paddingLeft="4dp"
             android:textColor="@color/black"
             android:fontFamily="Roboto Regular"/>
 
@@ -57,6 +62,7 @@
             android:layout_below="@+id/title"
             android:text="Description"
             android:maxLines="3"
+            android:paddingLeft="4dp"
             android:textColor="@color/black"
             android:fontFamily="Roboto Regular"/>
 
@@ -72,26 +78,26 @@
             android:textSize="6pt"
             android:textColor="@color/black"
             android:paddingRight="15dp"
-            android:paddingTop="10dp"
-            />
+            android:paddingLeft="4dp"
+            android:fontFamily="Roboto Regular"
+            android:paddingTop="10dp"/>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            android:layout_weight="0.05"
-            android:paddingLeft="10dp">
-        </View>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.05"
+                android:paddingLeft="10dp">
+            </View>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_error_outline_white_18dp"
-            android:background="#ff0000"
-            android:visibility="gone"
-            android:id="@+id/alertFlag"
-            android:layout_below="@+id/description"
-            android:layout_toEndOf="@+id/ownername"
-            />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_error_outline_white_18dp"
+                android:background="#ff0000"
+                android:visibility="gone"
+                android:id="@+id/alertFlag"
+                android:layout_below="@+id/description"
+                android:layout_toEndOf="@+id/ownername"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

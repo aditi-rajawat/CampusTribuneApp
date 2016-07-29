@@ -14,8 +14,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.campustribune.R;
+import com.campustribune.beans.Event;
 import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
+import com.campustribune.event.activity.ViewEventActivity;
 import com.campustribune.helper.Util;
 import com.campustribune.login.LoginActivity;
 import com.campustribune.post.activity.CreatePostActivity;
@@ -65,8 +67,10 @@ public class FrontPageActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Item Clicked", Toast.LENGTH_LONG).show();
                         if(data.getItemType().equalsIgnoreCase("Post"))
                             navigateToViewPostActivity(data.getItemId());
-                        /*else if(data.getItemTitle().equalsIgnoreCase("Event"))
-                            navigateToViewEventActivity(data.getItemId());*/
+                        else if(data.getItemType().equalsIgnoreCase("Event")){
+                            Event event = retrieveEventFromList(data.getItemId());
+                            navigateToViewEventActivity(event);
+                        }
 
                 }
 
@@ -80,13 +84,22 @@ public class FrontPageActivity extends AppCompatActivity {
         invokeGetUserActionsWS(userId);
     }
 
-   /* private void navigateToViewEventActivity(String itemId) {
+    private Event retrieveEventFromList(String itemId) {
+        for(Event event:LoginActivity.staticEventList){
+            System.out.println("CHECK here"+ itemId);
+            if((event.getId().toString()).equals(itemId));
+                return event;
+        }
+        return null;
+    }
+
+    private void navigateToViewEventActivity(Event event) {
 
         Intent viewEventIntent = new Intent(FrontPageActivity.this, ViewEventActivity.class);
         viewEventIntent.putExtra("new_event", event);
         viewEventIntent.putExtra("prev_activity", new String("FrontPageActivity"));
         FrontPageActivity.this.startActivity(viewEventIntent);
-    }*/
+    }
 
     private void navigateToViewPostActivity(String itemId) {
         Intent viewPostPage = new Intent(FrontPageActivity.this, ViewPostActivity.class);
@@ -115,7 +128,7 @@ public class FrontPageActivity extends AppCompatActivity {
                 Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
                 return true;*/
             case R.id.submenu_createpost:
-                Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Create Post was clicked", Toast.LENGTH_SHORT).show();
                 goToCreatePostPage();
                 return true;
             case R.id.submenu_createevent:      // Added by Aditi on 07/23/2016 START
