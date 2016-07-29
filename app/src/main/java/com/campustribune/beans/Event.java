@@ -20,6 +20,7 @@ public class Event implements Serializable{
     private double longitude;
     private String address;
     private String eventImageS3URL;
+    private String university;
 
     // Event actions
     private boolean upvoted;
@@ -50,7 +51,7 @@ public class Event implements Serializable{
     }
 
     public Event(UUID id, String title, String description, String category, String url, String startDate, String endDate,
-                 double latitude, double longitude, String address, String eventImageS3URL, boolean upvoted, boolean downvoted,
+                 double latitude, double longitude, String address, String eventImageS3URL, String university, boolean upvoted, boolean downvoted,
                  boolean follow, boolean going, boolean notGoing, boolean reported, Integer upVoteCount, Integer downVoteCount,
                  Integer goingCount, Integer notGoingCount, boolean updateEvent, boolean updateComments, boolean deleteComments,
                  String createdBy, String updatedBy, String createdOn, ArrayList<EventComment> listOfComments, ArrayList<EventComment> listOfDeletedComments) {
@@ -65,6 +66,7 @@ public class Event implements Serializable{
         this.longitude = longitude;
         this.address = address;
         this.eventImageS3URL = eventImageS3URL;
+        this.university = university;
         this.upvoted = upvoted;
         this.downvoted = downvoted;
         this.follow = follow;
@@ -277,6 +279,14 @@ public class Event implements Serializable{
         this.eventImageS3URL = eventImageS3URL;
     }
 
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
     public ArrayList<EventComment> getListOfComments() {
         return listOfComments;
     }
@@ -352,6 +362,8 @@ public class Event implements Serializable{
         if (address != null ? !address.equals(event.address) : event.address != null) return false;
         if (eventImageS3URL != null ? !eventImageS3URL.equals(event.eventImageS3URL) : event.eventImageS3URL != null)
             return false;
+        if (university != null ? !university.equals(event.university) : event.university != null)
+            return false;
         if (upVoteCount != null ? !upVoteCount.equals(event.upVoteCount) : event.upVoteCount != null)
             return false;
         if (downVoteCount != null ? !downVoteCount.equals(event.downVoteCount) : event.downVoteCount != null)
@@ -389,6 +401,7 @@ public class Event implements Serializable{
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (eventImageS3URL != null ? eventImageS3URL.hashCode() : 0);
+        result = 31 * result + (university != null ? university.hashCode() : 0);
         result = 31 * result + (upvoted ? 1 : 0);
         result = 31 * result + (downvoted ? 1 : 0);
         result = 31 * result + (follow ? 1 : 0);

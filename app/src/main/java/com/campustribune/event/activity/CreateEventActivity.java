@@ -82,6 +82,7 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
     AmazonS3Client myS3Client=null;
     Uri selectedImgUri=null;
     String userId = null;
+    String university=null;
 
     final static int PLACE_PICKER_REQUEST=1;
     final static int CAPTURE_IMAGE_REQUEST=2;
@@ -101,6 +102,7 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
         // Retrieve the user Id
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.userId = new String(settings.getString("loggedInUserId", "").toString());
+        this.university = new String(settings.getString("loggedInUserUniversity","").toString());
 
         //Intialize the GoogleAPIClient
         myGoogleAPIClient = new GoogleApiClient.Builder(this)
@@ -459,6 +461,7 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
             event.setCreatedBy(this.userId);
             DateTime dt = new DateTime(DateTimeZone.UTC);
             event.setCreatedOn(dt.toString(ISODateTimeFormat.dateTime().withZoneUTC()));
+            event.setUniversity(this.university);
 
             if(this.selectedImgUri!=null) {
                 try {
@@ -469,6 +472,7 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
                         Thread.sleep(1000);
                     }
                     event.setEventImageS3URL(imageUploader.getImageS3URL().toString());
+                   // event.setEventImageS3URL("https://ctpost.s3.amazonaws.com/ebec3a89-3c40-48c9-8b30-d2559b56d125?response-content-type=image%2Fjpeg&AWSAccessKeyId=AKIAJFQUSKEWLKRMA2OQ&Expires=1481871600&Signature=kmAg%2B1wCh675YgGTEIuJyZJ01jE%3D");
                 }catch (URISyntaxException ex){
                     System.out.println("URI of the image file uploaded is having incorrect syntax!");
                 }catch (InterruptedException ex){

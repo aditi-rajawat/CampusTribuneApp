@@ -32,6 +32,7 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
     private static ViewEventAdapter adapter=null;
     ListView eventsListContainer=null;
     String token=null;
+    String university=null;
 
     public static void updateEventList(Event oldEvent, Event updatedEvent) {
         if(listOfEvents!=null && listOfEvents.size()>0){
@@ -63,6 +64,7 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         // Retrieve the user token
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.token = new String("Token "+settings.getString("authToken", "").toString());
+        this.university = new String(settings.getString("loggedInUserUniversity","").toString());
 
         invokews();
     }
@@ -72,87 +74,49 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         httpClient.addHeader("authorization", this.token);
         System.out.println("Invoking GET list of events REST API...");
 
-        httpClient.get(Constants.baseAPIForEvents+"/", new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if(statusCode == 200){
-                    System.out.println("Received the response from EVENT GET ALL LISTS API!!!!!!!!!!");
-                    System.out.println("Response is "+ responseBody);
-                    try{
-                        ObjectMapper mapper = new ObjectMapper();
-                        Event[] eventArray = mapper.readValue(responseBody, Event[].class);
-                        System.out.println("No. of events received ============= "+ eventArray.length);
-                        if(eventArray.length>0){
-                            for(Event each: eventArray)
-                                listOfEvents.add(each);
+        if(this.university!=null) {
+            httpClient.get(Constants.baseAPIForEvents + "/" + this.university, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    if (statusCode == 200) {
+                        System.out.println("Received the response from EVENT GET ALL LISTS API!!!!!!!!!!");
+                        System.out.println("Response is " + responseBody);
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            Event[] eventArray = mapper.readValue(responseBody, Event[].class);
+                            System.out.println("No. of events received ============= " + eventArray.length);
+                            if (eventArray.length > 0) {
+                                for (Event each : eventArray)
+                                    listOfEvents.add(each);
 
-                            System.out.println("No. of events received = "+ eventArray.length);
-                            adapter = new ViewEventAdapter(ViewAllEventsActivity.this.getApplicationContext(),
-                                    listOfEvents, ViewAllEventsActivity.this);
-                            if(eventsListContainer !=null)
-                                eventsListContainer.setAdapter(adapter);
+                                System.out.println("No. of events received = " + eventArray.length);
+                                adapter = new ViewEventAdapter(ViewAllEventsActivity.this.getApplicationContext(),
+                                        listOfEvents, ViewAllEventsActivity.this);
+                                if (eventsListContainer != null)
+                                    eventsListContainer.setAdapter(adapter);
+                            }
+
+                            System.out.println("No. of events ====== " + listOfEvents.size());
+                        } catch (Exception ex) {
+                            System.out.println("Exception while parsing the response array due to " + ex.getMessage());
                         }
-
-                        System.out.println("No. of events ====== "+ listOfEvents.size());
-                    }catch (Exception ex){
-                        System.out.println("Exception while parsing the response array due to "+ ex.getMessage());
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                if(statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
-                    Toast.makeText(getApplicationContext(), "Something went wrong on the server end", Toast.LENGTH_LONG).show();
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+                        Toast.makeText(getApplicationContext(), "Something went wrong on the server end", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be " +
+                                "connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    }
                 }
-                else{
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be " +
-                            "connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-//        httpClient.get("http://10.0.2.2:8080/events/", new JsonHttpResponseHandler(){
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                if(statusCode == 200){
-//                    try{
-//                        ObjectMapper mapper = new ObjectMapper();
-//                        Event[] eventArray = mapper.readValue(response.toString(), Event[].class);
-//                        if(eventArray.length>0){
-//                            for(Event each: eventArray)
-//                                listOfEvents.add(each);
-//
-//                            System.out.println("No. of events received = "+ eventArray.length);
-//                            ViewEventAdapter adapter = new ViewEventAdapter(ViewAllEventsActivity.this.getApplicationContext(),
-//                                                                                        listOfEvents, ViewAllEventsActivity.this);
-//                            if(eventsListContainer !=null)
-//                                eventsListContainer.setAdapter(adapter);
-//                        }
-//                        System.out.println("No. of events ====== "+ listOfEvents.size());
-//                    }catch (Exception ex){
-//
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                System.out.println("EVENT GET LIST REST API RESPONSE REVCEIVED!!!!!!!!!");
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                if(statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
-//                    Toast.makeText(getApplicationContext(), "Something went wrong on the server end", Toast.LENGTH_LONG).show();
-//                }
-//                else{
-//                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be " +
-//                            "connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
+            });
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "User's university is not set.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

@@ -96,7 +96,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
 
             copyOfEvent = new Event(event.getId(), event.getTitle(), event.getDescription(), event.getCategory(), event.getUrl(),
                     event.getStartDate(), event.getEndDate(), event.getLatitude(), event.getLongitude(), event.getAddress(),
-                    event.getEventImageS3URL(), event.isUpvoted(), event.isDownvoted(), event.isFollow(), event.isGoing(),
+                    event.getEventImageS3URL(), event.getUniversity(), event.isUpvoted(), event.isDownvoted(), event.isFollow(), event.isGoing(),
                     event.isNotGoing(), event.isReported(), event.getUpVoteCount(), event.getDownVoteCount(),
                     event.getGoingCount(), event.getNotGoingCount(), event.isUpdateEvent(), event.isUpdateComments(), event.isDeleteComments(),
                     event.getCreatedBy(), event.getUpdatedBy(), event.getCreatedOn(), listOfEventComments, listOfDeletedComments);  // To be used with the update event operation
