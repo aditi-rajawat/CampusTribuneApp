@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -46,6 +47,7 @@ public class FrontPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_front_page);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        setUniversityLogo(getSupportActionBar());
         List<Data> frontPageData= new ArrayList();
         System.out.println("Started Activity for front page");
 
@@ -144,6 +146,22 @@ public class FrontPageActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    private void setUniversityLogo(ActionBar actionbar){
+        SharedPreferences settingsout = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        String university=settingsout.getString("loggedInUserUniversity", "");
+        switch (university) {
+            case "SJSU":
+                actionbar.setIcon(R.drawable.sjsulogo);
+                return;
+            case "UNCC":
+                actionbar.setIcon(R.drawable.uncclogo);
+                return;
+            default:
+
         }
     }
 
