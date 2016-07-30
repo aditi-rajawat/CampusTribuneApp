@@ -34,6 +34,7 @@ public class Event implements Serializable{
     private Integer downVoteCount = new Integer(0);
     private Integer goingCount = new Integer(0);
     private Integer notGoingCount = new Integer(0);
+    private Integer followCount = new Integer(0);
 
     private boolean updateEvent;
     private boolean updateComments;
@@ -53,7 +54,7 @@ public class Event implements Serializable{
     public Event(UUID id, String title, String description, String category, String url, String startDate, String endDate,
                  double latitude, double longitude, String address, String eventImageS3URL, String university, boolean upvoted, boolean downvoted,
                  boolean follow, boolean going, boolean notGoing, boolean reported, Integer upVoteCount, Integer downVoteCount,
-                 Integer goingCount, Integer notGoingCount, boolean updateEvent, boolean updateComments, boolean deleteComments,
+                 Integer goingCount, Integer notGoingCount, Integer followCount, boolean updateEvent, boolean updateComments, boolean deleteComments,
                  String createdBy, String updatedBy, String createdOn, ArrayList<EventComment> listOfComments, ArrayList<EventComment> listOfDeletedComments) {
         this.id = id;
         this.title = title;
@@ -77,6 +78,7 @@ public class Event implements Serializable{
         this.downVoteCount = downVoteCount;
         this.goingCount = goingCount;
         this.notGoingCount = notGoingCount;
+        this.followCount = followCount;
         this.updateEvent = updateEvent;
         this.updateComments = updateComments;
         this.deleteComments = deleteComments;
@@ -247,6 +249,14 @@ public class Event implements Serializable{
         this.notGoingCount = notGoingCount;
     }
 
+    public Integer getFollowCount() {
+        return followCount;
+    }
+
+    public void setFollowCount(Integer followCount) {
+        this.followCount = followCount;
+    }
+
     public boolean isUpdateEvent() {
         return updateEvent;
     }
@@ -372,6 +382,8 @@ public class Event implements Serializable{
             return false;
         if (notGoingCount != null ? !notGoingCount.equals(event.notGoingCount) : event.notGoingCount != null)
             return false;
+        if (followCount != null ? !followCount.equals(event.followCount) : event.followCount != null)
+            return false;
         if (createdBy != null ? !createdBy.equals(event.createdBy) : event.createdBy != null)
             return false;
         if (updatedBy != null ? !updatedBy.equals(event.updatedBy) : event.updatedBy != null)
@@ -412,6 +424,7 @@ public class Event implements Serializable{
         result = 31 * result + (downVoteCount != null ? downVoteCount.hashCode() : 0);
         result = 31 * result + (goingCount != null ? goingCount.hashCode() : 0);
         result = 31 * result + (notGoingCount != null ? notGoingCount.hashCode() : 0);
+        result = 31 * result + (followCount != null ? followCount.hashCode() : 0);
         result = 31 * result + (updateEvent ? 1 : 0);
         result = 31 * result + (updateComments ? 1 : 0);
         result = 31 * result + (deleteComments ? 1 : 0);
