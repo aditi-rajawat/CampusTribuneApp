@@ -17,6 +17,7 @@ public class Post  {
     private String imgURL;
     private int reportScore;
     private String university;
+    private int followCount;
     private String createdOn;
     private String lastEditedOn;
 
@@ -145,5 +146,13 @@ public class Post  {
 
     public void setUniversity(String university) {
         this.university = university;
+    }
+
+    public int getFollowCount() {
+        return followCount;
+    }
+
+    public void setFollowCount(int followCount) {
+        this.followCount = followCount;
     }
 }
