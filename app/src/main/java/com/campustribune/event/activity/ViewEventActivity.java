@@ -1,8 +1,10 @@
 package com.campustribune.event.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -17,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -79,11 +82,11 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
         progressDialog = new ProgressDialog(this);
 
         if(event!=null) {
-            ArrayList<EventComment> listOfEventComments = null;
-            ArrayList<EventComment> listOfDeletedComments = null;
+            ArrayList<EventComment> listOfEventComments = new ArrayList<>();
+            ArrayList<EventComment> listOfDeletedComments = new ArrayList<>();
 
             if(event.getListOfComments()!=null && event.getListOfComments().size()>0){
-                listOfEventComments = new ArrayList<>(event.getListOfComments().size());
+             //   listOfEventComments = new ArrayList<>(event.getListOfComments().size());
                 for(EventComment each: event.getListOfComments()){
                     EventComment comment = new EventComment(each.getId(), each.getEventId(), each.getCreatedBy(),
                             each.getCreatedOn(), each.getComment(), each.getReportedBy());
@@ -91,23 +94,44 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                 }
             }
 
-            if(event.getListOfDeletedComments()!=null)
-                listOfDeletedComments = new ArrayList<>();
-
             copyOfEvent = new Event(event.getId(), event.getTitle(), event.getDescription(), event.getCategory(), event.getUrl(),
                     event.getStartDate(), event.getEndDate(), event.getLatitude(), event.getLongitude(), event.getAddress(),
                     event.getEventImageS3URL(), event.getUniversity(), event.isUpvoted(), event.isDownvoted(), event.isFollow(), event.isGoing(),
                     event.isNotGoing(), event.isReported(), event.getUpVoteCount(), event.getDownVoteCount(),
-                    event.getGoingCount(), event.getNotGoingCount(), event.isUpdateEvent(), event.isUpdateComments(), event.isDeleteComments(),
+                    event.getGoingCount(), event.getNotGoingCount(), event.getFollowCount(), event.isUpdateEvent(), event.isUpdateComments(), event.isDeleteComments(),
                     event.getCreatedBy(), event.getUpdatedBy(), event.getCreatedOn(), listOfEventComments, listOfDeletedComments);  // To be used with the update event operation
 
-            System.out.println("EQUALS RESULT --------------> "+ event.equals(copyOfEvent));
+            System.out.println("EQUALS RESULT --------------> " + event.equals(copyOfEvent));
 
             TextView textView = (TextView) findViewById(R.id.view_event_title);
             textView.setText(event.getTitle());
 
             textView = (TextView)findViewById(R.id.view_event_description);
             textView.setText(event.getDescription());
+
+            textView = (TextView)findViewById(R.id.view_event_creator);
+            textView.setText("Created by "+ event.getCreatedBy());
+
+            String dt = Utility.getFormattedDate(event.getStartDate(), event.getEndDate());
+            textView = (TextView)findViewById(R.id.view_event_date);
+            textView.setText(dt);
+
+            String tm = Utility.getFormattedTime(event.getStartDate(), event.getEndDate());
+            textView = (TextView)findViewById(R.id.view_event_time);
+            textView.setText(tm);
+
+            textView = (TextView)findViewById(R.id.view_event_going_count);
+            textView.setText("Going : "+event.getGoingCount().toString());
+
+            textView = (TextView)findViewById(R.id.view_event_notgoing_count);
+            textView.setText("Not Going : "+event.getNotGoingCount().toString());
+
+            textView = (TextView)findViewById(R.id.view_event_votescore);
+            String voteScore = (event.getUpVoteCount().intValue() - event.getDownVoteCount().intValue())+"";
+            textView.setText("Vote Score : "+voteScore);
+
+            textView = (TextView)findViewById(R.id.view_event_followscore);
+            textView.setText("Following : "+event.getFollowCount().toString());
 
             ImageView imageView = (ImageView)findViewById(R.id.event_image_1);
             if(event.getEventImageS3URL()!=null){
@@ -121,17 +145,28 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             upvote.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
+                    View root = view.getRootView();
+                    TextView voteScore = (TextView)root.findViewById(R.id.view_event_votescore);
+                    String score = voteScore.getText().toString();
+                    int currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+
                     if(((String)view.getTag()).equals("not_upvoted")) {
                        // ((ImageButton)view).setImageResource(R.drawable.ic_action_upvoted);
                         ((ImageButton)view).setColorFilter(Color.argb(255, 0, 153, 51));
                         view.setTag(new String("upvoted"));
                         event.setUpvoted(true);
+                        score = voteScore.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        voteScore.setText("Vote Score : "+(currentScore+1));
                     }
                     else if(((String)view.getTag()).equals("upvoted")){
                         //((ImageButton)view).setImageResource(R.drawable.ic_action_upvote);
                         ((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
                         view.setTag(new String("not_upvoted"));
                         event.setUpvoted(false);
+                        score = voteScore.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        voteScore.setText("Vote Score : " + (currentScore - 1));
                     }
 
                 }
@@ -141,17 +176,29 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             downvote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    View root = view.getRootView();
+                    TextView voteScore = (TextView)root.findViewById(R.id.view_event_votescore);
+                    String score = voteScore.getText().toString();
+                    int currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+
                     if(((String)view.getTag()).equals("not_downvoted")) {
                         //((ImageButton)view).setImageResource(R.drawable.ic_action_downvoted);
                         ((ImageButton)view).setColorFilter(Color.argb(255, 255, 0, 0));
                         view.setTag(new String("downvoted"));
                         event.setDownvoted(true);
+                        score = voteScore.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        voteScore.setText("Vote Score : "+ (currentScore-1));
                     }
                     else if(((String)view.getTag()).equals("downvoted")){
                        // ((ImageButton)view).setImageResource(R.drawable.ic_action_downvote);
                         ((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
                         view.setTag(new String("not_downvoted"));
                         event.setDownvoted(false);
+                        score = voteScore.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        voteScore.setText("Vote Score : " + (currentScore + 1));
                     }
                 }
             });
@@ -186,64 +233,127 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                 }
             });
 
-            ImageButton follow = (ImageButton)findViewById(R.id.event_follow);
+            final Button follow = (Button)findViewById(R.id.event_follow);
             follow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    View root = view.getRootView();
+                    TextView followCount = (TextView)root.findViewById(R.id.view_event_followscore);
+                    String score = followCount.getText().toString();
+                    int currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+
                     if(((String)view.getTag()).equals("not_follow")) {
                         //((ImageButton)view).setImageResource(R.drawable.ic_action_following);
-                        ((ImageButton)view).setColorFilter(Color.argb(255, 0, 102, 255));
+                       // ((ImageButton)view).setColorFilter(Color.argb(255, 0, 102, 255));
+                        follow.setText("Following");
                         view.setTag(new String("follow"));
                         event.setFollow(true);
+                        score = followCount.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+                        followCount.setText("Following : "+(currentScore+1));
                     }
                     else if(((String)view.getTag()).equals("follow")){
                        // ((ImageButton)view).setImageResource(R.drawable.ic_action_follow);
-                        ((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
+                        //((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
+                        follow.setText("Follow");
                         view.setTag(new String("not_follow"));
                         event.setFollow(false);
+                        score = followCount.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+                        followCount.setText("Following : " + (currentScore - 1));
                     }
                 }
             });
 
-            ImageButton going = (ImageButton)findViewById(R.id.event_going);
+            final ImageButton report = (ImageButton)findViewById(R.id.event_report_action_button);
+            report.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+
+                    AlertDialog alert = new AlertDialog.Builder(ViewEventActivity.this)
+                            .setTitle("Report event")
+                            .setMessage("Are you sure you want to report this event?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with report
+                                    report.setColorFilter(Color.argb(255, 255, 0, 0));
+                                    report.setEnabled(false);
+                                    ViewEventActivity.this.event.setReported(true);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            });
+
+            Button going = (Button)findViewById(R.id.event_going);
             going.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    View root = view.getRootView();
+                    TextView goingCount = (TextView)root.findViewById(R.id.view_event_going_count);
+                    String score = goingCount.getText().toString();
+                    int currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+
                     if(((String)view.getTag()).equals("not_going")) {
                         //((ImageButton)view).setImageResource(R.drawable.ic_action_markedgoing);
-                        ((ImageButton)view).setColorFilter(Color.argb(255, 0, 153, 51));
+                        ((Button)view).setBackgroundColor(getResources().getColor(R.color.green));
                         view.setTag(new String("going"));
                         event.setGoing(true);
+                        score = goingCount.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+                        goingCount.setText("Going : "+(currentScore+1));
                     }
                     else if(((String)view.getTag()).equals("going")){
                         //((ImageButton)view).setImageResource(R.drawable.ic_action_markgoing);
-                        ((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
+                        //((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
+                        ((Button)view).setBackgroundColor(getResources().getColor(R.color.light_grey));
                         view.setTag(new String("not_going"));
                         event.setGoing(false);
+                        score = goingCount.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+                        goingCount.setText("Going : " + (currentScore - 1));
                     }
                 }
             });
 
-            ImageButton notgoing = (ImageButton)findViewById(R.id.event_notgoing);
+            Button notgoing = (Button)findViewById(R.id.event_notgoing);
             notgoing.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    View root = view.getRootView();
+                    TextView notgoingCount = (TextView)root.findViewById(R.id.view_event_notgoing_count);
+                    String score = notgoingCount.getText().toString();
+                    int currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+
                     if(((String)view.getTag()).equals("not_notgoing")) {
                        // ((ImageButton)view).setImageResource(R.drawable.ic_action_markednotgoing);
-                        ((ImageButton)view).setColorFilter(Color.argb(255, 255, 0, 0));
+                        ((Button)view).setBackgroundColor(getResources().getColor(R.color.red));
                         view.setTag(new String("notgoing"));
                         event.setNotGoing(true);
+                        score = notgoingCount.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+                        notgoingCount.setText("Not Going : "+(currentScore+1));
                     }
                     else if(((String)view.getTag()).equals("notgoing")){
                        // ((ImageButton)view).setImageResource(R.drawable.ic_action_marknotgoing);
-                        ((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
+                        //((ImageButton)view).setColorFilter(Color.argb(255, 255, 255, 255));
+                        ((Button)view).setBackgroundColor(getResources().getColor(R.color.light_grey));
                         view.setTag(new String("not_notgoing"));
                         event.setNotGoing(false);
+                        score = notgoingCount.getText().toString();
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
+                        notgoingCount.setText("Not Going : " + (currentScore - 1));
                     }
                 }
             });
 
-            ImageButton addComment = (ImageButton)findViewById(R.id.event_add_comment);
+            Button addComment = (Button)findViewById(R.id.event_add_comment);
             addComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -263,6 +373,15 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.view_event_menu, menu);
+
+        // Changes for Edit and Delete Enabled only for the creator
+        if(event.getCreatedBy().equals(this.userId)){
+            MenuItem edit = menu.findItem(R.id.view_event_edit_action);
+            edit.setVisible(true);
+            MenuItem delete = menu.findItem(R.id.view_event_delete_action);
+            delete.setVisible(true);
+        }
+
         if(this.previousActivity.equals("ViewAllEventsActivity")){
             MenuItem home = menu.findItem(R.id.view_event_home_action);
             home.setVisible(false);
@@ -289,7 +408,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             {
 
                 if(event.isUpvoted() || event.isDownvoted() || event.isFollow() || event.isGoing()
-                        || event.isNotGoing())
+                        || event.isNotGoing() || event.isReported())
                     event.setUpdateEvent(true);
 
                 if(event.isUpdateEvent() || event.isUpdateComments() || event.isDeleteComments()) {
@@ -297,7 +416,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                     if (event.getId() != null && event.getCreatedBy() != null && (!event.getCreatedBy().isEmpty())) {
                         EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event, this.token);
                         myRestClient.start();
-                        event.setListOfDeletedComments(null);
+                        event.setListOfDeletedComments(new ArrayList<EventComment>());
                         ViewAllEventsActivity.updateEventList(copyOfEvent, event);
 
                     } else {
@@ -425,7 +544,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
 
         ListView listView = (ListView)popupView.findViewById(R.id.list_event_comments);
         adapter = new EventCommentsAdapter(this.getApplicationContext(), event.getListOfComments(),
-                                                            view.getRootView(), ViewEventActivity.this);
+                                                            view.getRootView(), ViewEventActivity.this, this.userId);
         listView.setAdapter(adapter);
 
         View addComment = popupView.findViewById(R.id.add_event_comment_action);
@@ -449,9 +568,13 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void updateEventComment(EventComment oldComment, EventComment newComment) {
+    public void updateEventComment(EventComment oldComment, EventComment newComment, boolean onlyMarkAsUpdate) {
         ArrayList<EventComment> listOfComments = event.getListOfComments();
         if(listOfComments!=null && listOfComments.size()>0){
+            if(onlyMarkAsUpdate){
+                event.setUpdateComments(true);
+                return;
+            }
             try {
                 int index = listOfComments.indexOf(oldComment);
                 listOfComments.remove(index);

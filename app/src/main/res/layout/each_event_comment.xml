@@ -23,4 +23,15 @@
         android:textSize="10dp"
         android:textColor="@color/colorPrimaryDark"/>
 
+    <ImageButton
+        android:id="@+id/event_comment_report_action_button"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/each_event_comment_string"
+        android:layout_alignParentRight="true"
+        android:background="@color/light_grey"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_report_problem_white_24dp"/>
+
 </RelativeLayout>

@@ -17,12 +17,13 @@ tools:context="com.campustribune.event.activity.ViewEventActivity">
 
     <item android:id="@+id/view_event_edit_action"
         android:title="@string/action_view_event_edit"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+        android:visible="false"/>
 
     <item android:id="@+id/view_event_editsave_action"
         android:title="@string/action_view_event_editsave"
         app:showAsAction="never"
-        android:visible="false"/>
+        android:visible="false" />
 
     <item android:id="@+id/view_event_report_action"
         android:title="@string/action_view_event_report"
@@ -30,6 +31,7 @@ tools:context="com.campustribune.event.activity.ViewEventActivity">
 
     <item android:id="@+id/view_event_delete_action"
         android:title="@string/action_view_event_delete"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+        android:visible="false"/>
 
 </menu>

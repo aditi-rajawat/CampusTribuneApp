@@ -15,6 +15,13 @@
     <color name="gradientStartColor">#C8C8C8</color>
     <color name="gradientEndColor">#FFFFFF</color>
     <color name="editTextHintColor">#4b4a4a</color>
+    <color name="magenta">#CC0000</color>
+    <color name="dark_grey">#606060</color>
+    <color name="lil_grey">#808080</color>
+    <color name="light_grey">#A0A0A0</color>
+    <color name="yellow">#FFFF66</color>
+    <color name="green">#00CC00</color>
+    <color name="red">#FF0000</color>
     <!-- Added by Aditi on 07/23/2016 END -->
 
 </resources>

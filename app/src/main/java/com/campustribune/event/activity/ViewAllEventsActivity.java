@@ -66,6 +66,9 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         this.token = new String("Token "+settings.getString("authToken", "").toString());
         this.university = new String(settings.getString("loggedInUserUniversity","").toString());
 
+        // Clear the static list
+        this.listOfEvents.clear();
+
         invokews();
     }
 

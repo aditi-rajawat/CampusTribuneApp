@@ -1,175 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:background="@color/grey">
+
+<RelativeLayout android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/view_event_title"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="10dp"
-        android:textSize="30dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"
         android:textStyle="bold"
-        android:text="San Jose State Final Sports at City Center"/>
+        android:textColor="@color/white"
+        android:text="San Jose State Final Sports at City Center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/magenta"/>
 
     <EditText
-        android:layout_marginTop="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_width="350dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/view_event_edit_title"
         android:background="@drawable/edittextstyle"
         android:hint="@string/edit_event_title"
-        android:textSize="18dp"
+        android:textSize="25dp"
         android:textColor="@color/editTextHintColor"
         android:textColorHint="@color/editTextHintColor"
         android:gravity="top|left"
         android:visibility="invisible"/>
 
-    <TextView
-        android:id="@+id/view_event_description"
-        android:layout_width="250dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/view_event_title"
-        android:layout_marginTop="15dp"
-        android:textSize="20dp"
+        android:id="@+id/view_event_first_container"
+        android:background="@color/colorPrimaryDarker">
+
+        <RelativeLayout
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_event_title"
+            android:id="@+id/view_event_dashboard"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/view_event_creator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_event_title"
+                android:layout_alignParentLeft="true"
+                android:textSize="12dp"
+                android:textStyle="italic"
+                android:textColor="@color/white"
+                android:text="Created by CiCr111"/>
+
+            <TextView
+                android:id="@+id/view_event_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_event_creator"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="5dp"
+                android:textSize="12dp"
+                android:textStyle="italic"
+                android:textColor="@color/white"
+                android:text="July 29th - Aug 1st"/>
+
+            <TextView
+                android:id="@+id/view_event_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_event_date"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="5dp"
+                android:textSize="12dp"
+                android:textStyle="italic"
+                android:textColor="@color/white"
+                android:text="5:00PM - 9:00PM"/>
+
+            <TextView
+                android:id="@+id/view_event_going_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_event_time"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="25dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow"
+                android:text="Going : 10"/>
+
+            <TextView
+                android:id="@+id/view_event_notgoing_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_event_going_count"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="5dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow"
+                android:text="Not Going : 5"/>
+
+            <TextView
+                android:id="@+id/view_event_votescore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_event_notgoing_count"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="5dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow"
+                android:text="Vote Score : 55"/>
+
+            <TextView
+                android:id="@+id/view_event_followscore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_event_votescore"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="5dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow"
+                android:text="Following : 35"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/event_image_1"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_below="@+id/view_event_title"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/background_sjsu"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_event_first_container"
+        android:background="@color/dark_grey"
+        android:id="@+id/view_event_options_first"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageButton
+            android:id="@+id/event_upvote"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/event_image_1"
+            android:layout_alignParentLeft="true"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:tag="not_upvoted"
+            android:src="@drawable/ic_thumb_up_white_24dp"/>
+
+        <ImageButton
+            android:id="@+id/event_downvote"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/event_image_1"
+            android:layout_toRightOf="@+id/event_upvote"
+            android:layout_marginLeft="15dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:tag="not_downvoted"
+            android:src="@drawable/ic_thumb_down_white_24dp"/>
+
+        <ImageButton
+            android:id="@+id/event_addToCalendar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/event_image_1"
+            android:layout_toRightOf="@+id/event_downvote"
+            android:layout_marginLeft="15dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_action_addtocalendar"/>
+
+        <Button
+            android:id="@+id/event_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@+id/event_image_1"
+            android:layout_toRightOf="@+id/event_addToCalendar"
+            android:background="#3399ff"
+            android:text="Follow"
+            android:textSize="5pt"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:tag="not_follow"
+            android:drawableStart="@drawable/ic_add_white_24dp"/>
+
+        <ImageButton
+            android:id="@+id/event_report_action_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/event_image_1"
+            android:layout_toRightOf="@+id/event_follow"
+            android:layout_marginLeft="15dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_report_problem_white_24dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_event_options_first"
+        android:background="@color/lil_grey"
+        android:id="@+id/view_event_options_second">
+
+        <Button
+            android:id="@+id/event_going"
+            android:layout_width="130dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:background="@color/light_grey"
+            android:text="Mark Going"
+            android:textSize="5pt"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:tag="not_going"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"/>
+
+        <Button
+            android:id="@+id/event_notgoing"
+            android:layout_width="130dp"
+            android:layout_height="25dp"
+            android:layout_toRightOf="@+id/event_going"
+            android:background="@color/light_grey"
+            android:text="Mark Not Going"
+            android:textSize="5pt"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:tag="not_notgoing"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
+
+        <Button
+            android:id="@+id/event_add_comment"
+            android:layout_width="130dp"
+            android:layout_height="25dp"
+            android:layout_toRightOf="@+id/event_notgoing"
+            android:background="@color/light_grey"
+            android:text="Add Comment"
+            android:textSize="5pt"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:id="@+id/view_event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_event_options_second"
+        android:layout_marginTop="10dp"
+        android:textSize="15dp"
+        android:textColor="@color/black"
         android:text="This is an event happening for the first time in San Jose.\n
         Every student of San Jose State are cordinally invited to support their favourite team. Breakfast and lunch will be served at the lawn. See you guys there!"/>
 
     <EditText
-        android:layout_marginTop="15dp"
-        android:layout_width="250dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/view_event_edit_title"
+        android:layout_below="@+id/view_event_options"
         android:inputType="textMultiLine"
         android:id="@+id/view_event_edit_desc"
         android:background="@drawable/edittextstyle"
         android:hint="@string/edit_event_desc"
-        android:textSize="18dp"
+        android:textSize="15dp"
         android:textColor="@color/editTextHintColor"
         android:textColorHint="@color/editTextHintColor"
         android:gravity="top|left"
         android:visibility="invisible"/>
-
-    <ImageView
-        android:id="@+id/event_image_1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/view_event_title"
-        android:layout_toLeftOf="@+id/view_event_description"
-        android:layout_alignParentRight="true"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:src="@drawable/background_sjsu"/>
-
-    <ImageButton
-        android:id="@+id/event_upvote"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/view_event_description"
-        android:layout_alignParentLeft="true"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:tag="not_upvoted"
-        android:src="@drawable/ic_thumb_up_white_24dp"/>
-
-    <ImageButton
-        android:id="@+id/event_downvote"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_below="@+id/event_upvote"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentLeft="true"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:tag="not_downvoted"
-        android:src="@drawable/ic_thumb_down_white_24dp"/>
-
-    <ImageButton
-        android:id="@+id/event_addToCalendar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/view_event_description"
-        android:layout_toRightOf="@+id/event_upvote"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_action_addtocalendar"/>
-
-    <ImageButton
-        android:id="@+id/event_follow"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/view_event_description"
-        android:layout_toRightOf="@+id/event_addToCalendar"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:tag="not_follow"
-        android:src="@drawable/ic_add_white_24dp"/>
-
-    <ImageButton
-        android:id="@+id/event_going"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/view_event_description"
-        android:layout_toRightOf="@+id/event_follow"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:tag="not_going"
-        android:src="@drawable/ic_action_markgoing"/>
-
-    <ImageButton
-        android:id="@+id/event_notgoing"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/view_event_description"
-        android:layout_toRightOf="@+id/event_going"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:tag="not_notgoing"
-        android:src="@drawable/ic_action_marknotgoing"/>
-
-    <ImageButton
-        android:id="@+id/event_add_comment"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/view_event_description"
-        android:layout_toRightOf="@+id/event_notgoing"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_action_addcomment"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:name="com.google.android.gms.maps.MapFragment"
         android:id="@+id/view_event_location_map"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/event_downvote"/>
+        android:layout_height="220dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/view_event_description"/>
 
 </RelativeLayout>
+
+</ScrollView>
