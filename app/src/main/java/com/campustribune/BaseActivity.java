@@ -1,6 +1,8 @@
 package com.campustribune;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
 import com.campustribune.frontpage2.FrontPageActivity;
+import com.campustribune.login.LoginActivity;
 import com.campustribune.post.activity.CreatePostActivity;
 import com.campustribune.post.activity.ViewPostsByCategoryListActivity;
 import com.campustribune.userProfile.UserProfileActivity;
@@ -79,9 +82,30 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.submenu_viewpostsbycategory:
                 goToViewPostsByCategoryPage();
                 return true;
+            case R.id.submenu_logout:
+                handleLogout();
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    private void handleLogout() {
+
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
+        navigateToLoginActivity();
+
+    }
+
+    private void navigateToLoginActivity() {
+
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        this.finish();
+        startActivity(loginIntent);
     }
 
     private void goToUserProfilePage(){

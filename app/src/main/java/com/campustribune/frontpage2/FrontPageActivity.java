@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.event.activity.CreateEventActivity;
@@ -140,88 +139,112 @@ public class FrontPageActivity extends AppCompatActivity {
             case R.id.submenu_viewpostsbycategory:
                 goToViewPostsByCategoryPage();
                 return true;
+            case R.id.submenu_logout:
+                handleLogout();
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
     }
 
-    private void goToUserProfilePage(){
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
+    private void handleLogout() {
+
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
+        navigateToLoginActivity();
+
+
+
     }
 
-    private void goToCreatePostPage(){
-        Intent intent = new Intent(getApplicationContext(), CreatePostActivity.class);
-        startActivity(intent);
+    private void navigateToLoginActivity() {
+
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        this.finish();
+        startActivity(loginIntent);
     }
 
-    // Added by Aditi on 07/23/2016 START
-    private void goToCreateEventPage(){
-        Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
-        startActivity(intent);
-    }
+    private void goToUserProfilePage() {
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                startActivity(intent);
+            }
 
-    private void goToViewAllEventsPage(){
-        Intent intent = new Intent(getApplicationContext(), ViewAllEventsActivity.class);
-        startActivity(intent);
-    }
-    // Added by Aditi on 07/23/2016 END
-    private void goToViewPostsByCategoryPage(){
-        Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryListActivity.class);
-        startActivity(intent);
-    }
+            private void goToCreatePostPage() {
+                Intent intent = new Intent(getApplicationContext(), CreatePostActivity.class);
+                startActivity(intent);
+            }
 
-    public List<Data> fill_with_data(ArrayList<Data> dataList) throws ExecutionException, InterruptedException {
-        Collections.shuffle(dataList);
-        List<Data> frontPageDataList = new ArrayList<>();
-        Iterator<Data> listIterator = dataList.iterator();
-        Data data= new Data();
-        while(listIterator.hasNext()){
-            data = listIterator.next();
-            System.out.println("LOADING ITEM TYPE: "+data.getItemType());
-            frontPageDataList.add(data);
-        }
-        return frontPageDataList;
-    }
+            // Added by Aditi on 07/23/2016 START
+            private void goToCreateEventPage() {
+                Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
+                startActivity(intent);
+            }
 
-    public void invokeGetUserActionsWS(String userId){
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("authorization", token);
-        client.get(Util.SERVER_URL+"post/getUserActions/"+userId, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
-                try {
-                    if (statusCode == 200) {
-                        System.out.println(responseBody.toString());
-                        SharedPreferences settings = PreferenceManager
-                                .getDefaultSharedPreferences(getApplicationContext());
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("userPostActions", responseBody.toString());
-                        editor.commit();
+            private void goToViewAllEventsPage() {
+                Intent intent = new Intent(getApplicationContext(), ViewAllEventsActivity.class);
+                startActivity(intent);
+            }
 
-                    } else {
-                        Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
+            // Added by Aditi on 07/23/2016 END
+            private void goToViewPostsByCategoryPage() {
+                Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryListActivity.class);
+                startActivity(intent);
+            }
+
+            public List<Data> fill_with_data(ArrayList<Data> dataList) throws ExecutionException, InterruptedException {
+                Collections.shuffle(dataList);
+                List<Data> frontPageDataList = new ArrayList<>();
+                Iterator<Data> listIterator = dataList.iterator();
+                Data data = new Data();
+                while (listIterator.hasNext()) {
+                    data = listIterator.next();
+                    System.out.println("LOADING ITEM TYPE: " + data.getItemType());
+                    frontPageDataList.add(data);
+                }
+                return frontPageDataList;
+            }
+
+            public void invokeGetUserActionsWS(String userId) {
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.addHeader("authorization", token);
+                client.get(Util.SERVER_URL + "post/getUserActions/" + userId, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
+                        try {
+                            if (statusCode == 200) {
+                                System.out.println(responseBody.toString());
+                                SharedPreferences settings = PreferenceManager
+                                        .getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putString("userPostActions", responseBody.toString());
+                                editor.commit();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+
                     }
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject responseBody) {
+                        error.printStackTrace();
+                        if (statusCode == 409) {
+                            Toast.makeText(getApplicationContext(), "Get user actions failed", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
             }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject responseBody) {
-                error.printStackTrace();
-                if (statusCode == 409) {
-                    Toast.makeText(getApplicationContext(), "Get user actions failed", Toast.LENGTH_LONG).show();
-                } else if (statusCode == 500) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-    }
-
-}
+        }

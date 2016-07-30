@@ -33,6 +33,9 @@
     <item
         android:id="@+id/submenu_viewpostsbycategory"
         android:title="@string/submenu_action_view_posts_by_category"/>
+    <item
+        android:id="@+id/submenu_logout"
+        android:title="@string/menu_action_logout"/>
 </menu>
 
 
