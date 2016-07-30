@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -36,6 +37,7 @@ public class BaseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setUniversityLogo(getSupportActionBar());
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,4 +138,19 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+    private void setUniversityLogo(ActionBar actionbar){
+        SharedPreferences settingsout = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        String university=settingsout.getString("loggedInUserUniversity", "");
+        switch (university) {
+            case "SJSU":
+                actionbar.setIcon(R.drawable.sjsulogo);
+                return;
+            case "UNCC":
+                actionbar.setIcon(R.drawable.uncclogo);
+                return;
+            default:
+
+        }
+    }
 }
