@@ -22,6 +22,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -99,6 +101,9 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Disable create event menu
+        invalidateOptionsMenu();
+
         // Retrieve the user Id
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.userId = new String(settings.getString("loggedInUserId", "").toString());
@@ -131,6 +136,16 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
 
         //Intialize progress dialog
         this.progressDialog = new ProgressDialog(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_action_frontpage, menu);
+        MenuItem createevent = (MenuItem)menu.findItem(R.id.submenu_createevent);
+        createevent.setVisible(false);
+        MenuItem ref = (MenuItem) menu.findItem(R.id.action_refresh);
+        ref.setVisible(false);
+        return true;
     }
 
     /**

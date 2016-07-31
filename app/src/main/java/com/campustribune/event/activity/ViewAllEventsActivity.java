@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -77,6 +79,9 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_all_events);
 
+        // Disable view all from side menu
+        invalidateOptionsMenu();
+
         eventsListContainer = (ListView)findViewById(R.id.view_all_events_container);
 
         // Retrieve the user token
@@ -119,6 +124,16 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_action_frontpage, menu);
+        MenuItem viewallevents = (MenuItem)menu.findItem(R.id.submenu_viewallevents);
+        viewallevents.setVisible(false);
+        MenuItem ref = (MenuItem) menu.findItem(R.id.action_refresh);
+        ref.setVisible(false);
+        return true;
     }
 
     @Override
