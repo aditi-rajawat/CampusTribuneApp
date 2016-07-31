@@ -463,22 +463,22 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
             event.setCreatedOn(dt.toString(ISODateTimeFormat.dateTime().withZoneUTC()));
             event.setUniversity(this.university);
 
-//            if(this.selectedImgUri!=null) {
-//                try {
-//                    ImageUploader imageUploader = new ImageUploader(this.selectedImgUri, getApplicationContext(), getContentResolver());
-//                    imageUploader.beginUpload(imageUploader.getPath());
-//
-//                    while (!imageUploader.isUploadComplete()) {
-//                        Thread.sleep(1000);
-//                    }
-//                    event.setEventImageS3URL(imageUploader.getImageS3URL().toString());
-                   event.setEventImageS3URL("https://ctpost.s3.amazonaws.com/ebec3a89-3c40-48c9-8b30-d2559b56d125?response-content-type=image%2Fjpeg&AWSAccessKeyId=AKIAJFQUSKEWLKRMA2OQ&Expires=1481871600&Signature=kmAg%2B1wCh675YgGTEIuJyZJ01jE%3D");
-//                }catch (URISyntaxException ex){
-//                    System.out.println("URI of the image file uploaded is having incorrect syntax!");
-//                }catch (InterruptedException ex){
-//                    System.out.println("Thread could not sleep while uploading the image");
-//                }
-//            }
+            if(this.selectedImgUri!=null) {
+               try {
+                    ImageUploader imageUploader = new ImageUploader(this.selectedImgUri, getApplicationContext(), getContentResolver());
+                    imageUploader.beginUpload(imageUploader.getPath());
+
+                    while (!imageUploader.isUploadComplete()) {
+                        Thread.sleep(1000);
+                    }
+                    event.setEventImageS3URL(imageUploader.getImageS3URL().toString());
+                   //event.setEventImageS3URL("https://ctpost.s3.amazonaws.com/ebec3a89-3c40-48c9-8b30-d2559b56d125?response-content-type=image%2Fjpeg&AWSAccessKeyId=AKIAJFQUSKEWLKRMA2OQ&Expires=1481871600&Signature=kmAg%2B1wCh675YgGTEIuJyZJ01jE%3D");
+                }catch (URISyntaxException ex){
+                    System.out.println("URI of the image file uploaded is having incorrect syntax!");
+                }catch (InterruptedException ex){
+                    System.out.println("Thread could not sleep while uploading the image");
+                }
+            }
 
             Intent viewEventIntent = new Intent(CreateEventActivity.this, ViewEventActivity.class);
             viewEventIntent.putExtra("new_event", event);

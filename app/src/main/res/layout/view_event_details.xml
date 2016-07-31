@@ -61,23 +61,44 @@
                 android:textColor="@color/white"
                 android:text="Created by CiCr111"/>
 
+            <ImageView
+                android:id="@+id/view_event_date_calendar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/view_event_creator"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:src="@drawable/ic_action_date_white"/>
+
             <TextView
                 android:id="@+id/view_event_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view_event_creator"
-                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/view_event_date_calendar"
                 android:layout_marginTop="5dp"
                 android:textSize="12dp"
                 android:textStyle="italic"
                 android:textColor="@color/white"
                 android:text="July 29th - Aug 1st"/>
 
+            <ImageView
+                android:id="@+id/view_event_time_clock"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/view_event_date"
+                android:layout_marginTop="5dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:src="@drawable/ic_action_time_white"/>
+
             <TextView
                 android:id="@+id/view_event_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view_event_date"
+                android:layout_below="@+id/view_event_time_clock"
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="5dp"
                 android:textSize="12dp"

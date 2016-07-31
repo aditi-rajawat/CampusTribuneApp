@@ -2,61 +2,99 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="15dp">
-
-    <TextView
-        android:id="@+id/each_event_date"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:background="@color/gradientStartColor"
-        android:textColor="@color/colorPrimaryDark"
-        android:text="JUL 15-JUL 17"
-        android:textSize="20dp"
-        android:textAlignment="center"
-        android:textStyle="bold"/>
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/eacheventcontainer">
 
     <ImageView
         android:id="@+id/each_event_image"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/each_event_date"
         android:layout_alignParentLeft="true"
+        android:paddingLeft="10dp"
+        android:background="@color/white"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:src="@mipmap/ic_launcher"/>
 
-    <TextView
-        android:id="@+id/each_event_title"
-        android:layout_width="200dp"
+    <RelativeLayout
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/each_event_date"
-        android:textSize="15dp"
-        android:text="San Jose State Final Sports at City Center"/>
+        android:background="@color/white"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/each_event_image">
 
-    <TextView
-        android:id="@+id/each_event_location"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_below="@+id/each_event_title"
-        android:layout_toRightOf="@+id/each_event_image"
-        android:textSize="12dp"
-        android:text="at San Jose City Center"/>
+        <TextView
+            android:id="@+id/each_event_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/magenta"
+            android:text="San Jose State Final Sports at City Center" />
 
-    <TextView
-        android:id="@+id/each_event_time"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_below="@+id/each_event_location"
-        android:layout_toRightOf="@+id/each_event_image"
-        android:textSize="12dp"
-        android:text="10:00AM - 8:00PM"/>
+        <TextView
+            android:id="@+id/each_event_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/each_event_title"
+            android:textSize="15dp"
+            android:textStyle="italic"
+            android:text="at San Jose City Center"
+            android:textColor="@color/black"/>
 
+        <ImageView
+            android:id="@+id/each_event_date_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/each_event_location"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:src="@drawable/ic_action_date"/>
+
+        <TextView
+            android:id="@+id/each_event_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/each_event_location"
+            android:layout_toRightOf="@+id/each_event_date_calendar"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/black"
+            android:text="JUL 15-JUL 17"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/each_event_time_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/each_event_date_calendar"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:src="@drawable/ic_action_time"/>
+
+        <TextView
+            android:id="@+id/each_event_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/each_event_date_calendar"
+            android:layout_toRightOf="@+id/each_event_time_clock"
+            android:layout_marginLeft="5dp"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="10:00AM - 8:00PM"
+            android:textColor="@color/black"/>
+
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

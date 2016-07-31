@@ -1,11 +1,16 @@
 package com.campustribune.event.activity;
 
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.campustribune.BaseActivity;
@@ -15,6 +20,13 @@ import com.campustribune.beans.EventUser;
 import com.campustribune.event.adapter.ViewEventAdapter;
 import com.campustribune.event.utility.Constants;
 import com.campustribune.event.utility.UpdateEventUserActions;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -30,7 +42,7 @@ import cz.msebera.android.httpclient.HttpStatus;
 /**
  * Created by aditi on 08/07/16.
  */
-public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdapter.ViewEachEventInterface{
+public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdapter.ViewEachEventInterface, OnMapReadyCallback{
 
     private static ArrayList<Event> listOfEvents = new ArrayList<>();
     private static ViewEventAdapter adapter=null;
@@ -84,8 +96,46 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
 
         // Clear the static list
         this.listOfEvents.clear();
-
         invokews();
+
+        TextView textView = (TextView)findViewById(R.id.view_all_events_on_map);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapFragment map = new MapFragment();
+
+                if(((TextView)v).getTag().toString().equals("view_map")) {
+                    map.getMapAsync(ViewAllEventsActivity.this);
+                    LinearLayout container = (LinearLayout) findViewById(R.id.map_container);
+                    getFragmentManager().beginTransaction().add(container.getId(), map, "events_map").commit();
+                    ((TextView) v).setText("View List");
+                    ((TextView) v).setTag("view_list");
+                }
+                else if(((TextView)v).getTag().toString().equals("view_list")){
+                    getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentByTag("events_map")).commit();
+                    ((TextView) v).setText("View on Maps");
+                    ((TextView) v).setTag("view_map");
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        if(listOfEvents!=null && listOfEvents.size()>0) {
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(listOfEvents.get(0).getLatitude(), listOfEvents.get(0).getLongitude()))
+                    .zoom(8)
+                    .build();
+            googleMap.clear();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            for(Event each: listOfEvents){
+                googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(each.getLatitude(), each.getLongitude()))
+                    .title(each.getTitle()));
+            }
+        }
     }
 
     private void invokews(){

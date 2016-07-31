@@ -127,7 +127,8 @@
         android:layout_alignParentRight="true"
         android:textSize="15dp"
         android:textColorHint="@color/colorAccent"
-        android:text="@string/capture_photo"/>
+        android:text="@string/capture_photo"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/add_image"
