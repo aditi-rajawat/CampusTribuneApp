@@ -31,7 +31,7 @@
         <Button
             android:id="@+id/button_save_comment"
             android:layout_width="60dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:text="Save"
             android:textSize="6pt"
             android:textColor="#3399ff"
@@ -46,7 +46,7 @@
         <Button
             android:id="@+id/button_cancel_comment"
             android:layout_width="80dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:textSize="6pt"
             android:text="Cancel"
             android:textColor="#3399ff"
