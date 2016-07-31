@@ -46,10 +46,14 @@ public class LoginActivity extends AppCompatActivity {
     public static ArrayList<String> subscriptionList = new ArrayList();
 
     public static ArrayList<Event> staticEventList= new ArrayList<Event>();
+
+    public String university="";
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         progressDialog = new ProgressDialog(LoginActivity.this,

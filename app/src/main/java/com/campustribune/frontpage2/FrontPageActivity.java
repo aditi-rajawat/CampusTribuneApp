@@ -76,6 +76,8 @@ public class FrontPageActivity extends AppCompatActivity {
                             navigateToViewPostActivity(data.getItemId());
                         else if(data.getItemType().equalsIgnoreCase("Event")){
                             Event event = retrieveEventFromList(data.getItemId());
+                            System.out.println(event.getId());
+                            System.out.println(event.getTitle());
                             navigateToViewEventActivity(event);
                         }
 
@@ -95,7 +97,7 @@ public class FrontPageActivity extends AppCompatActivity {
     private Event retrieveEventFromList(String itemId) {
         for(Event event:LoginActivity.staticEventList){
             System.out.println("CHECK here"+ itemId);
-            if((event.getId().toString()).equals(itemId));
+            if((event.getId().toString()).equals(itemId))
                 return event;
         }
         return null;
