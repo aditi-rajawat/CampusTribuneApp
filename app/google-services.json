@@ -1,0 +1,61 @@
+{
+  "project_info": {
+    "project_number": "149059395754",
+    "project_id": "campustribune-1374"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149059395754:android:b0d327651eef1e95",
+        "android_client_info": {
+          "package_name": "com.campustribune.notifications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwyxkoNWp19MJbc_PGuz6K3Pt9FUxoaNc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149059395754:android:8b9afe952e1c475f",
+        "android_client_info": {
+          "package_name": "com.campustribune"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwyxkoNWp19MJbc_PGuz6K3Pt9FUxoaNc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
