@@ -122,7 +122,7 @@ public class CommentListFragment extends Fragment{
 
     private void showComment(View view, final PostComment comment){
         showComment = new Dialog(getActivity());
-        showComment.setTitle("Dialog Title");
+        showComment.setTitle("");
         showComment.setContentView(R.layout.fragment_view_comment);
         commentText = (TextView)showComment.findViewById(R.id.commentContent);
         commentTextEdit= (EditText) showComment.findViewById(R.id.commentContentEdit);
