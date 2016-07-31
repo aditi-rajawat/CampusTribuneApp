@@ -185,7 +185,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Sign Up failed", Toast.LENGTH_LONG).show();
 
@@ -197,6 +196,7 @@ public class SignupActivity extends AppCompatActivity {
 
         String fname = _fnameText.getText().toString();
         String lname = _lnameText.getText().toString();
+        String university = _universitySpinner.getSelectedItem().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
@@ -217,7 +217,20 @@ public class SignupActivity extends AppCompatActivity {
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
             valid = false;
-        } else {
+        }
+        else if(university.equalsIgnoreCase("San Jose State University")) {
+            if (!(email.contains("*@sjsu.edu"))) {
+                _emailText.setError("enter the .edu email id of your university!");
+                valid = false;
+            }
+        }
+        else if(university.equalsIgnoreCase("University of North Carolina")) {
+            if(!(email.contains("*@uncc.edu"))) {
+                _emailText.setError("enter the .edu email id of your university!");
+                valid = false;
+            }
+        }
+        else {
             _emailText.setError(null);
         }
 
