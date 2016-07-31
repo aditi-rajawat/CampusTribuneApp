@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +29,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
@@ -76,9 +77,6 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_event_details);
 
-        //Toolbar settings
-        //Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-
         //Retrieve the user token
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.token = new String("Token "+settings.getString("authToken", "").toString());
@@ -86,6 +84,23 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
 
         event = (Event)getIntent().getSerializableExtra("new_event");
         previousActivity = getIntent().getStringExtra("prev_activity");
+
+        // Set the toolbar according to the previous activity
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        if(previousActivity.equals("CreateEventActivity"))
+            toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    navigateToFrontPage();
+                }
+            });
+        else if(previousActivity.equals("ViewAllEventsActivity"))
+            toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    navigateToEventsListPage();
+                }
+            });
 
         progressDialog = new ProgressDialog(this);
 
@@ -415,55 +430,48 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             delete.setVisible(true);
         }
 
-        if(this.previousActivity.equals("ViewAllEventsActivity")){
-            MenuItem home = menu.findItem(R.id.view_event_home_action);
-            home.setVisible(false);
-
-            MenuItem back = menu.findItem(R.id.view_event_back_action);
-            back.setVisible(true);
-        }
         this.mymenu = menu;
         return true;
+    }
+
+    public void navigateToFrontPage(){
+        EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("create"), event, this.token);
+        myRestClient.start();
+        // Add code to navigate to the front page
+        Intent frontPageIntent = new Intent(ViewEventActivity.this, FrontPageActivity.class);
+        frontPageIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        ViewEventActivity.this.startActivity(frontPageIntent);
+        ViewEventActivity.this.finish();
+    }
+
+    public void navigateToEventsListPage(){
+        if(event.isUpvoted() || event.isDownvoted() || event.isFollow() || event.isGoing()
+                || event.isNotGoing() || event.isReported())
+            event.setUpdateEvent(true);
+
+        if(event.isUpdateEvent() || event.isUpdateComments() || event.isDeleteComments()) {
+            event.setUpdatedBy(this.userId);
+            if (event.getId() != null && event.getCreatedBy() != null && (!event.getCreatedBy().isEmpty())) {
+                EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event, this.token);
+                myRestClient.start();
+                event.setListOfDeletedComments(new ArrayList<EventComment>());
+                ViewAllEventsActivity.updateEventList(copyOfEvent, event);
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Something went wrong..Event couldn't be updated.", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        Intent viewAllEventsIntent = new Intent(ViewEventActivity.this, ViewAllEventsActivity.class);
+        viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(viewAllEventsIntent);
+
+        ViewEventActivity.this.finish();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.view_event_home_action:
-            {
-                EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("create"), event, this.token);
-                myRestClient.start();
-                // Add code to navigate to the front page
-                ViewEventActivity.this.finish();
-                return true;
-            }
-            case R.id.view_event_back_action:
-            {
-
-                if(event.isUpvoted() || event.isDownvoted() || event.isFollow() || event.isGoing()
-                        || event.isNotGoing() || event.isReported())
-                    event.setUpdateEvent(true);
-
-                if(event.isUpdateEvent() || event.isUpdateComments() || event.isDeleteComments()) {
-                    event.setUpdatedBy(this.userId);
-                    if (event.getId() != null && event.getCreatedBy() != null && (!event.getCreatedBy().isEmpty())) {
-                        EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event, this.token);
-                        myRestClient.start();
-                        event.setListOfDeletedComments(new ArrayList<EventComment>());
-                        ViewAllEventsActivity.updateEventList(copyOfEvent, event);
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Something went wrong..Event couldn't be updated.", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                Intent viewAllEventsIntent = new Intent(ViewEventActivity.this, ViewAllEventsActivity.class);
-                viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(viewAllEventsIntent);
-
-                ViewEventActivity.this.finish();
-                return true;
-            }
             case R.id.view_event_edit_action:
             {
                 if(this.mymenu!=null){

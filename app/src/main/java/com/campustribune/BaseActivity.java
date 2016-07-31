@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
+import com.campustribune.event.activity.ViewEventActivity;
 import com.campustribune.frontpage2.FrontPageActivity;
 import com.campustribune.login.LoginActivity;
 import com.campustribune.post.activity.CreatePostActivity;
@@ -47,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(frontPage);
             }
         });
+
         invalidateOptionsMenu();
     }
 

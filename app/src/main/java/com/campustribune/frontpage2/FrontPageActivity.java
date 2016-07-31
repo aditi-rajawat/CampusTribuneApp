@@ -15,9 +15,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.campustribune.R;
 import com.campustribune.beans.Event;
+import com.campustribune.beans.EventUser;
 import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
 import com.campustribune.event.activity.ViewEventActivity;
+import com.campustribune.event.utility.UpdateEventUserActions;
 import com.campustribune.helper.Util;
 import com.campustribune.login.LoginActivity;
 import com.campustribune.post.activity.CreatePostActivity;
@@ -27,6 +29,7 @@ import com.campustribune.userProfile.UserProfileActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +45,8 @@ import cz.msebera.android.httpclient.HttpStatus;
 public class FrontPageActivity extends AppCompatActivity {
 
     String token;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -295,6 +300,21 @@ public class FrontPageActivity extends AppCompatActivity {
                 System.out.println("Could not retrive user's event actions.. please check");
             }
         });
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String eventUserActions = new String(settings.getString("eventUserActions","").toString());
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            EventUser eventUser = mapper.readValue(eventUserActions, EventUser.class);
+            if(LoginActivity.staticEventList!=null && LoginActivity.staticEventList.size()>0
+                    && eventUser!=null){
+                new UpdateEventUserActions(LoginActivity.staticEventList, eventUser).updateAll();
+            }
+        }catch(Exception ex){
+            System.out.println("Could not parse the user's event actions..please check");
+        }
+
     }
 
 }
