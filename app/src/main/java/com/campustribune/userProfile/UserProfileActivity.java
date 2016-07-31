@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -272,6 +274,15 @@ public class UserProfileActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_action_frontpage, menu);
+        MenuItem cp = (MenuItem) menu.findItem(R.id.submenu_userprofile);
+        cp.setVisible(false);
+        MenuItem ref = (MenuItem) menu.findItem(R.id.action_refresh);
+        ref.setVisible(false);
+        return true;
+    }
     private void markAsDeSelected(Button _selectCategory) {
 
         _selectCategory.setBackgroundColor(Color.TRANSPARENT);
