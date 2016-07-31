@@ -25,9 +25,6 @@ tools:context="com.campustribune.event.activity.ViewEventActivity">
         app:showAsAction="never"
         android:visible="false" />
 
-    <item android:id="@+id/view_event_report_action"
-        android:title="@string/action_view_event_report"
-        app:showAsAction="never"/>
 
     <item android:id="@+id/view_event_delete_action"
         android:title="@string/action_view_event_delete"

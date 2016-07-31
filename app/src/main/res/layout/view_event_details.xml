@@ -228,7 +228,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_event_options_first"
-        android:background="@color/lil_grey"
+        android:background="@color/light_grey"
         android:id="@+id/view_event_options_second">
 
         <Button
@@ -244,7 +244,7 @@
             android:tag="not_going"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:paddingRight="5dp"/>
 
         <Button
@@ -276,7 +276,7 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="5dp"
-            android:paddingRight="10dp"/>
+            android:paddingRight="15dp"/>
 
     </RelativeLayout>
 
@@ -304,7 +304,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/view_event_options"
+        android:layout_below="@+id/view_event_options_second"
         android:inputType="textMultiLine"
         android:id="@+id/view_event_edit_desc"
         android:background="@drawable/edittextstyle"

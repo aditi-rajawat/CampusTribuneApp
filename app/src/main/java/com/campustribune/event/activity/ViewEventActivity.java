@@ -28,14 +28,17 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.beans.EventComment;
+import com.campustribune.beans.EventUser;
 import com.campustribune.event.adapter.EventCommentsAdapter;
 import com.campustribune.event.utility.EventRestCallThread;
 import com.campustribune.event.utility.Utility;
+import com.campustribune.frontpage2.FrontPageActivity;
 import com.campustribune.helper.ImageUploader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,6 +48,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +75,9 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_event_details);
+
+        //Toolbar settings
+        //Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 
         //Retrieve the user token
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -142,6 +150,11 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             }
 
             ImageButton upvote = (ImageButton)findViewById(R.id.event_upvote);
+            if(event.isUpvoted()){
+                upvote.setColorFilter(Color.argb(255, 0, 153, 51));
+                upvote.setEnabled(false);
+                event.setUpvoted(false);
+            }
             upvote.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
@@ -173,6 +186,11 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             });
 
             ImageButton downvote = (ImageButton)findViewById(R.id.event_downvote);
+            if(event.isDownvoted()){
+                downvote.setColorFilter(Color.argb(255, 255, 0, 0));
+                downvote.setEnabled(false);
+                event.setDownvoted(false);
+            }
             downvote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -234,6 +252,11 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             });
 
             final Button follow = (Button)findViewById(R.id.event_follow);
+            if(event.isFollow()){
+                follow.setText("Following");
+                follow.setEnabled(false);
+                event.setFollow(false);
+            }
             follow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -292,6 +315,11 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             });
 
             Button going = (Button)findViewById(R.id.event_going);
+            if(event.isGoing()){
+                going.setBackgroundColor(getResources().getColor(R.color.green));
+                going.setEnabled(false);
+                event.setGoing(false);
+            }
             going.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -323,6 +351,11 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             });
 
             Button notgoing = (Button)findViewById(R.id.event_notgoing);
+            if(event.isNotGoing()){
+                notgoing.setBackgroundColor(getResources().getColor(R.color.red));
+                notgoing.setEnabled(false);
+                event.setNotGoing(false);
+            }
             notgoing.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -485,22 +518,40 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
             }
             case R.id.view_event_delete_action:
             {
-                if(event.getId()!=null){
-                    EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("delete"), event, this.token);
-                    myRestClient.start();
-                    ViewAllEventsActivity.removeFromList(copyOfEvent);
+                AlertDialog alert = new AlertDialog.Builder(ViewEventActivity.this)
+                        .setTitle("Delete event")
+                        .setMessage("Are you sure you want to delete this event?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                if(event.getId()!=null){
+                                    EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("delete"), event, token);
+                                    myRestClient.start();
+                                    ViewAllEventsActivity.removeFromList(copyOfEvent);
 
-                    Intent viewAllEventsIntent = new Intent(ViewEventActivity.this, ViewAllEventsActivity.class);
-                    viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(viewAllEventsIntent);
+                                    Intent viewAllEventsIntent = new Intent(ViewEventActivity.this, ViewAllEventsActivity.class);
+                                    viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                    startActivity(viewAllEventsIntent);
+                                }
+                                else{
+                                    // Add code to navigate to the front page
+                                    Intent frontPageIntent = new Intent(ViewEventActivity.this, FrontPageActivity.class);
+                                    frontPageIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                    startActivity(frontPageIntent);
+                                }
 
-                    ViewEventActivity.this.finish();
-                }
-                else{
-                    // Add code to navigate to the front page
-                }
+                                ViewEventActivity.this.finish();
+                                Toast.makeText(getApplicationContext(),"Event deleted successfully!", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
 
-                Toast.makeText(getApplicationContext(),"Event deleted successfully!", Toast.LENGTH_LONG).show();
                 return true;
             }
             default:

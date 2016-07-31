@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpStatus;
 
 public class FrontPageActivity extends AppCompatActivity {
 
@@ -83,6 +84,7 @@ public class FrontPageActivity extends AppCompatActivity {
         token = "Token "+sharedPreferences.getString("authToken", "");
         String userId= sharedPreferences.getString("loggedInUserId", "");
         invokeGetUserActionsWS(userId);
+        invokeGetEventUserActionsWS(userId);
     }
 
     private Event retrieveEventFromList(String itemId) {
@@ -265,4 +267,34 @@ public class FrontPageActivity extends AppCompatActivity {
 
             }
 
-        }
+    public void invokeGetEventUserActionsWS(String userId){
+        AsyncHttpClient httpClient = new AsyncHttpClient();
+        httpClient.addHeader("authorization", token);
+        httpClient.get(Util.SERVER_URL+"eventusers/"+userId, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                if(statusCode == HttpStatus.SC_OK){
+                    System.out.println("I am in success!!!");
+                    SharedPreferences settings = PreferenceManager
+                            .getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("eventUserActions", response.toString());
+                    editor.commit();
+                    System.out.println("Event user actions saved successfully!!!");
+                }
+                else{
+                    System.out.println("Could not retrive user's event actions.. please check");
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("I am in failure!!!");
+                System.out.println("Could not retrive user's event actions.. please check");
+            }
+        });
+    }
+
+}
