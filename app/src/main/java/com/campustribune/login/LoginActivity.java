@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        frontPageList.clear();
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);

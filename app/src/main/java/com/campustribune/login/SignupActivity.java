@@ -219,13 +219,13 @@ public class SignupActivity extends AppCompatActivity {
             valid = false;
         }
         else if(university.equalsIgnoreCase("San Jose State University")) {
-            if (!(email.contains("*@sjsu.edu"))) {
+            if (!(email.contains("@sjsu.edu"))) {
                 _emailText.setError("enter the .edu email id of your university!");
                 valid = false;
             }
         }
         else if(university.equalsIgnoreCase("University of North Carolina")) {
-            if(!(email.contains("*@uncc.edu"))) {
+            if(!(email.contains("@uncc.edu"))) {
                 _emailText.setError("enter the .edu email id of your university!");
                 valid = false;
             }
