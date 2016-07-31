@@ -39,7 +39,8 @@ public class View_Holder extends RecyclerView.ViewHolder {
     public void bind(final Data data, final Recycler_View_Adapter.OnItemClickListener listener) {
         if(data.getItemType().equalsIgnoreCase("Event")){
             System.out.println("THIS IS AN EVENT");
-            cv.setCardBackgroundColor(Color.parseColor("#3399FF"));
+            //cv.setCardBackgroundColor(Color.parseColor("#DECAC5"));
+            cv.setCardBackgroundColor(Color.parseColor("#CDDEC5"));
         }
         else {
 
