@@ -33,8 +33,8 @@
             android:layout_width="60dp"
             android:layout_height="32dp"
             android:text="Save"
-            android:textSize="4pt"
-            android:textColor="#3333ff"
+            android:textSize="6pt"
+            android:textColor="#3399ff"
             style="?android:attr/borderlessButtonStyle" />
 
         <View
@@ -47,9 +47,9 @@
             android:id="@+id/button_cancel_comment"
             android:layout_width="80dp"
             android:layout_height="32dp"
-            android:textSize="4pt"
+            android:textSize="6pt"
             android:text="Cancel"
-            android:textColor="#3333ff"
+            android:textColor="#3399ff"
             style="?android:attr/borderlessButtonStyle" />
 
     </LinearLayout>
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit"
-            android:textColor="#3333ff"
+            android:textColor="#3399ff"
             style="?android:attr/borderlessButtonStyle" />
 
         <View
@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"
-            android:textColor="#3333ff"
+            android:textColor="#3399ff"
             style="?android:attr/borderlessButtonStyle" />
 
     </LinearLayout>

@@ -72,7 +72,7 @@
                 android:layout_height="35dp"
                 android:text="Save"
                 android:textSize="6pt"
-                android:textColor="#3333ff"
+                android:textColor="#3399ff"
                 style="?android:attr/borderlessButtonStyle" />
 
             <View
@@ -87,7 +87,7 @@
                 android:layout_height="35dp"
                 android:textSize="6pt"
                 android:text="Cancel"
-                android:textColor="#3333ff"
+                android:textColor="#3399ff"
                 style="?android:attr/borderlessButtonStyle" />
 
         </LinearLayout>

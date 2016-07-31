@@ -141,7 +141,7 @@
                     android:text="Upload"
                     android:minWidth="50dp"
                     android:minHeight="15dp"
-                    android:textColor="#3333ff"
+                    android:textColor="#3399ff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="50dp"

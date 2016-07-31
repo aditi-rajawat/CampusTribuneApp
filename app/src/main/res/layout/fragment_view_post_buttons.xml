@@ -88,7 +88,7 @@
             android:layout_height="45dp"
             android:text="Edit"
             android:textSize="5.5pt"
-            android:textColor="#3333ff"
+            android:textColor="#3399ff"
             style="?android:attr/borderlessButtonStyle" />
 
         <View
@@ -103,7 +103,7 @@
             android:layout_height="45dp"
             android:text="Delete"
             android:textSize="5.5pt"
-            android:textColor="#3333ff"
+            android:textColor="#3399ff"
             style="?android:attr/borderlessButtonStyle" />
 
     </LinearLayout>
