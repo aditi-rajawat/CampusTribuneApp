@@ -284,7 +284,7 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
             if(grantResults.length>0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
-                startTakePicFromCameraIntent();
+                pickPhotoAction();
             }
         }
     }
@@ -398,6 +398,19 @@ public class CreateEventActivity extends BaseActivity implements CreateEventTitl
 
     @Override
     public void pickPhotoFromGalleryListener(View view) {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    CreateEventActivity.WRITE_TO_STORAGE_PERMISSION_REQUEST);
+        }
+        else
+            pickPhotoAction();
+
+    }
+
+    private void pickPhotoAction(){
         Intent pickPhotoIntent = new Intent();
         pickPhotoIntent.setType("image/*");
         pickPhotoIntent.setAction(Intent.ACTION_GET_CONTENT);
