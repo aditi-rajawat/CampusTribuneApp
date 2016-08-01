@@ -276,23 +276,32 @@ public class FrontPageActivity extends AppCompatActivity {
 
     public void invokeGetEventUserActionsWS(String userId){
         AsyncHttpClient httpClient = new AsyncHttpClient();
-        httpClient.addHeader("authorization", token);
+        httpClient.addHeader("authorization", FrontPageActivity.this.token);
         httpClient.get(Util.SERVER_URL+"eventusers/"+userId, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 if(statusCode == HttpStatus.SC_OK){
                     System.out.println("I am in success!!!");
+                    System.out.println("Response for user event's action =========== "+ response.toString());
                     SharedPreferences settings = PreferenceManager
-                            .getDefaultSharedPreferences(getApplicationContext());
+                            .getDefaultSharedPreferences(FrontPageActivity.this.getApplicationContext());
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("eventUserActions", response.toString());
                     editor.commit();
                     System.out.println("Event user actions saved successfully!!!");
                 }
-                else{
-                    System.out.println("Could not retrive user's event actions.. please check");
+                else if(statusCode == HttpStatus.SC_NO_CONTENT){
+                    System.out.println("User's events actions were empty");
+                    SharedPreferences settings = PreferenceManager
+                            .getDefaultSharedPreferences(FrontPageActivity.this.getApplicationContext());
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("eventUserActions", new String(""));
+                    editor.commit();
+                    System.out.println("Event user empty actions saved successfully!!!");
                 }
+                else
+                    System.out.println("Could not retrive user's event actions.. please check");
             }
 
             @Override
@@ -308,7 +317,9 @@ public class FrontPageActivity extends AppCompatActivity {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            EventUser eventUser = mapper.readValue(eventUserActions, EventUser.class);
+            EventUser eventUser = null;
+            if(!eventUserActions.equals(""))
+                eventUser = mapper.readValue(eventUserActions, EventUser.class);
             if(LoginActivity.staticEventList!=null && LoginActivity.staticEventList.size()>0
                     && eventUser!=null){
                 new UpdateEventUserActions(LoginActivity.staticEventList, eventUser).updateAll();

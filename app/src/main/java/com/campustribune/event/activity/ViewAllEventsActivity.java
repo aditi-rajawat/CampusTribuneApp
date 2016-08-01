@@ -22,6 +22,9 @@ import com.campustribune.beans.EventUser;
 import com.campustribune.event.adapter.ViewEventAdapter;
 import com.campustribune.event.utility.Constants;
 import com.campustribune.event.utility.UpdateEventUserActions;
+import com.campustribune.frontpage2.FrontPageActivity;
+import com.campustribune.helper.Util;
+import com.campustribune.login.LoginActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -31,8 +34,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +58,7 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
     String university=null;
     String eventUserActions=null;
     EventUser eventUser=null;
+    String userId=null;
 
     public static void updateEventList(Event oldEvent, Event updatedEvent) {
         if(listOfEvents!=null && listOfEvents.size()>0){
@@ -88,13 +94,17 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.token = new String("Token "+settings.getString("authToken", "").toString());
         this.university = new String(settings.getString("loggedInUserUniversity","").toString());
+        this.userId = new String(settings.getString("loggedInUserId", "").toString());
 
         //Retrieve the user actions
+        invokeGetEventUserActionsWS(this.userId);
         this.eventUserActions = new String(settings.getString("eventUserActions","").toString());
         try {
             ObjectMapper mapper = new ObjectMapper();
-            eventUser = mapper.readValue(this.eventUserActions, EventUser.class);
-            System.out.println("ADITI -------------------> "+ eventUser.getUserName());
+            if(!this.eventUserActions.equals("")) {
+                eventUser = mapper.readValue(this.eventUserActions, EventUser.class);
+                System.out.println("ADITI -------------------> " + eventUser.getUserName());
+            }
         }catch (Exception ex){
             System.out.println("Could not parse user's event actions due to "+ ex.getMessage());
         }
@@ -174,14 +184,15 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
                                     listOfEvents.add(each);
 
                                 System.out.println("No. of events received = " + eventArray.length);
+                                // Set all user actions
+                                if(eventUser!=null && listOfEvents!=null && listOfEvents.size()>0)
+                                    new UpdateEventUserActions(listOfEvents, eventUser).updateAll();
+
                                 adapter = new ViewEventAdapter(ViewAllEventsActivity.this.getApplicationContext(),
                                         listOfEvents, ViewAllEventsActivity.this);
                                 if (eventsListContainer != null)
                                     eventsListContainer.setAdapter(adapter);
 
-                                // Set all user actions
-                                if(eventUser!=null && listOfEvents!=null && listOfEvents.size()>0)
-                                    new UpdateEventUserActions(listOfEvents, eventUser).updateAll();
                             }
 
                             System.out.println("No. of events ====== " + listOfEvents.size());
@@ -214,5 +225,44 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         viewEventIntent.putExtra("prev_activity", new String("ViewAllEventsActivity"));
         ViewAllEventsActivity.this.startActivity(viewEventIntent);
     }
+
+    public void invokeGetEventUserActionsWS(String userId){
+        AsyncHttpClient httpClient = new AsyncHttpClient();
+        httpClient.addHeader("authorization", this.token);
+        httpClient.get(Util.SERVER_URL + "eventusers/" + userId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                if (statusCode == HttpStatus.SC_OK) {
+                    System.out.println("I am in success!!!");
+                    System.out.println("Response for user event's action =========== " + response.toString());
+                    SharedPreferences settings = PreferenceManager
+                            .getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("eventUserActions", response.toString());
+                    editor.commit();
+                    System.out.println("Event user actions saved successfully!!!");
+                } else if (statusCode == HttpStatus.SC_NO_CONTENT) {
+                    System.out.println("User's events actions were empty");
+                    SharedPreferences settings = PreferenceManager
+                            .getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("eventUserActions", new String(""));
+                    editor.commit();
+                    System.out.println("Event user empty actions saved successfully!!!");
+                } else
+                    System.out.println("Could not retrive user's event actions.. please check");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("I am in failure!!!");
+                System.out.println("Could not retrive user's event actions.. please check");
+            }
+        });
+
+    }
+
 
 }

@@ -101,6 +101,13 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                     navigateToEventsListPage();
                 }
             });
+        else if(previousActivity.equals("FrontPageActivity"))
+            toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    navigateToFrontPageOnUpdate();
+                }
+            });
 
         progressDialog = new ProgressDialog(this);
 
@@ -439,7 +446,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
         myRestClient.start();
         // Add code to navigate to the front page
         Intent frontPageIntent = new Intent(ViewEventActivity.this, FrontPageActivity.class);
-        frontPageIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        //frontPageIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         ViewEventActivity.this.startActivity(frontPageIntent);
         ViewEventActivity.this.finish();
     }
@@ -463,11 +470,36 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
         }
 
         Intent viewAllEventsIntent = new Intent(ViewEventActivity.this, ViewAllEventsActivity.class);
-        viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        //viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(viewAllEventsIntent);
 
         ViewEventActivity.this.finish();
     }
+
+    public void navigateToFrontPageOnUpdate(){
+        if(event.isUpvoted() || event.isDownvoted() || event.isFollow() || event.isGoing()
+                || event.isNotGoing() || event.isReported())
+            event.setUpdateEvent(true);
+
+        if(event.isUpdateEvent() || event.isUpdateComments() || event.isDeleteComments()) {
+            event.setUpdatedBy(this.userId);
+            if (event.getId() != null && event.getCreatedBy() != null && (!event.getCreatedBy().isEmpty())) {
+                EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event, this.token);
+                myRestClient.start();
+                event.setListOfDeletedComments(new ArrayList<EventComment>());
+                ViewAllEventsActivity.updateEventList(copyOfEvent, event);
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Something went wrong..Event couldn't be updated.", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        Intent frontPageIntent = new Intent(ViewEventActivity.this, FrontPageActivity.class);
+        //frontPageIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        ViewEventActivity.this.startActivity(frontPageIntent);
+        ViewEventActivity.this.finish();
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
