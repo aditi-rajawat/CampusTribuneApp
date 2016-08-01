@@ -266,8 +266,11 @@ public class FrontPageActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Get user actions failed", Toast.LENGTH_LONG).show();
                         } else if (statusCode == 500) {
                             Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                        } else if (statusCode==404) {
+                            System.out.println("No user Actions!!");
+                        }else
+                        {
+                           Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
