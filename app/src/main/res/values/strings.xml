@@ -21,6 +21,7 @@
         <item>Sports</item>
         <item>Administration</item>
         <item>Arts</item>
+        <item>Entertainment</item>
     </string-array>
 
     <!-- Added by Aditi on 07/23/2016 START -->
@@ -47,8 +48,9 @@
         <item>---Select Category---</item>
         <item>Technology</item>
         <item>Sports</item>
+        <item>Administration</item>
+        <item>Arts</item>
         <item>Entertainment</item>
-        <item>Art and Culture</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="event_new_comment">Enter a comment</string>
@@ -71,7 +73,7 @@
     <string name="category1">Sports</string>
     <string name="category2">Administration</string>
     <string name="category3">Technology</string>
-    <string name="category4">Arts and Culture</string>
+    <string name="category4">Arts</string>
     <string name="category5">Entertainment</string>
     <string name="LoginOnSignUp">Already a member? <b>Login</b></string>
 
