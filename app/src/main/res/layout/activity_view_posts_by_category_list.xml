@@ -17,17 +17,29 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                >
-
+                android:layout_gravity="center_horizontal">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|top">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Select Category"
+                    android:text="Select a category to "
                     android:id="@+id/textView"
                     android:layout_gravity="center"
-                    android:textSize="45dp" />
+                    android:textSize="35dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="view posts"
+                    android:id="@+id/textView3"
+                    android:layout_gravity="center"
+                    android:textSize="35dp" />
+                </LinearLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -121,7 +133,8 @@
                             android:scaleType="fitXY"
                             android:clickable="true"
                             android:focusableInTouchMode="true"
-                            android:contextClickable="true" />
+                            android:contextClickable="true"
+                            android:focusable="true" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/lay4"
@@ -142,7 +155,6 @@
                             android:layout_margin="7dp"
                             android:layout_gravity="center"
                             android:src ="@drawable/arts"
-                            android:layout_weight="0"
                             android:scaleType="fitXY"
                             android:cropToPadding="true"
                             android:contextClickable="true"

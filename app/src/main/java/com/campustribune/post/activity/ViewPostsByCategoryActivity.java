@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
+import com.campustribune.frontpage.FrontPageActivity;
 import com.campustribune.helper.Util;
 import com.campustribune.post.adapter.ViewPostByCategoriesAdapter;
 import com.loopj.android.http.AsyncHttpClient;
@@ -42,6 +45,14 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_posts_by_category);
         postsListView = (ListView) findViewById(R.id.listView_news);
+        // Set the toolbar according to the previous activity
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    goToViewPostsByCategoryPage();
+                }
+            });
         // Retrieve the user token
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.token = new String("Token " + settings.getString("authToken", "").toString());
@@ -94,8 +105,10 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
                 if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                     Toast.makeText(getApplicationContext(), "Something went wrong on the server end", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be " +
-                            "connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be " +
+//                            "connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    Intent viewNoPost = new Intent(ViewPostsByCategoryActivity.this,NoPostsActivity.class);
+                    ViewPostsByCategoryActivity.this.startActivity(viewNoPost);
                 }
             }
         });
@@ -108,5 +121,11 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
         viewPostPage.putExtra("post_id", String.valueOf(post.getId()));
         ViewPostsByCategoryActivity.this.startActivity(viewPostPage);
     }
+
+    private void goToViewPostsByCategoryPage(){
+        Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryListActivity.class);
+        startActivity(intent);
+    }
+
 }
 
