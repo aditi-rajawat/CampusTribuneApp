@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.PostUser;
-import com.campustribune.frontpage2.FrontPageActivity;
+import com.campustribune.frontpage.FrontPageActivity;
 import com.campustribune.helper.Util;
 import com.campustribune.post.activity.ViewPostActivity;
 import com.google.gson.Gson;

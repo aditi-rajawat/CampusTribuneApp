@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,44 +48,35 @@ public class ViewPostByCategoriesAdapter extends ArrayAdapter<Post> {
         TextView txtContent;
         TextView txtPostUserId;
         ImageView alertImage;
+        FrameLayout imageFrame;
 
 
-        if (post.getImgURL() != null && post.getImgURL() != "" && !(post.getImgURL()).trim().equalsIgnoreCase("") ) {
 
-            if (rowView == null) {
-                rowView = LayoutInflater.from(getContext()).inflate(R.layout.view_posts_image, parent, false);
-            }
+        if (rowView == null) {
+            rowView = LayoutInflater.from(context).inflate(R.layout.view_posts_image, parent, false);
+        }
 
-            txtHeadline = (TextView) rowView.findViewById(R.id.heading);
-            imgPostImage = (ImageView) rowView.findViewById(R.id.news_image);
-            txtContent = (TextView) rowView.findViewById(R.id.description);
-            txtPostUserId = (TextView) rowView.findViewById(R.id.posted);
-            alertImage = (ImageView) rowView.findViewById(R.id.alertFlag);
+        txtHeadline = (TextView) rowView.findViewById(R.id.heading);
+        imgPostImage = (ImageView) rowView.findViewById(R.id.post_category_image);
+        txtContent = (TextView) rowView.findViewById(R.id.description);
+        txtPostUserId = (TextView) rowView.findViewById(R.id.posted);
+        alertImage = (ImageView) rowView.findViewById(R.id.alertFlag);
+        imageFrame =(FrameLayout)rowView.findViewById(R.id.imageFrameLayout);
 
-            if(post.isAlert())
-                alertImage.setVisibility(View.VISIBLE);
-            txtHeadline.setText(post.getHeadline());
-            txtContent.setText(post.getContent());
-            txtPostUserId.setText("Created By " + post.getUserId());
+        txtHeadline.setText(post.getHeadline());
+        txtContent.setText(post.getContent());
+        txtPostUserId.setText("Created By " + post.getUserId());
+        if(post.isAlert()) {
+            System.out.println("THIS IS AN ALERT");
+            alertImage.setVisibility(View.VISIBLE);
+        }else {
+            alertImage.setVisibility(View.GONE);
+        }
+        if(post.getImgURL()!=null && post.getImgURL().length()>0) {
+            imageFrame.setVisibility(View.VISIBLE);
             Picasso.with(context).load(post.getImgURL()).into(imgPostImage);
-        } else {
-
-            if (rowView == null) {
-                rowView = LayoutInflater.from(getContext()).inflate(R.layout.view_posts, parent, false);
-            }
-
-            txtHeadline = (TextView) rowView.findViewById(R.id.heading);
-            txtContent = (TextView) rowView.findViewById(R.id.description);
-            txtPostUserId = (TextView) rowView.findViewById(R.id.posted);
-            alertImage = (ImageView) rowView.findViewById(R.id.alertFlag);
-
-            if(post.isAlert())
-                alertImage.setVisibility(View.VISIBLE);
-
-            txtHeadline.setText(post.getHeadline());
-            txtContent.setText(post.getContent());
-            txtPostUserId.setText("Created By " + post.getUserId());
-
+        }else {
+            imageFrame.setVisibility(View.GONE);
         }
 
         rowView.setOnClickListener(new View.OnClickListener() {

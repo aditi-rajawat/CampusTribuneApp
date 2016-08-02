@@ -1,12 +1,9 @@
 package com.campustribune.event.activity;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,9 +19,7 @@ import com.campustribune.beans.EventUser;
 import com.campustribune.event.adapter.ViewEventAdapter;
 import com.campustribune.event.utility.Constants;
 import com.campustribune.event.utility.UpdateEventUserActions;
-import com.campustribune.frontpage2.FrontPageActivity;
 import com.campustribune.helper.Util;
-import com.campustribune.login.LoginActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -40,8 +35,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpStatus;

@@ -2,170 +2,120 @@ package com.campustribune.frontpage;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.campustribune.R;
+import com.campustribune.beans.Event;
+import com.campustribune.beans.EventUser;
+import com.campustribune.event.activity.CreateEventActivity;
+import com.campustribune.event.activity.ViewAllEventsActivity;
+import com.campustribune.event.activity.ViewEventActivity;
+import com.campustribune.event.utility.UpdateEventUserActions;
+import com.campustribune.helper.Util;
+import com.campustribune.login.LoginActivity;
+import com.campustribune.post.activity.CreatePostActivity;
+import com.campustribune.post.activity.ViewPostActivity;
+import com.campustribune.post.activity.ViewPostsByCategoryListActivity;
 import com.campustribune.userProfile.UserProfileActivity;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.SyncHttpClient;
 
-import org.json.JSONArray;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpStatus;
 
 public class FrontPageActivity extends AppCompatActivity {
 
-    private static final String TAG = FrontPageActivity.class.getSimpleName();
-    private ListView mListView;
-    private ProgressBar mProgressBar;
-    private ListViewAdapter mListAdapter;
-    private HashMap<Integer, ListItem> mListData;
-    private String FEED_URL = "http://10.0.0.227:8080/front-page/data/";
-    private Integer newsCount=0;
-    Bitmap image;
+    String token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frontpage);
+        setContentView(R.layout.activity_front_page);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        setUniversityLogo(getSupportActionBar());
+        List<Data> frontPageData= new ArrayList();
+        System.out.println("Started Activity for front page");
 
-        mListView = (ListView) findViewById(R.id.listView_news);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        try {
+            frontPageData = fill_with_data(LoginActivity.frontPageList);
+            System.out.println("Started loading Data");
 
-        //Initialize with empty data
-        mListData = new HashMap();
-       // mListAdapter = new ListViewAdapter(getApplicationContext(), newsCount, mListData);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        //Start download
-        new SyncHttpTask().execute(FEED_URL);
-        mProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    //Downloading data asynchronously -- Need to fix this as right now its downloading synchronously
-    public class SyncHttpTask extends AsyncTask<String, Void, Integer> {
-        Integer result=0;
-        @Override
-        protected Integer doInBackground(String... params) {
-           SyncHttpClient client = new SyncHttpClient();
-            SharedPreferences sharedPreferences = PreferenceManager
-                    .getDefaultSharedPreferences(getApplicationContext());
-            String auth_token_string = sharedPreferences.getString("authToken", "");
-            String userId = sharedPreferences.getString("loggedInUserId", "");
-            client.addHeader("authorization","Token "+auth_token_string);
-            client.get(FEED_URL+userId, new JsonHttpResponseHandler(){
-                @Override
-                public void onSuccess(int statusCode, Header[] header, JSONArray responseArray){
-                    try{
-                        if (statusCode == 200) {
-                            parseResult(responseArray);
-                            result=1;
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        Recycler_View_Adapter adapter = new Recycler_View_Adapter(frontPageData, getApplication(),
+                new Recycler_View_Adapter.OnItemClickListener(){
+                    @Override public void onItemClick(Data data) {
+                        Toast.makeText(getBaseContext(), "Item Clicked", Toast.LENGTH_LONG).show();
+                        if(data.getItemType().equalsIgnoreCase("Post"))
+                            navigateToViewPostActivity(data.getItemId());
+                        else if(data.getItemType().equalsIgnoreCase("Event")){
+                            Event event = retrieveEventFromList(data.getItemId());
+                            System.out.println(event.getId());
+                            System.out.println(event.getTitle());
+                            navigateToViewEventActivity(event);
                         }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Succeeded!But Error!", Toast.LENGTH_LONG).show();
-                        }
-                    }catch (Exception e){
-                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
+
                 }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable error) {
-                    mProgressBar.setVisibility(View.GONE);
-                    if (statusCode == 409) {
-                        Toast.makeText(getBaseContext(), "Unauthorized!Please login again!", Toast.LENGTH_LONG).show();
-                    } else if (statusCode == 500) {
-                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                    }
-
-                }
             });
-
-            return result;
-
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            // Download complete. Let us update UI
-           if(result==1){
-               mListAdapter = new ListViewAdapter(FrontPageActivity.this,newsCount,mListData);
-               mListView.setAdapter(mListAdapter);
-               for (int i = 0; i < newsCount; i++) {
-                   if (mListData.get(i) != null) {
-                       try {
-                           Void aVoid = new GetBitMapTask().execute(mListData.get(i).getImage()).get();
-                       } catch (InterruptedException e) {
-                           e.printStackTrace();
-                       } catch (ExecutionException e) {
-                           e.printStackTrace();
-                       }
-                       mListData.get(i).setBitMapImage(image);
-                   } else {
-                       Log.d("null", "null");
-                   }
-
-               }
-            }
-            else{
-                Toast.makeText(FrontPageActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
-           }
-            mProgressBar.setVisibility(View.GONE);
-        }
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        token = "Token "+sharedPreferences.getString("authToken", "");
+        String userId= sharedPreferences.getString("loggedInUserId", "");
+        invokeGetUserActionsWS(userId);
+        invokeGetEventUserActionsWS(userId);
     }
 
-    private void parseResult(JSONArray responseArray) {
+    private Event retrieveEventFromList(String itemId) {
+        for(Event event:LoginActivity.staticEventList){
+            System.out.println("CHECK here"+ itemId);
+            if((event.getId().toString()).equals(itemId))
+                return event;
+        }
+        return null;
+    }
 
-            try {
-                newsCount=0;
-                ListItem item;
-                for (int i = 0; i < responseArray.length(); i++) {
-                    JSONObject response = responseArray.optJSONObject(i);
-                    String headline = response.optString("headline");
-                    System.out.println("HEADLINE:"+ headline);
-                    String content = response.optString("content");
-                    Integer userId = response.optInt("userId");
-                    item = new ListItem();
-                    item.setHeadline(headline);
-                    item.setContent(content);
-                    item.setUserId(userId);
-                    String imageURL=response.optString("imgURL");
-                    if (imageURL != null){
-                        item.setImage(imageURL);
-                    }
-                    mListData.put(i,item);
+    private void navigateToViewEventActivity(Event event) {
 
-                    newsCount++;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Intent viewEventIntent = new Intent(FrontPageActivity.this, ViewEventActivity.class);
+        viewEventIntent.putExtra("new_event", event);
+        viewEventIntent.putExtra("prev_activity", new String("FrontPageActivity"));
+        FrontPageActivity.this.startActivity(viewEventIntent);
+    }
+
+    private void navigateToViewPostActivity(String itemId) {
+        Intent viewPostPage = new Intent(FrontPageActivity.this, ViewPostActivity.class);
+        viewPostPage.putExtra("post_id", itemId);
+        FrontPageActivity.this.startActivity(viewPostPage);
+
     }
 
     @Override
@@ -177,60 +127,210 @@ public class FrontPageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        // Take appropriate action for each action item click
         switch (menuItem.getItemId()) {
             case R.id.menu_action_refresh:
-                Toast.makeText(this,"Refresh button was clicked",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Refresh button was clicked", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.submenu_userprofile:
-                Toast.makeText(this,"User-profile menu was clicked",Toast.LENGTH_SHORT).show();
                 goToUserProfilePage();
                 return true;
             /*case R.id.submenu_search:
-                Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
+                return true;*/
+            case R.id.submenu_createpost:
+                Toast.makeText(this,"Create Post was clicked", Toast.LENGTH_SHORT).show();
+                goToCreatePostPage();
+                return true;
+            case R.id.submenu_createevent:      // Added by Aditi on 07/23/2016 START
+                goToCreateEventPage();
+                return true;
+            case R.id.submenu_viewallevents:
+                goToViewAllEventsPage();
+                return true;                   // Added by Aditi on 07/23/2016 END
+            case R.id.submenu_viewpostsbycategory:
+                goToViewPostsByCategoryPage();
+                return true;
+            case R.id.submenu_logout:
+                handleLogout();
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
     }
 
-    private void goToUserProfilePage(){
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
+    private void setUniversityLogo(ActionBar actionbar){
+        SharedPreferences settingsout = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        String university=settingsout.getString("loggedInUserUniversity", "");
+        switch (university) {
+            case "SJSU":
+                actionbar.setIcon(R.drawable.sjsulogo);
+                return;
+            case "UNCC":
+                actionbar.setIcon(R.drawable.uncclogo);
+                return;
+            default:
 
-    public class GetBitMapTask extends AsyncTask<String, Void, Void> {
-        protected Void doInBackground(String... h) {
-            Log.d("image", h[0]);
-            image = getBitmapFromURL(h[0]);
-            return null;
         }
+    }
+
+    private void handleLogout() {
+
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.clear();
+        editor.commit();
+        navigateToLoginActivity();
+
 
 
     }
 
-    public Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.d("image", src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            try {
-                connection.connect();
-            } catch (Exception e) {
+    private void navigateToLoginActivity() {
+
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        this.finish();
+        startActivity(loginIntent);
+    }
+
+    private void goToUserProfilePage() {
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                startActivity(intent);
+            }
+
+            private void goToCreatePostPage() {
+                Intent intent = new Intent(getApplicationContext(), CreatePostActivity.class);
+                startActivity(intent);
+            }
+
+            // Added by Aditi on 07/23/2016 START
+            private void goToCreateEventPage() {
+                Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
+                startActivity(intent);
+            }
+
+            private void goToViewAllEventsPage() {
+                Intent intent = new Intent(getApplicationContext(), ViewAllEventsActivity.class);
+                startActivity(intent);
+            }
+
+            // Added by Aditi on 07/23/2016 END
+            private void goToViewPostsByCategoryPage() {
+                Intent intent = new Intent(getApplicationContext(), ViewPostsByCategoryListActivity.class);
+                startActivity(intent);
+            }
+
+            public List<Data> fill_with_data(ArrayList<Data> dataList) throws ExecutionException, InterruptedException {
+                Collections.shuffle(dataList);
+                List<Data> frontPageDataList = new ArrayList<>();
+                Iterator<Data> listIterator = dataList.iterator();
+                Data data = new Data();
+                while (listIterator.hasNext()) {
+                    data = listIterator.next();
+                    System.out.println("LOADING ITEM TYPE: " + data.getItemType());
+                    frontPageDataList.add(data);
+                }
+                return frontPageDataList;
+            }
+
+            public void invokeGetUserActionsWS(String userId) {
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.addHeader("authorization", token);
+                client.get(Util.SERVER_URL + "post/getUserActions/" + userId, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
+                        try {
+                            if (statusCode == 200) {
+                                System.out.println(responseBody.toString());
+                                SharedPreferences settings = PreferenceManager
+                                        .getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putString("userPostActions", responseBody.toString());
+                                editor.commit();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject responseBody) {
+                        error.printStackTrace();
+                        if (statusCode == 409) {
+                            Toast.makeText(getApplicationContext(), "Get user actions failed", Toast.LENGTH_LONG).show();
+                        } else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                        } else if (statusCode==404) {
+                            System.out.println("No user Actions!!");
+                        }else
+                        {
+                           Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
             }
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+
+    public void invokeGetEventUserActionsWS(String userId){
+        AsyncHttpClient httpClient = new AsyncHttpClient();
+        httpClient.addHeader("authorization", FrontPageActivity.this.token);
+        httpClient.get(Util.SERVER_URL+"eventusers/"+userId, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                if(statusCode == HttpStatus.SC_OK){
+                    System.out.println("I am in success!!!");
+                    System.out.println("Response for user event's action =========== "+ response.toString());
+                    SharedPreferences settings = PreferenceManager
+                            .getDefaultSharedPreferences(FrontPageActivity.this.getApplicationContext());
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("eventUserActions", response.toString());
+                    editor.commit();
+                    System.out.println("Event user actions saved successfully!!!");
+                }
+                else if(statusCode == HttpStatus.SC_NO_CONTENT){
+                    System.out.println("User's events actions were empty");
+                    SharedPreferences settings = PreferenceManager
+                            .getDefaultSharedPreferences(FrontPageActivity.this.getApplicationContext());
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("eventUserActions", new String(""));
+                    editor.commit();
+                    System.out.println("Event user empty actions saved successfully!!!");
+                }
+                else
+                    System.out.println("Could not retrive user's event actions.. please check");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("I am in failure!!!");
+                System.out.println("Could not retrive user's event actions.. please check");
+            }
+        });
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String eventUserActions = new String(settings.getString("eventUserActions","").toString());
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            EventUser eventUser = null;
+            if(!eventUserActions.equals(""))
+                eventUser = mapper.readValue(eventUserActions, EventUser.class);
+            if(LoginActivity.staticEventList!=null && LoginActivity.staticEventList.size()>0
+                    && eventUser!=null){
+                new UpdateEventUserActions(LoginActivity.staticEventList, eventUser).updateAll();
+            }
+        }catch(Exception ex){
+            System.out.println("Could not parse the user's event actions..please check");
         }
 
-
     }
-
-
-
 
 }

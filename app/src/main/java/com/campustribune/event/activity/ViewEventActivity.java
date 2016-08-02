@@ -1,6 +1,5 @@
 package com.campustribune.event.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
@@ -35,12 +33,10 @@ import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.beans.EventComment;
-import com.campustribune.beans.EventUser;
 import com.campustribune.event.adapter.EventCommentsAdapter;
 import com.campustribune.event.utility.EventRestCallThread;
 import com.campustribune.event.utility.Utility;
-import com.campustribune.frontpage2.FrontPageActivity;
-import com.campustribune.helper.ImageUploader;
+import com.campustribune.frontpage.FrontPageActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -49,8 +45,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;

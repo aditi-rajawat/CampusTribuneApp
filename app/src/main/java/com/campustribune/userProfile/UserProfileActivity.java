@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
-import com.campustribune.frontpage2.FrontPageActivity;
+import com.campustribune.frontpage.FrontPageActivity;
 import com.campustribune.helper.Util;
 import com.campustribune.login.LoginActivity;
 import com.loopj.android.http.AsyncHttpClient;

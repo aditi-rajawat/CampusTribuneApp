@@ -1,4 +1,4 @@
-package com.campustribune.frontpage2;
+package com.campustribune.frontpage;
 
 /**
  * Created by sandyarathidas on 7/18/16.

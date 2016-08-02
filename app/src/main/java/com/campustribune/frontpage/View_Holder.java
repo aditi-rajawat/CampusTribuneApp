@@ -1,4 +1,4 @@
-package com.campustribune.frontpage2;
+package com.campustribune.frontpage;
 
 import android.graphics.Color;
 import android.support.v7.widget.CardView;

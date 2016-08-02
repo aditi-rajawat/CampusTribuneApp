@@ -65,7 +65,7 @@
             android:name=".login.SignupActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".frontpage2.FrontPageActivity"
+            android:name=".frontpage.FrontPageActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".userProfile.UserProfileActivity"
