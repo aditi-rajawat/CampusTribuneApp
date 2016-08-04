@@ -143,14 +143,12 @@ public class SignupActivity extends AppCompatActivity {
         StringEntity entity = new StringEntity(params.toString());
         progressDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
-        //Please remember to change the below url to your system ip where the backend runs
         client.post(this, Util.SERVER_URL + "user/signUp", entity, "application/json", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 progressDialog.hide();
                 try {
                     if (statusCode == 201) {
-                        Toast.makeText(getApplicationContext(), "You are successfully registered!!", Toast.LENGTH_LONG).show();
                         Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
                         SignupActivity.this.startActivity(loginIntent);
                     } else {

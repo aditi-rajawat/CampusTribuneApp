@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.beans.EventUser;
+import com.campustribune.beans.Post;
+import com.campustribune.beans.User;
 import com.campustribune.event.activity.CreateEventActivity;
 import com.campustribune.event.activity.ViewAllEventsActivity;
 import com.campustribune.event.activity.ViewEventActivity;
@@ -33,6 +35,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -45,6 +48,12 @@ import cz.msebera.android.httpclient.HttpStatus;
 public class FrontPageActivity extends AppCompatActivity {
 
     String token;
+    String userId;
+    List<Data> frontPageData= new ArrayList();
+    List<Data> newFrontPageData= new ArrayList();
+
+    RecyclerView recyclerView;
+    Recycler_View_Adapter adapter;
 
 
     @Override
@@ -54,9 +63,7 @@ public class FrontPageActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         setUniversityLogo(getSupportActionBar());
-        List<Data> frontPageData= new ArrayList();
         System.out.println("Started Activity for front page");
-
         try {
             frontPageData = fill_with_data(LoginActivity.frontPageList);
             System.out.println("Started loading Data");
@@ -66,8 +73,19 @@ public class FrontPageActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        adapter = setAdapterWithData(frontPageData);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        token = "Token "+sharedPreferences.getString("authToken", "");
+        userId= sharedPreferences.getString("loggedInUserId", "");
+        invokeGetUserActionsWS(userId);
+        invokeGetEventUserActionsWS(userId);
+    }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+    private Recycler_View_Adapter setAdapterWithData(List<Data> frontPageData) {
         Recycler_View_Adapter adapter = new Recycler_View_Adapter(frontPageData, getApplication(),
                 new Recycler_View_Adapter.OnItemClickListener(){
                     @Override public void onItemClick(Data data) {
@@ -80,23 +98,14 @@ public class FrontPageActivity extends AppCompatActivity {
                             System.out.println(event.getTitle());
                             navigateToViewEventActivity(event);
                         }
+                    }
 
-                }
-
-            });
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
-        token = "Token "+sharedPreferences.getString("authToken", "");
-        String userId= sharedPreferences.getString("loggedInUserId", "");
-        invokeGetUserActionsWS(userId);
-        invokeGetEventUserActionsWS(userId);
+                });
+        return adapter;
     }
 
     private Event retrieveEventFromList(String itemId) {
         for(Event event:LoginActivity.staticEventList){
-            System.out.println("CHECK here"+ itemId);
             if((event.getId().toString()).equals(itemId))
                 return event;
         }
@@ -128,17 +137,13 @@ public class FrontPageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.menu_action_refresh:
-                Toast.makeText(this, "Refresh button was clicked", Toast.LENGTH_SHORT).show();
+            case R.id.action_refresh:
+                handleRefresh();
                 return true;
             case R.id.submenu_userprofile:
                 goToUserProfilePage();
                 return true;
-            /*case R.id.submenu_search:
-                Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
-                return true;*/
             case R.id.submenu_createpost:
-                Toast.makeText(this,"Create Post was clicked", Toast.LENGTH_SHORT).show();
                 goToCreatePostPage();
                 return true;
             case R.id.submenu_createevent:      // Added by Aditi on 07/23/2016 START
@@ -155,6 +160,88 @@ public class FrontPageActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    private void handleRefresh() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("authorization", token);
+        client.get(Util.SERVER_URL + "/user/front-page/" + userId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
+                User user = new User();
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    user = mapper.readValue(responseBody.toString(), User.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (statusCode == 200) {
+                        newFrontPageData.clear();
+                        mapPostListToFrontPagData(user.getPostList());
+                        mapEventListToFrontPageData(user.getEventList());
+                        adapter.swap(newFrontPageData);
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable error) {
+                if (statusCode == 404) {
+                    Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+
+                } else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+        });
+
+    }
+
+    private void mapEventListToFrontPageData(ArrayList<Event> eventList) {
+        if(eventList!=null){
+            for(Event event:eventList){
+                Data data = new Data();
+                data.setItemId(String.valueOf((event.getId())));
+                data.setItemTitle(event.getTitle());
+                data.setItemContent(event.getDescription());
+                data.setItemImageURL(event.getEventImageS3URL());
+                data.setItemOwnerId(event.getCreatedBy());
+                data.setItemCategory(event.getCategory());
+                data.setIsItemAlert(false);
+                data.setItemType("Event");
+                newFrontPageData.add(data);
+            }
+        }
+    }
+
+    private void mapPostListToFrontPagData(ArrayList<Post> postList) {
+        if(postList!=null){
+            for(Post post:postList){
+                Data data = new Data();
+                data.setItemId(String.valueOf((post.getId())));
+                data.setItemTitle(post.getHeadline());
+                data.setItemContent(post.getContent());
+                data.setItemImageURL(post.getImgURL());
+                data.setItemOwnerId(post.getUserId());
+                data.setItemCategory(post.getCategory());
+                data.setIsItemAlert(post.isAlert());
+                data.setItemType("Post");
+                newFrontPageData.add(data);
+            }
         }
     }
 
@@ -285,23 +372,17 @@ public class FrontPageActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 if(statusCode == HttpStatus.SC_OK){
-                    System.out.println("I am in success!!!");
-                    System.out.println("Response for user event's action =========== "+ response.toString());
                     SharedPreferences settings = PreferenceManager
                             .getDefaultSharedPreferences(FrontPageActivity.this.getApplicationContext());
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("eventUserActions", response.toString());
                     editor.commit();
-                    System.out.println("Event user actions saved successfully!!!");
                 }
                 else if(statusCode == HttpStatus.SC_NO_CONTENT){
-                    System.out.println("User's events actions were empty");
                     SharedPreferences settings = PreferenceManager
                             .getDefaultSharedPreferences(FrontPageActivity.this.getApplicationContext());
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("eventUserActions", new String(""));
                     editor.commit();
-                    System.out.println("Event user empty actions saved successfully!!!");
                 }
                 else
                     System.out.println("Could not retrive user's event actions.. please check");
@@ -310,7 +391,6 @@ public class FrontPageActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                System.out.println("I am in failure!!!");
                 System.out.println("Could not retrive user's event actions.. please check");
             }
         });

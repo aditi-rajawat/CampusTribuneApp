@@ -130,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.hide();
                 try {
                     if (statusCode == 200) {
-                        Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
                         mapPostListToFrontPagData(user.getPostList());
                         staticEventList=user.getEventList();
                         mapEventListToFrontPageData(user.getEventList());
@@ -141,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
@@ -152,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.hide();
                 if (statusCode == 409) {
                     Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
                     Toast.makeText(getApplicationContext(), "Unauthorized", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();

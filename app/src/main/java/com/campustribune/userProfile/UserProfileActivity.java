@@ -106,15 +106,11 @@ public class UserProfileActivity extends BaseActivity {
             university="San Jose State University";
         }
 
-
-
         _selectCategory1.setEnabled(true);
         _selectCategory2.setEnabled(true);
         _selectCategory3.setEnabled(true);
         _selectCategory4.setEnabled(true);
         _selectCategory5.setEnabled(true);
-
-
 
 
         ArrayList<String> catlist= LoginActivity.subscriptionList;

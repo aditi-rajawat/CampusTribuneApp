@@ -59,6 +59,17 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<View_Holder> {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    public void swap(List<Data> newlist){
+        if (list != null) {
+            list.clear();
+            list.addAll(newlist);
+        }
+        else {
+            list = newlist;
+        }
+        notifyDataSetChanged();
+    }
+
     // Insert a new item to the RecyclerView on a predefined position
     public void insert(int position, Data data) {
         list.add(position, data);
