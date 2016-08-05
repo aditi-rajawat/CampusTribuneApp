@@ -155,7 +155,7 @@ public class CreatePostActivity extends BaseActivity {
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         } else {
-            System.out.println("Inside build num ekse"+Build.VERSION.SDK_INT);
+            System.out.println("Inside build num else"+Build.VERSION.SDK_INT);
             intent.setAction(Intent.ACTION_GET_CONTENT);
         }
 
@@ -174,7 +174,8 @@ public class CreatePostActivity extends BaseActivity {
                 ActivityCompat.requestPermissions(CreatePostActivity.this, new String[]{permission}, requestCode);
             }
         } else {
-            Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
+            System.out.println("Permission already granted");
+            //Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -189,13 +190,13 @@ public class CreatePostActivity extends BaseActivity {
                     System.out.println("Path is "+path);
                 } catch (URISyntaxException e) {
                     Toast.makeText(this,
-                            "Unable to get the file from the given URI.  See error log for details",
+                            "Unable to get the file from the given URI.",
                             Toast.LENGTH_LONG).show();
                 }
                 imageUrlText.setText(path);
-                System.out.println("URI of selected image is  ---------> " + uri);
+                System.out.println("URI  is  " + uri);
             }catch (Exception ex){
-                System.out.println("I am having this issue ----->  "+ ex.getMessage());
+                ex.getMessage();
             }
         }
     }
@@ -242,8 +243,7 @@ public class CreatePostActivity extends BaseActivity {
         final boolean needToCheckUri = Build.VERSION.SDK_INT >= 19;
         String selection = null;
         String[] selectionArgs = null;
-        // Uri is different in versions after KITKAT (Android 4.4), we need to
-        // deal with different Uris.
+
         if (needToCheckUri && DocumentsContract.isDocumentUri(getApplicationContext(), uri)) {
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
@@ -297,26 +297,17 @@ public class CreatePostActivity extends BaseActivity {
         return null;
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
+
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
+
     public static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
+
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
@@ -389,7 +380,7 @@ public class CreatePostActivity extends BaseActivity {
                 System.out.println(statusCode);
                 try {
                     if (statusCode == 201) {
-                        Toast.makeText(getApplicationContext(), "Post Created Successfully!!", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Post Created Successfully!!", Toast.LENGTH_LONG).show();
                         System.out.println(responseBody.toString());
                         ObjectMapper mapper = new ObjectMapper();
                         Post post = mapper.readValue(responseBody.toString(), Post.class);

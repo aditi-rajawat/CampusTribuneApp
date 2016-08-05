@@ -1,6 +1,8 @@
 package com.campustribune.post.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -101,7 +103,7 @@ public class ViewPostButtonsFragment extends Fragment{
 
        upvoteBtn.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v) {
-               Toast.makeText(getContext(), "Upvote Clicked", Toast.LENGTH_LONG).show();
+               //Toast.makeText(getContext(), "Upvote Clicked", Toast.LENGTH_LONG).show();
                if (downvoteBtn.isEnabled()) {
                    try {
                        callVoteWS("1", userId);
@@ -132,7 +134,7 @@ public class ViewPostButtonsFragment extends Fragment{
 
         downvoteBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Downvote Clicked", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Downvote Clicked", Toast.LENGTH_LONG).show();
                 if (upvoteBtn.isEnabled()) {
                     try {
                         callVoteWS("3",userId);
@@ -163,8 +165,34 @@ public class ViewPostButtonsFragment extends Fragment{
 
         reportBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Report Clicked", Toast.LENGTH_LONG).show();
-                try {
+                //Toast.makeText(getContext(), "Report Clicked", Toast.LENGTH_LONG).show();
+
+                AlertDialog alert = new AlertDialog.Builder(getContext())
+                        .setTitle("Report post")
+                        .setMessage("Are you sure you want to report this post?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    callReportWS(userId);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                reportBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
+                                reportBtn.setEnabled(false);
+                                updateUserPref("reportpost", Integer.valueOf(post_id));
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+               /* try {
                     callReportWS(userId);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -173,13 +201,13 @@ public class ViewPostButtonsFragment extends Fragment{
                 }
                 reportBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
                 reportBtn.setEnabled(false);
-                updateUserPref("reportpost", Integer.valueOf(post_id));
+                updateUserPref("reportpost", Integer.valueOf(post_id));*/
             }
         });
 
         followBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Follow Clicked", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Follow Clicked", Toast.LENGTH_LONG).show();
                 try {
                     callFollowWS(post_id,userId);
                 } catch (JSONException e) {
@@ -199,7 +227,7 @@ public class ViewPostButtonsFragment extends Fragment{
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Edit Clicked", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Edit Clicked", Toast.LENGTH_LONG).show();
                 viewPostFragment.performEditText();
             }
         });
@@ -207,14 +235,37 @@ public class ViewPostButtonsFragment extends Fragment{
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Delete Clicked", Toast.LENGTH_LONG).show();
-                try {
+                //Toast.makeText(getContext(), "Delete Clicked", Toast.LENGTH_LONG).show();
+                AlertDialog alert = new AlertDialog.Builder(getContext())
+                        .setTitle("Delete Post")
+                        .setMessage("Are you sure you want to delete this post?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                System.out.println("Delete clicked");
+                                try {
+                                    callDeleteWS(post_id);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+               /* try {
                     callDeleteWS(post_id);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
@@ -247,7 +298,7 @@ public class ViewPostButtonsFragment extends Fragment{
 
     private void callDeleteWS(String postId) throws JSONException, UnsupportedEncodingException {
         JSONObject params = new JSONObject();
-        String URL = "delete/"+postId;
+        String URL = "remove/"+postId;
         invokeDeleteWS(URL);
     }
 
@@ -279,8 +330,13 @@ public class ViewPostButtonsFragment extends Fragment{
                 try {
 
                     if (statusCode == 200) {
-                        Toast.makeText(getContext(), "Post Updated Successfully!!", Toast.LENGTH_LONG).show();
-                        ViewPostButtonsFragment.this.setPostObj(responseBody);
+                        //Toast.makeText(getContext(), "Post Updated Successfully!!", Toast.LENGTH_LONG).show();
+                        if(responseBody!=null)
+                             ViewPostButtonsFragment.this.setPostObj(responseBody);
+                        else {
+                            Toast.makeText(getContext(), "Post is being removed since we received multiple reports", Toast.LENGTH_LONG).show();
+                            ViewPostButtonsFragment.this.goToFrontPage();
+                        }
                     } else {
                         Toast.makeText(getContext(), "Error on on success!" + responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
@@ -296,7 +352,7 @@ public class ViewPostButtonsFragment extends Fragment{
             public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject responseBody) {
                 System.out.println(statusCode);
                 if (statusCode == 404) {
-                    Toast.makeText(getContext(), "Create Post failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Update Post failed", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {
                     Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 } else {
@@ -305,7 +361,18 @@ public class ViewPostButtonsFragment extends Fragment{
 
             }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseBody,Throwable error) {
+                System.out.println(statusCode);
+                if (statusCode == 200) {
+                    System.out.println("Inside if 200");
+                    Toast.makeText(getContext(), "Post is being removed since we received multiple reports", Toast.LENGTH_LONG).show();
+                    ViewPostButtonsFragment.this.goToFrontPage();
+                }  else {
+                    Toast.makeText(getContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
 
+            }
         });
     }
 
@@ -318,7 +385,8 @@ public class ViewPostButtonsFragment extends Fragment{
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 System.out.println(statusCode);
                 if (statusCode == 200) {
-                    Toast.makeText(getContext(), "Post Followed Successfully!!", Toast.LENGTH_LONG).show();
+                    System.out.println("Post followed!!!");
+                    //Toast.makeText(getContext(), "Post Followed Successfully!!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();
                 }
@@ -350,7 +418,7 @@ public class ViewPostButtonsFragment extends Fragment{
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 System.out.println(statusCode);
                 if (statusCode == 200) {
-                    Toast.makeText(getContext(), "Post Deleted Successfully!!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Post Deleted Successfully!!", Toast.LENGTH_LONG).show();
                     ViewPostButtonsFragment.this.goToFrontPage();
                 } else {
                     Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();

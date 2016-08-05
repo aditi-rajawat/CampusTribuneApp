@@ -78,7 +78,7 @@ public class ViewPostActivity extends BaseActivity {
         System.out.println("inside invokeloadPostWS");
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("authorization", token);
-        client.get(BASEURL+"post/get/" + postid, new JsonHttpResponseHandler() {
+        client.get(BASEURL+"post/view/" + postid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 try {

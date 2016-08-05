@@ -106,7 +106,7 @@ public class ViewPostFragment extends Fragment {
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Save Post Clicked", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Save Post Clicked", Toast.LENGTH_LONG).show();
                 try {
                     String headlineVal = headlineEdit.getText().toString();String contentVal=contentEdit.getText().toString();
                     //callSaveWS(headlineEdit.getText().toString(), contentEdit.getText().toString());
@@ -256,6 +256,7 @@ public class ViewPostFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 try {
                     if (statusCode == 200) {
+                        //Toast.makeText(getContext(), "Post edited successfully!!!", Toast.LENGTH_LONG).show();
                         ViewPostFragment.this.setPostObj(responseBody);
                     }  else if(statusCode==412){
                         Toast.makeText(getContext(), "The post contains spam!!!", Toast.LENGTH_LONG).show();

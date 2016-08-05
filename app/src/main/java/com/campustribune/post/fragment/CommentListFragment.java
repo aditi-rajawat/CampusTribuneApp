@@ -1,8 +1,10 @@
 package com.campustribune.post.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -28,6 +30,7 @@ import com.campustribune.R;
 import com.campustribune.beans.Post;
 import com.campustribune.beans.PostComment;
 import com.campustribune.beans.PostUser;
+import com.campustribune.frontpage.FrontPageActivity;
 import com.campustribune.helper.Util;
 import com.campustribune.post.activity.ViewPostActivity;
 import com.campustribune.post.adapter.CommentListAdapter;
@@ -151,6 +154,35 @@ public class CommentListFragment extends Fragment{
         });
         deleteCommentBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                AlertDialog alert = new AlertDialog.Builder(getContext())
+                        .setTitle("Delete comment")
+                        .setMessage("Are you sure you want to delete this comment?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                System.out.println("Delete clicked");
+                                try {
+                                    callDeleteCommentWS(comment.getId(), comment.getPostId());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                showComment.hide();
+                                commentText.setVisibility(View.VISIBLE);
+                                commentTextEdit.setVisibility(View.GONE);
+                                editCommentBtnLayout.setVisibility(View.GONE);
+                                reloadFragment();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+/*
+
                 System.out.println("Delete clicked");
                 try {
                     callDeleteCommentWS(comment.getId(), comment.getPostId());
@@ -163,13 +195,41 @@ public class CommentListFragment extends Fragment{
                 commentText.setVisibility(View.VISIBLE);
                 commentTextEdit.setVisibility(View.GONE);
                 editCommentBtnLayout.setVisibility(View.GONE);
-                reloadFragment();
+                reloadFragment();*/
             }
         });
 
         reportCommentBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("Delete clicked");
+                AlertDialog alert = new AlertDialog.Builder(getContext())
+                        .setTitle("Report comment")
+                        .setMessage("Are you sure you want to report this comment?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    callReportCommentWS(comment);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                reportCommentBtn.setColorFilter(Color.argb(255, 255, 0, 0)); // Red Tint
+                                reportCommentBtn.setEnabled(false);
+                                commentText.setVisibility(View.VISIBLE);
+                                commentTextEdit.setVisibility(View.GONE);
+                                editCommentBtnLayout.setVisibility(View.GONE);
+                                reloadFragment();
+                                updateUserPref("reportcomment",Integer.valueOf(comment.getId()));
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+              /*  System.out.println("Delete clicked");
                 try {
                     callReportCommentWS(comment);
                 } catch (JSONException e) {
@@ -183,7 +243,7 @@ public class CommentListFragment extends Fragment{
                 commentTextEdit.setVisibility(v.GONE);
                 editCommentBtnLayout.setVisibility(v.GONE);
                 reloadFragment();
-                updateUserPref("reportcomment",Integer.valueOf(comment.getId()));
+                updateUserPref("reportcomment",Integer.valueOf(comment.getId()));*/
             }
         });
 
@@ -225,6 +285,10 @@ public class CommentListFragment extends Fragment{
             }
         });
         showComment.show();
+    }
+
+    public void hideComment(){
+        showComment.hide();
     }
 
     public void reloadFragment(){
@@ -275,7 +339,7 @@ public class CommentListFragment extends Fragment{
 
     private void callDeleteCommentWS(int commentId, int postId) throws JSONException, UnsupportedEncodingException {
         JSONObject params = new JSONObject();
-        String URL = "delete/"+commentId+"/forPost/"+postId;
+        String URL = "remove/"+commentId+"/forPost/"+postId;
         invokeDeleteCommentWS(URL);
     }
 
@@ -316,7 +380,7 @@ public class CommentListFragment extends Fragment{
     public void loadCommentsWS(String postid){
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("authorization", token);
-        client.get(BASEURL + "/comment/getAll/forPost/" + postid, new JsonHttpResponseHandler() {
+        client.get(BASEURL + "/comment/viewAll/forPost/" + postid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 System.out.println("Inside onSuccess" + statusCode);
@@ -335,7 +399,7 @@ public class CommentListFragment extends Fragment{
                 System.out.println("Inside onFailue" + statusCode);
                 if (statusCode == 409) {
                     System.out.println("Inside onFailue if");
-                    Toast.makeText(getContext(), "View Post failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "View Comments failed", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {
                     System.out.println("Inside onFailue if");
                     Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
@@ -360,7 +424,7 @@ public class CommentListFragment extends Fragment{
                 System.out.println(statusCode);
                 try {
                     if (statusCode == 201) {
-                        Toast.makeText(getContext(), "Comment Created Successfully!!", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), "Comment Created Successfully!!", Toast.LENGTH_LONG).show();
                         CommentListFragment.this.reloadCommentsWS(post_id);
 
                     } else {
@@ -399,7 +463,7 @@ public class CommentListFragment extends Fragment{
     public void reloadCommentsWS(String postid){
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("authorization", token);
-        client.get(BASEURL + "comment/getAll/forPost/" + postid, new JsonHttpResponseHandler() {
+        client.get(BASEURL + "comment/viewAll/forPost/" + postid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 System.out.println("Inside onSuccess" + statusCode);
@@ -417,7 +481,7 @@ public class CommentListFragment extends Fragment{
                 System.out.println("Inside onFailue" + statusCode);
                 if (statusCode == 409) {
                     System.out.println("Inside onFailue if");
-                    Toast.makeText(getContext(), "View Post failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "View Comments failed", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {
                     System.out.println("Inside onFailue if");
                     Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
@@ -439,7 +503,7 @@ public class CommentListFragment extends Fragment{
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 try {
                     if (statusCode == 200) {
-                        Toast.makeText(getContext(), "Comment Edited Successfully", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), "Comment Edited Successfully", Toast.LENGTH_LONG).show();
                         CommentListFragment.this.reloadCommentsWS(post_id);
                     } else {
                         Toast.makeText(getContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
@@ -477,8 +541,13 @@ public class CommentListFragment extends Fragment{
                 try {
 
                     if (statusCode == 200) {
-                        Toast.makeText(getContext(), "Post Updated Successfully!!", Toast.LENGTH_LONG).show();
-                        CommentListFragment.this.reloadCommentsWS(post_id);
+                        //Toast.makeText(getContext(), "Comment Reported Successfully!!", Toast.LENGTH_LONG).show();
+                        if(responseBody!=null)
+                            CommentListFragment.this.reloadCommentsWS(post_id);
+                        else{
+                            Toast.makeText(getContext(), "Comment is being removed since we received multiple reports", Toast.LENGTH_LONG).show();
+                            CommentListFragment.this.reloadCommentsWS(post_id);
+                        }
                     } else {
                         Toast.makeText(getContext(), "Error on on success!" + responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
@@ -503,6 +572,20 @@ public class CommentListFragment extends Fragment{
 
             }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseBody,Throwable error) {
+                System.out.println(statusCode);
+                if (statusCode == 200) {
+                    System.out.println("Inside if 200");
+                    Toast.makeText(getContext(), "Comment is being removed since we received multiple reports", Toast.LENGTH_LONG).show();
+                    CommentListFragment.this.reloadCommentsWS(post_id);
+                    CommentListFragment.this.hideComment();
+                }  else {
+                    Toast.makeText(getContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
 
         });
     }
@@ -516,7 +599,7 @@ public class CommentListFragment extends Fragment{
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 System.out.println(statusCode);
                 if (statusCode == 200) {
-                    Toast.makeText(getContext(), "Comment Deleted Successfully!!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Comment Deleted Successfully!!", Toast.LENGTH_LONG).show();
                     CommentListFragment.this.reloadCommentsWS(post_id);
                 } else {
                     Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();
