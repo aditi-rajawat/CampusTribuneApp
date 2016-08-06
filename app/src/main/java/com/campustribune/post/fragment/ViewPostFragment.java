@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,7 @@ public class ViewPostFragment extends Fragment {
     String post_id;
     String userId;
     String token;
-
+    private static final String LOG_TAG = ViewPostFragment.class.getSimpleName();
     public String BASEURL= Util.SERVER_URL;
 
 
@@ -93,7 +94,7 @@ public class ViewPostFragment extends Fragment {
         post_id= ((ViewPostActivity)this.getActivity()).getPost_id();
 
         post= ((ViewPostActivity)this.getActivity()).getPost();
-        System.out.println(post_id);
+        Log.d(LOG_TAG, "Post id is " + post_id);
 
         //Code to retrieve the user details stored in shared preferences
         SharedPreferences settingsout = PreferenceManager
@@ -210,7 +211,7 @@ public class ViewPostFragment extends Fragment {
     public void setPostObj(JSONObject respBody){
         ObjectMapper mapper = new ObjectMapper();
         try {
-            System.out.println(respBody.toString());
+            Log.d(LOG_TAG, "Response is " + respBody.toString());
             this.post = mapper.readValue(respBody.toString(), Post.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -223,7 +224,7 @@ public class ViewPostFragment extends Fragment {
         headline.setText(post.getHeadline());
         content.setText(post.getContent());
         creator.setText("Created By "+post.getUserId());
-        System.out.println("URL is "+post.getImgURL());
+        System.out.println("URL is " + post.getImgURL());
 
         if(post.isAlert()){
             alert.setVisibility(View.VISIBLE);
@@ -257,6 +258,7 @@ public class ViewPostFragment extends Fragment {
                 try {
                     if (statusCode == 200) {
                         //Toast.makeText(getContext(), "Post edited successfully!!!", Toast.LENGTH_LONG).show();
+                        Log.d(LOG_TAG, "Post edited");
                         ViewPostFragment.this.setPostObj(responseBody);
                     }  else if(statusCode==412){
                         Toast.makeText(getContext(), "The post contains spam!!!", Toast.LENGTH_LONG).show();

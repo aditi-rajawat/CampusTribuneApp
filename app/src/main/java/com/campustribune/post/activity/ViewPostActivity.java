@@ -4,6 +4,7 @@ package com.campustribune.post.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.campustribune.BaseActivity;
@@ -31,14 +32,14 @@ public class ViewPostActivity extends BaseActivity {
  public Post post = new Post();
 
     String token;
-
+    private static final String LOG_TAG = ViewPostActivity.class.getSimpleName();
     public String BASEURL= Util.SERVER_URL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         post_id = bundle.getString("post_id");
-        System.out.println(post_id);
+        Log.d(LOG_TAG, "Post id is " + post_id);
 
         //Code to retrieve the user details stored in shared preferences
         SharedPreferences settingsout = PreferenceManager
@@ -66,7 +67,7 @@ public class ViewPostActivity extends BaseActivity {
     public void setPostObj(JSONObject respBody) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            System.out.println(respBody.toString());
+            Log.d(LOG_TAG, "Response is " + respBody.toString());
             this.post = mapper.readValue(respBody.toString(), Post.class);
 
         } catch (IOException e) {
@@ -83,7 +84,7 @@ public class ViewPostActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 try {
                     if (statusCode == 200) {
-                        System.out.println(responseBody.toString());
+                        Log.d(LOG_TAG, "Response is " + responseBody.toString());
                         ViewPostActivity.this.setPostObj(responseBody);
                         ViewPostActivity.this.setContentView((R.layout.activity_view_post));
 

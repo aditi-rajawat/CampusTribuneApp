@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class CommentListFragment extends Fragment{
     @Bind(R.id.clist)
     ListView cList;
 
+    private static final String LOG_TAG = CommentListFragment.class.getSimpleName();
     ArrayList<PostComment> comments = new ArrayList<PostComment>();
 
     TextView commentText;
@@ -95,7 +97,7 @@ public class CommentListFragment extends Fragment{
                 R.style.AppTheme_Dark_Dialog);
 
         post_id= ((ViewPostActivity)this.getActivity()).getPost_id();
-        System.out.println(post_id);
+        Log.d(LOG_TAG, "Post id is " + post_id);
         //Code to retrieve the user details stored in shared preferences
         SharedPreferences settingsout = PreferenceManager
                 .getDefaultSharedPreferences(getContext());
@@ -386,6 +388,7 @@ public class CommentListFragment extends Fragment{
                 System.out.println("Inside onSuccess" + statusCode);
                 //try {
                 if (statusCode == 200) {
+                    Log.d(LOG_TAG, "Comments fetched");
                     CommentListFragment.this.setCommentListsObj(responseBody, "firstload");
                 } else {
                     System.out.println("Inside onSuccess else");
@@ -425,6 +428,7 @@ public class CommentListFragment extends Fragment{
                 try {
                     if (statusCode == 201) {
                         //Toast.makeText(getContext(), "Comment Created Successfully!!", Toast.LENGTH_LONG).show();
+                        Log.d(LOG_TAG, "Comment created");
                         CommentListFragment.this.reloadCommentsWS(post_id);
 
                     } else {
@@ -469,6 +473,7 @@ public class CommentListFragment extends Fragment{
                 System.out.println("Inside onSuccess" + statusCode);
                 //try {
                 if (statusCode == 200) {
+                    Log.d(LOG_TAG, "Comments reloaded");
                     CommentListFragment.this.setCommentListsObj(responseBody, "reload");
                 } else {
                     System.out.println("Inside onSuccess else");
@@ -504,6 +509,7 @@ public class CommentListFragment extends Fragment{
                 try {
                     if (statusCode == 200) {
                         //Toast.makeText(getContext(), "Comment Edited Successfully", Toast.LENGTH_LONG).show();
+                        Log.d(LOG_TAG, "Comment saved");
                         CommentListFragment.this.reloadCommentsWS(post_id);
                     } else {
                         Toast.makeText(getContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
@@ -542,9 +548,10 @@ public class CommentListFragment extends Fragment{
 
                     if (statusCode == 200) {
                         //Toast.makeText(getContext(), "Comment Reported Successfully!!", Toast.LENGTH_LONG).show();
-                        if(responseBody!=null)
+                        if(responseBody!=null) {
+                            Log.d(LOG_TAG, "Comment reported");
                             CommentListFragment.this.reloadCommentsWS(post_id);
-                        else{
+                        }else{
                             Toast.makeText(getContext(), "Comment is being removed since we received multiple reports", Toast.LENGTH_LONG).show();
                             CommentListFragment.this.reloadCommentsWS(post_id);
                         }
@@ -600,6 +607,7 @@ public class CommentListFragment extends Fragment{
                 System.out.println(statusCode);
                 if (statusCode == 200) {
                     //Toast.makeText(getContext(), "Comment Deleted Successfully!!", Toast.LENGTH_LONG).show();
+                    Log.d(LOG_TAG, "Comment deleted");
                     CommentListFragment.this.reloadCommentsWS(post_id);
                 } else {
                     Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();

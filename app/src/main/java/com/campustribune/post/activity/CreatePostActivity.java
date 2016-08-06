@@ -17,6 +17,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,6 +82,7 @@ public class CreatePostActivity extends BaseActivity {
     @Bind(R.id.upload)
     Button uploadBtn;
 
+    private static final String LOG_TAG = CreatePostActivity.class.getSimpleName();
     public String BASEURL=Util.SERVER_URL;
     AmazonS3Client s3Client;
     String path;
@@ -174,7 +176,8 @@ public class CreatePostActivity extends BaseActivity {
                 ActivityCompat.requestPermissions(CreatePostActivity.this, new String[]{permission}, requestCode);
             }
         } else {
-            System.out.println("Permission already granted");
+            Log.d(LOG_TAG, "Permission already granted");
+            //System.out.println("Permission already granted");
             //Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -187,16 +190,19 @@ public class CreatePostActivity extends BaseActivity {
                 Uri uri = data.getData();
                 try {
                     path = getPath(uri);
-                    System.out.println("Path is "+path);
+                    Log.d(LOG_TAG, "Path is " + path);
+                    //System.out.println("Path is "+path);
                 } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                    //Log.e(LOG_TAG, e.getMessage());
                     Toast.makeText(this,
                             "Unable to get the file from the given URI.",
                             Toast.LENGTH_LONG).show();
                 }
                 imageUrlText.setText(path);
-                System.out.println("URI  is  " + uri);
+                Log.d(LOG_TAG, "URI is " + uri);
             }catch (Exception ex){
-                ex.getMessage();
+                ex.printStackTrace();
             }
         }
     }
@@ -227,7 +233,8 @@ public class CreatePostActivity extends BaseActivity {
                     urlRequest.setExpiration(date);
                     urlRequest.setResponseHeaders(override);
                     picurl = s3Client.generatePresignedUrl( urlRequest );
-                    System.out.println(picurl);
+                    Log.d(LOG_TAG, "Pic url is " + picurl);
+                    //System.out.println(picurl);
                     uploadComplete=true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -381,7 +388,9 @@ public class CreatePostActivity extends BaseActivity {
                 try {
                     if (statusCode == 201) {
                         //Toast.makeText(getApplicationContext(), "Post Created Successfully!!", Toast.LENGTH_LONG).show();
-                        System.out.println(responseBody.toString());
+                        Log.d(LOG_TAG, "Post created Successfully");
+                        Log.d(LOG_TAG, "Response is " + responseBody.toString());
+                        //System.out.println(.toString());
                         ObjectMapper mapper = new ObjectMapper();
                         Post post = mapper.readValue(responseBody.toString(), Post.class);
                         Intent viewPostPage = new Intent(CreatePostActivity.this, ViewPostActivity.class);

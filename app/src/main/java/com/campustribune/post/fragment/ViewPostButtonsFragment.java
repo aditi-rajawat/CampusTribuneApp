@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class ViewPostButtonsFragment extends Fragment{
     String post_id;
     String userId;
     String token;
+    private static final String LOG_TAG = ViewPostButtonsFragment.class.getSimpleName();
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -80,7 +82,7 @@ public class ViewPostButtonsFragment extends Fragment{
                 container, false);
         post_id= ((ViewPostActivity)this.getActivity()).getPost_id();
         post= ((ViewPostActivity)this.getActivity()).getPost();
-        System.out.println(post_id);
+        Log.d(LOG_TAG, "Post id is " + post_id);
 
         //Code to retrieve the user details stored in shared preferences
         SharedPreferences settingsout = PreferenceManager
@@ -331,6 +333,7 @@ public class ViewPostButtonsFragment extends Fragment{
 
                     if (statusCode == 200) {
                         //Toast.makeText(getContext(), "Post Updated Successfully!!", Toast.LENGTH_LONG).show();
+                        Log.d(LOG_TAG, "Post updated");
                         if(responseBody!=null)
                              ViewPostButtonsFragment.this.setPostObj(responseBody);
                         else {
@@ -387,6 +390,7 @@ public class ViewPostButtonsFragment extends Fragment{
                 if (statusCode == 200) {
                     System.out.println("Post followed!!!");
                     //Toast.makeText(getContext(), "Post Followed Successfully!!", Toast.LENGTH_LONG).show();
+                    Log.d(LOG_TAG, "Post followed");
                 } else {
                     Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();
                 }
@@ -419,6 +423,7 @@ public class ViewPostButtonsFragment extends Fragment{
                 System.out.println(statusCode);
                 if (statusCode == 200) {
                     //Toast.makeText(getContext(), "Post Deleted Successfully!!", Toast.LENGTH_LONG).show();
+                    Log.d(LOG_TAG, "Post deleted");
                     ViewPostButtonsFragment.this.goToFrontPage();
                 } else {
                     Toast.makeText(getContext(), "Error on on success!", Toast.LENGTH_LONG).show();
