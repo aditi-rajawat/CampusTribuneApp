@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Campus Tribune</string>
+    <string name="app_name"> Campus Tribune</string>
     <string name="menu_action_post">Posts</string>
     <string name="menu_action_event">Events</string>
     <string name="menu_action_profile">Profile</string>
@@ -17,6 +17,7 @@
     <string name="submenu_action_view_posts_by_category">View Posts</string>
     <string name="selectCategory">Select Category</string>
     <string-array name="category_options">
+        <item>---Select Category---</item>
         <item>Technology</item>
         <item>Sports</item>
         <item>Administration</item>
