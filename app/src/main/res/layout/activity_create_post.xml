@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="fill_parent">
 
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,6 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Alert"
+                android:fontFamily="Roboto Regular"
                 android:textColor="#ff0000"
                 android:layout_row="0"
                 android:layout_column="0"
@@ -35,6 +37,7 @@
 
                 <TextView
                     android:text="Headline: "
+                    android:fontFamily="Roboto Regular"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content">
                 </TextView>
@@ -60,6 +63,7 @@
 
                 <TextView
                     android:text="Content: "
+                    android:fontFamily="Roboto Regular"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     >
@@ -87,6 +91,7 @@
 
                 <TextView
                     android:layout_width="70dp"
+                    android:fontFamily="Roboto Regular"
                     android:layout_height="wrap_content"
                     android:text="URL: "
                     >
@@ -114,7 +119,7 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:text="Image: "
-                    >
+                    android:fontFamily="Roboto Regular">
                 </TextView>
 
                 <EditText
@@ -160,22 +165,27 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:text="Category: "
-                    >
+                    android:fontFamily="Roboto Regular">
                 </TextView>
 
                 <Spinner
                     android:id="@+id/category"
                     android:layout_width="260dp"
                     android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
                     android:ems="10"
+                    android:background="@color/wallet_highlighted_text_holo_dark"
+                    android:popupBackground="@color/colorPrimary"
                     android:entries="@array/category_options"
                     android:prompt="@string/selectCategory"
                     android:spinnerMode="dropdown"
                     android:dropDownWidth="250dp"
                     android:minWidth="250dp"
-                    android:textColor="#000000"
+
                     />
+                <!--android:background="@android:drawable/btn_dropdown"
+                                    android:textColor="#000000"
+-->
+
 
             </LinearLayout>
 

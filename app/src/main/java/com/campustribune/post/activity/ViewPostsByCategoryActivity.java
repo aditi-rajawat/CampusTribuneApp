@@ -2,21 +2,19 @@ package com.campustribune.post.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.campustribune.BaseActivity;
 import com.campustribune.R;
 import com.campustribune.beans.Post;
-import com.campustribune.frontpage.FrontPageActivity;
 import com.campustribune.helper.Util;
 import com.campustribune.post.adapter.ViewPostByCategoriesAdapter;
 import com.loopj.android.http.AsyncHttpClient;
@@ -34,25 +32,30 @@ import cz.msebera.android.httpclient.HttpStatus;
 public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPostByCategoriesAdapter.ViewPostInterface{
 
     private static ArrayList<Post> listOfPosts = new ArrayList<>();
-    private static ViewPostByCategoriesAdapter adapter = null;
+    private static ViewPostByCategoriesAdapter adapter;
     private ListView postsListView;
     String token = null;
     String userId;
     String university;
     String category;
+
+    EditText inputSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_posts_by_category);
         postsListView = (ListView) findViewById(R.id.listView_news);
+        inputSearch = (EditText) findViewById(R.id.inputSearch);
         // Set the toolbar according to the previous activity
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goToViewPostsByCategoryPage();
                 }
             });
+
+
         // Retrieve the user token
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.token = new String("Token " + settings.getString("authToken", "").toString());
@@ -63,7 +66,40 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
         category = bundle.getString("category");
         System.out.println("Category is"+category);
         invokews();
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                int textlength = cs.length();
+                ArrayList<Post> tempArrayList = new ArrayList<Post>();
+
+                for (Post post : listOfPosts) {
+                    if (post.getContent().toLowerCase().contains(cs.toString().toLowerCase())) {
+                        tempArrayList.add(post);
+                    }
+
+                }
+                adapter = new ViewPostByCategoriesAdapter(ViewPostsByCategoryActivity.this.getApplicationContext(),
+                        tempArrayList, ViewPostsByCategoryActivity.this);
+                postsListView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
+
+
 
     private void invokews() {
         AsyncHttpClient httpClient = new AsyncHttpClient();
@@ -73,7 +109,6 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
         System.out.println("URL is"+url);
         httpClient.get(Util.SERVER_URL + "post/getByCategory/"+category+"/"+university , new AsyncHttpResponseHandler() {
             Post[] postArray={};
-            private ArrayList<Post> listOfPosts = new ArrayList<>();
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (statusCode == 200) {
@@ -82,18 +117,15 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
                     try {
                         ObjectMapper mapper = new ObjectMapper();
                         postArray = mapper.readValue(responseBody, Post[].class);
-                        System.out.println("No. of posts received ============= " + postArray.length);
                         if (postArray.length > 0) {
                             for (Post each : postArray)
                                 listOfPosts.add(each);
 
-                            System.out.println("No. of posts received = " + postArray.length);
                             adapter = new ViewPostByCategoriesAdapter(ViewPostsByCategoryActivity.this.getApplicationContext(),
                                     listOfPosts, ViewPostsByCategoryActivity.this);
                             if (postsListView != null)
                                 postsListView.setAdapter(adapter);
                         }
-                        System.out.println("No. of posts ====== " + listOfPosts.size());
                     } catch (Exception ex) {
                         System.out.println("Exception while parsing the response array due to " + ex.getMessage());
                     }

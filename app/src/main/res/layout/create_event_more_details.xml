@@ -7,6 +7,14 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.1"
+        android:src="@drawable/signup"/>
+
     <TextView
         android:id="@+id/entered_event_title"
         android:layout_width="match_parent"
