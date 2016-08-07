@@ -136,7 +136,9 @@ public class LoginActivity extends AppCompatActivity {
                         subscriptionList = user.getSubscriptionList();
                         navigatetoFrontpageActivity();
                     } else {
+                        onLoginFailed();
                         Toast.makeText(getApplicationContext(), responseBody.getString("error_msg"), Toast.LENGTH_LONG).show();
+                        return;
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -146,11 +148,14 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable error) {
+            public void onFailure(int statusCode, Header[] headers,  Throwable error, JSONObject responseBody) {
                 progressDialog.hide();
-                if (statusCode == 409) {
+                if (statusCode == 401) {
+
                     Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(), "Unauthorized", Toast.LENGTH_LONG).show();
+                    onLoginFailed();
+                    return;
+
                 } else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 } else {
@@ -211,8 +216,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
+        Toast.makeText(getBaseContext(), "Login failed! Please try again!", Toast.LENGTH_LONG).show();
+        _usernameText.setText("");
+        _passwordText.setText("");
         _loginButton.setEnabled(true);
     }
 
