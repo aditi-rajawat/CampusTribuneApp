@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,6 +50,7 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
     private static ArrayList<Event> listOfEvents = new ArrayList<>();
     private static ViewEventAdapter adapter=null;
     ListView eventsListContainer=null;
+    EditText inputSearch;
     String token=null;
     String university=null;
     String eventUserActions=null;
@@ -77,6 +81,9 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_all_events);
+
+        inputSearch = (EditText) findViewById(R.id.inputSearch);
+
 
         // Disable view all from side menu
         invalidateOptionsMenu();
@@ -124,6 +131,39 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
                     ((TextView) v).setText("View on Maps");
                     ((TextView) v).setTag("view_map");
                 }
+            }
+        });
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                int textlength = cs.length();
+                ArrayList<Event> tempArrayList = new ArrayList<Event>();
+                for(Event event: listOfEvents){
+
+                    if (event.getDescription().toLowerCase().contains(cs.toString().toLowerCase())) {
+                        tempArrayList.add(event);
+                    }
+
+                }
+                adapter = new ViewEventAdapter(ViewAllEventsActivity.this.getApplicationContext(),
+                        tempArrayList, ViewAllEventsActivity.this);
+                eventsListContainer.setAdapter(adapter);
+
+            }
+
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
             }
         });
 

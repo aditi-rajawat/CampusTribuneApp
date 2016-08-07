@@ -1,5 +1,7 @@
 package com.campustribune;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -37,7 +39,7 @@ public class BaseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setUniversityLogo(getSupportActionBar());
+
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +49,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(frontPage);
             }
         });
+        setUniversityLogo(getSupportActionBar());
 
         invalidateOptionsMenu();
     }
@@ -70,9 +73,9 @@ public class BaseActivity extends AppCompatActivity {
                 Toast.makeText(this,"User-profile menu was clicked",Toast.LENGTH_SHORT).show();
                 goToUserProfilePage();
                 return true;
-            /*case R.id.submenu_search:
-                Toast.makeText(this,"Search button was clicked", Toast.LENGTH_SHORT).show();
-                return true;*/
+            case R.id.submenu_search:
+                handleSearch();
+                return true;
             case R.id.submenu_createpost:
                 goToCreatePostPage();
                 return true;
@@ -91,6 +94,28 @@ public class BaseActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    private void handleSearch() {
+        final CharSequence[] searchType= {"Posts", "Events"};
+
+        AlertDialog.Builder builder= new AlertDialog.Builder(BaseActivity.this, AlertDialog.THEME_HOLO_DARK)
+                .setTitle("Search")
+                .setSingleChoiceItems(searchType, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (searchType[which].equals("Posts")) {
+                            goToViewPostsByCategoryPage();
+                            dialog.dismiss();
+                        } else {
+                            goToViewAllEventsPage();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
     }
 
     private void handleLogout() {
@@ -145,10 +170,11 @@ public class BaseActivity extends AppCompatActivity {
         String university=settingsout.getString("loggedInUserUniversity", "");
         switch (university) {
             case "SJSU":
-                actionbar.setIcon(R.drawable.sjsulogo);
+                actionbar.setIcon(R.drawable.sjsulogospace);
+
                 return;
             case "UNCC":
-                actionbar.setIcon(R.drawable.uncclogo);
+                actionbar.setIcon(R.drawable.uncclogospace);
                 return;
             default:
 

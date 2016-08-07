@@ -1,5 +1,7 @@
 package com.campustribune.frontpage;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.campustribune.R;
 import com.campustribune.beans.Event;
 import com.campustribune.beans.EventUser;
@@ -63,10 +66,8 @@ public class FrontPageActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         setUniversityLogo(getSupportActionBar());
-        System.out.println("Started Activity for front page");
         try {
             frontPageData = fill_with_data(LoginActivity.frontPageList);
-            System.out.println("Started loading Data");
 
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -94,8 +95,6 @@ public class FrontPageActivity extends AppCompatActivity {
                             navigateToViewPostActivity(data.getItemId());
                         else if(data.getItemType().equalsIgnoreCase("Event")){
                             Event event = retrieveEventFromList(data.getItemId());
-                            System.out.println(event.getId());
-                            System.out.println(event.getTitle());
                             navigateToViewEventActivity(event);
                         }
                     }
@@ -140,6 +139,9 @@ public class FrontPageActivity extends AppCompatActivity {
             case R.id.action_refresh:
                 handleRefresh();
                 return true;
+            case R.id.submenu_search:
+                handleSearch();
+                return true;
             case R.id.submenu_userprofile:
                 goToUserProfilePage();
                 return true;
@@ -162,6 +164,32 @@ public class FrontPageActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(menuItem);
         }
     }
+
+
+
+    private void handleSearch() {
+        final CharSequence[] searchType= {"Posts", "Events"};
+
+        AlertDialog.Builder builder= new AlertDialog.Builder(FrontPageActivity.this, AlertDialog.THEME_HOLO_DARK)
+                .setTitle("Search")
+                .setSingleChoiceItems(searchType, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (searchType[which].equals("Posts")) {
+                            goToViewPostsByCategoryPage();
+                            dialog.dismiss();
+                        } else {
+                            goToViewAllEventsPage();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+
 
     private void handleRefresh() {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -197,7 +225,7 @@ public class FrontPageActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable error) {
                 if (statusCode == 404) {
-                    Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Data Retrieval failure", Toast.LENGTH_LONG).show();
 
                 } else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
@@ -251,10 +279,10 @@ public class FrontPageActivity extends AppCompatActivity {
         String university=settingsout.getString("loggedInUserUniversity", "");
         switch (university) {
             case "SJSU":
-                actionbar.setIcon(R.drawable.sjsulogo);
+                actionbar.setIcon(R.drawable.sjsulogospace);
                 return;
             case "UNCC":
-                actionbar.setIcon(R.drawable.uncclogo);
+                actionbar.setIcon(R.drawable.uncclogospace);
                 return;
             default:
 
@@ -315,7 +343,6 @@ public class FrontPageActivity extends AppCompatActivity {
                 Data data = new Data();
                 while (listIterator.hasNext()) {
                     data = listIterator.next();
-                    System.out.println("LOADING ITEM TYPE: " + data.getItemType());
                     frontPageDataList.add(data);
                 }
                 return frontPageDataList;
