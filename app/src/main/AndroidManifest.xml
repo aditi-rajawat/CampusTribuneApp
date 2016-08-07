@@ -86,7 +86,7 @@
         </activity>
         <activity
             android:name=".BaseActivity"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.PopupOverlay" />
         <activity
             android:name=".post.activity.CreatePostActivity"
             android:theme="@style/AppTheme.Dark" />
@@ -113,6 +113,7 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".post.activity.ViewPostsByCategoryActivity"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.Dark" />
         <activity android:name=".post.activity.NoPostsActivity"
             android:theme="@style/AppTheme.Dark" />
