@@ -21,6 +21,7 @@ import com.campustribune.beans.Event;
 import com.campustribune.beans.EventUser;
 import com.campustribune.event.adapter.ViewEventAdapter;
 import com.campustribune.event.utility.Constants;
+import com.campustribune.event.utility.EventRestCallThread;
 import com.campustribune.event.utility.UpdateEventUserActions;
 import com.campustribune.helper.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.SyncHttpClient;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
@@ -45,7 +47,8 @@ import cz.msebera.android.httpclient.HttpStatus;
 /**
  * Created by aditi on 08/07/16.
  */
-public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdapter.ViewEachEventInterface, OnMapReadyCallback{
+public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdapter.ViewEachEventInterface, OnMapReadyCallback,
+        EventRestCallThread.ViewAllEventsInterface{
 
     private static ArrayList<Event> listOfEvents = new ArrayList<>();
     private static ViewEventAdapter adapter=null;
@@ -56,6 +59,7 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
     String eventUserActions=null;
     EventUser eventUser=null;
     String userId=null;
+    boolean restCallDone=false;
 
     public static void updateEventList(Event oldEvent, Event updatedEvent) {
         if(listOfEvents!=null && listOfEvents.size()>0){
@@ -96,21 +100,15 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         this.university = new String(settings.getString("loggedInUserUniversity","").toString());
         this.userId = new String(settings.getString("loggedInUserId", "").toString());
 
-        //Retrieve the user actions
-        invokeGetEventUserActionsWS(this.userId);
-        this.eventUserActions = new String(settings.getString("eventUserActions","").toString());
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            if(!this.eventUserActions.equals("")) {
-                eventUser = mapper.readValue(this.eventUserActions, EventUser.class);
-                System.out.println("ADITI -------------------> " + eventUser.getUserName());
-            }
-        }catch (Exception ex){
-            System.out.println("Could not parse user's event actions due to "+ ex.getMessage());
-        }
-
         // Clear the static list
         this.listOfEvents.clear();
+
+        // Invoke WS to get user actions
+        EventRestCallThread myRestClient = new EventRestCallThread(ViewAllEventsActivity.this, getApplicationContext(), new String("getuseractions"),
+                null, ViewAllEventsActivity.this.token, ViewAllEventsActivity.this.userId);
+        myRestClient.start();
+
+        //Invoke WS to get list of events
         invokews();
 
         TextView textView = (TextView)findViewById(R.id.view_all_events_on_map);
@@ -140,7 +138,7 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 int textlength = cs.length();
                 ArrayList<Event> tempArrayList = new ArrayList<Event>();
-                for(Event event: listOfEvents){
+                for (Event event : listOfEvents) {
 
                     if (event.getDescription().toLowerCase().contains(cs.toString().toLowerCase())) {
                         tempArrayList.add(event);
@@ -217,15 +215,14 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
                                     listOfEvents.add(each);
 
                                 System.out.println("No. of events received = " + eventArray.length);
-                                // Set all user actions
-                                if(eventUser!=null && listOfEvents!=null && listOfEvents.size()>0)
-                                    new UpdateEventUserActions(listOfEvents, eventUser).updateAll();
 
                                 adapter = new ViewEventAdapter(ViewAllEventsActivity.this.getApplicationContext(),
                                         listOfEvents, ViewAllEventsActivity.this);
+
                                 if (eventsListContainer != null)
                                     eventsListContainer.setAdapter(adapter);
 
+                                ViewAllEventsActivity.this.updateUserActions();
                             }
 
                             System.out.println("No. of events ====== " + listOfEvents.size());
@@ -259,43 +256,25 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         ViewAllEventsActivity.this.startActivity(viewEventIntent);
     }
 
-    public void invokeGetEventUserActionsWS(String userId){
-        AsyncHttpClient httpClient = new AsyncHttpClient();
-        httpClient.addHeader("authorization", this.token);
-        httpClient.get(Util.SERVER_URL + "eventusers/" + userId, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                if (statusCode == HttpStatus.SC_OK) {
-                    System.out.println("I am in success!!!");
-                    System.out.println("Response for user event's action =========== " + response.toString());
-                    SharedPreferences settings = PreferenceManager
-                            .getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("eventUserActions", response.toString());
-                    editor.commit();
-                    System.out.println("Event user actions saved successfully!!!");
-                } else if (statusCode == HttpStatus.SC_NO_CONTENT) {
-                    System.out.println("User's events actions were empty");
-                    SharedPreferences settings = PreferenceManager
-                            .getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("eventUserActions", new String(""));
-                    editor.commit();
-                    System.out.println("Event user empty actions saved successfully!!!");
-                } else
-                    System.out.println("Could not retrive user's event actions.. please check");
+    @Override
+    public void updateUserActions() {
+        //Retrieve the user actions
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        ViewAllEventsActivity.this.eventUserActions = new String(settings.getString("eventUserActions","").toString());
+        try {
+            if(!ViewAllEventsActivity.this.eventUserActions.equals("")) {
+                ObjectMapper mapper = new ObjectMapper();
+                eventUser = mapper.readValue(ViewAllEventsActivity.this.eventUserActions, EventUser.class);
+                System.out.println("ADITI -------------------> " + eventUser.getUserName());
             }
+        }catch (Exception ex){
+            System.out.println("Could not parse user's event actions due to "+ ex.getMessage());
+        }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                System.out.println("I am in failure!!!");
-                System.out.println("Could not retrive user's event actions.. please check");
-            }
-        });
+        // Set all user actions
+        if(eventUser!=null && listOfEvents!=null && listOfEvents.size()>0)
+            new UpdateEventUserActions(listOfEvents, eventUser).updateAll();
 
+        adapter.notifyDataSetChanged();
     }
-
-
 }

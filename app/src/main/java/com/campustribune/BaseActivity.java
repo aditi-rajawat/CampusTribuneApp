@@ -171,7 +171,6 @@ public class BaseActivity extends AppCompatActivity {
         switch (university) {
             case "SJSU":
                 actionbar.setIcon(R.drawable.sjsulogospace);
-
                 return;
             case "UNCC":
                 actionbar.setIcon(R.drawable.uncclogospace);

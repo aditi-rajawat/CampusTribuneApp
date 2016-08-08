@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:alpha="0.2"
-        android:src="@drawable/signup"/>
+        android:src="@drawable/campustribunebackground2"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,11 +21,14 @@
         android:paddingRight="24dp">
 
 
-        <ImageView android:src="@drawable/changelogo"
+        <ImageView android:src="@drawable/campustribunelogo"
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_height="62dp"
             android:layout_marginBottom="24dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
 
         <!--  UserId Label -->
         <android.support.design.widget.TextInputLayout

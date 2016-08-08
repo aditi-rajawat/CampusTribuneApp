@@ -103,7 +103,6 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                 }
             });
 
-        progressDialog = new ProgressDialog(this);
 
         if(event!=null) {
             ArrayList<EventComment> listOfEventComments = new ArrayList<>();
@@ -165,10 +164,13 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                 imageView.setVisibility(View.INVISIBLE);
             }
 
-            ImageButton upvote = (ImageButton)findViewById(R.id.event_upvote);
+            final ImageButton upvote = (ImageButton)findViewById(R.id.event_upvote);
+            final ImageButton downvote = (ImageButton)findViewById(R.id.event_downvote);
+
             if(event.isUpvoted()){
                 upvote.setColorFilter(Color.argb(255, 0, 153, 51));
                 upvote.setEnabled(false);
+                downvote.setEnabled(false);
                 event.setUpvoted(false);
             }
             upvote.setOnClickListener(new View.OnClickListener(){
@@ -185,8 +187,9 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         view.setTag(new String("upvoted"));
                         event.setUpvoted(true);
                         score = voteScore.getText().toString();
-                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         voteScore.setText("Vote Score : "+(currentScore+1));
+                        downvote.setEnabled(false);
                     }
                     else if(((String)view.getTag()).equals("upvoted")){
                         //((ImageButton)view).setImageResource(R.drawable.ic_action_upvote);
@@ -194,17 +197,19 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         view.setTag(new String("not_upvoted"));
                         event.setUpvoted(false);
                         score = voteScore.getText().toString();
-                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         voteScore.setText("Vote Score : " + (currentScore - 1));
+                        downvote.setEnabled(true);
                     }
 
                 }
             });
 
-            ImageButton downvote = (ImageButton)findViewById(R.id.event_downvote);
+
             if(event.isDownvoted()){
                 downvote.setColorFilter(Color.argb(255, 255, 0, 0));
                 downvote.setEnabled(false);
+                upvote.setEnabled(false);
                 event.setDownvoted(false);
             }
             downvote.setOnClickListener(new View.OnClickListener() {
@@ -222,8 +227,9 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         view.setTag(new String("downvoted"));
                         event.setDownvoted(true);
                         score = voteScore.getText().toString();
-                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         voteScore.setText("Vote Score : "+ (currentScore-1));
+                        upvote.setEnabled(false);
                     }
                     else if(((String)view.getTag()).equals("downvoted")){
                        // ((ImageButton)view).setImageResource(R.drawable.ic_action_downvote);
@@ -231,8 +237,9 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         view.setTag(new String("not_downvoted"));
                         event.setDownvoted(false);
                         score = voteScore.getText().toString();
-                        currentScore = Integer.parseInt(score.substring(score.indexOf(":")+1).trim());
+                        currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         voteScore.setText("Vote Score : " + (currentScore + 1));
+                        upvote.setEnabled(true);
                     }
                 }
             });
@@ -330,10 +337,13 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                 }
             });
 
-            Button going = (Button)findViewById(R.id.event_going);
+            final Button going = (Button)findViewById(R.id.event_going);
+            final Button notgoing = (Button)findViewById(R.id.event_notgoing);
+
             if(event.isGoing()){
                 going.setBackgroundColor(getResources().getColor(R.color.green));
                 going.setEnabled(false);
+                notgoing.setEnabled(false);
                 event.setGoing(false);
             }
             going.setOnClickListener(new View.OnClickListener() {
@@ -352,6 +362,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         score = goingCount.getText().toString();
                         currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         goingCount.setText("Going : "+(currentScore+1));
+                        notgoing.setEnabled(false);
                     }
                     else if(((String)view.getTag()).equals("going")){
                         //((ImageButton)view).setImageResource(R.drawable.ic_action_markgoing);
@@ -362,14 +373,16 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         score = goingCount.getText().toString();
                         currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         goingCount.setText("Going : " + (currentScore - 1));
+                        notgoing.setEnabled(true);
                     }
                 }
             });
 
-            Button notgoing = (Button)findViewById(R.id.event_notgoing);
+
             if(event.isNotGoing()){
                 notgoing.setBackgroundColor(getResources().getColor(R.color.red));
                 notgoing.setEnabled(false);
+                going.setEnabled(false);
                 event.setNotGoing(false);
             }
             notgoing.setOnClickListener(new View.OnClickListener() {
@@ -388,6 +401,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         score = notgoingCount.getText().toString();
                         currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         notgoingCount.setText("Not Going : "+(currentScore+1));
+                        going.setEnabled(false);
                     }
                     else if(((String)view.getTag()).equals("notgoing")){
                        // ((ImageButton)view).setImageResource(R.drawable.ic_action_marknotgoing);
@@ -398,6 +412,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                         score = notgoingCount.getText().toString();
                         currentScore = Integer.parseInt(score.substring(score.indexOf(":") + 1).trim());
                         notgoingCount.setText("Not Going : " + (currentScore - 1));
+                        going.setEnabled(true);
                     }
                 }
             });
@@ -436,7 +451,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
     }
 
     public void navigateToFrontPage(){
-        EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("create"), event, this.token);
+        EventRestCallThread myRestClient = new EventRestCallThread(null,getApplicationContext(), new String("create"), event, this.token, this.userId);
         myRestClient.start();
         // Add code to navigate to the front page
         Intent frontPageIntent = new Intent(ViewEventActivity.this, FrontPageActivity.class);
@@ -453,10 +468,25 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
         if(event.isUpdateEvent() || event.isUpdateComments() || event.isDeleteComments()) {
             event.setUpdatedBy(this.userId);
             if (event.getId() != null && event.getCreatedBy() != null && (!event.getCreatedBy().isEmpty())) {
-                EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event, this.token);
+                EventRestCallThread myRestClient = new EventRestCallThread(null, getApplicationContext(), new String("update"), event, this.token, this.userId);
                 myRestClient.start();
+
+                // Add the progress dialog
+                progressDialog = new ProgressDialog(ViewEventActivity.this, R.style.AppTheme_Dark_Dialog);
+                //progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Refreshing events list..");
+                progressDialog.show();
+                while(!myRestClient.isDone()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception ex) {
+                        System.out.println("Event list back navigation thread couldn't sleep due to "+ ex.getMessage());
+                    }
+                }
+
                 event.setListOfDeletedComments(new ArrayList<EventComment>());
                 ViewAllEventsActivity.updateEventList(copyOfEvent, event);
+                progressDialog.hide();
 
             } else {
                 Toast.makeText(getApplicationContext(), "Something went wrong..Event couldn't be updated.", Toast.LENGTH_LONG).show();
@@ -478,7 +508,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
         if(event.isUpdateEvent() || event.isUpdateComments() || event.isDeleteComments()) {
             event.setUpdatedBy(this.userId);
             if (event.getId() != null && event.getCreatedBy() != null && (!event.getCreatedBy().isEmpty())) {
-                EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("update"), event, this.token);
+                EventRestCallThread myRestClient = new EventRestCallThread(null, getApplicationContext(), new String("update"), event, this.token, this.userId);
                 myRestClient.start();
                 event.setListOfDeletedComments(new ArrayList<EventComment>());
                 ViewAllEventsActivity.updateEventList(copyOfEvent, event);
@@ -559,12 +589,26 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
                                 if(event.getId()!=null){
-                                    EventRestCallThread myRestClient = new EventRestCallThread(getApplicationContext(), new String("delete"), event, token);
+                                    EventRestCallThread myRestClient = new EventRestCallThread(null, getApplicationContext(), new String("delete"), event, token, userId);
                                     myRestClient.start();
+
+                                    // Add the progress dialog
+                                    progressDialog = new ProgressDialog(ViewEventActivity.this, R.style.AppTheme_Dark_Dialog);
+                                    //progressDialog.setIndeterminate(true);
+                                    progressDialog.setMessage("Deleting event..");
+                                    progressDialog.show();
+                                    while(!myRestClient.isDone()) {
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch (Exception ex) {
+                                            System.out.println("Event delete thread couldn't sleep due to "+ ex.getMessage());
+                                        }
+                                    }
                                     ViewAllEventsActivity.removeFromList(copyOfEvent);
+                                    progressDialog.hide();
 
                                     Intent viewAllEventsIntent = new Intent(ViewEventActivity.this, ViewAllEventsActivity.class);
-                                    viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                    //viewAllEventsIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                     startActivity(viewAllEventsIntent);
                                 }
                                 else{
