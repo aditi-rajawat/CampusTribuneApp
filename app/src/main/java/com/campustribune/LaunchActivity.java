@@ -14,8 +14,7 @@ import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.campustribune.login.SignupActivity;
-import com.campustribune.R;
+import com.campustribune.login.LoginActivity;
 import com.campustribune.notifications.QuickstartPreferences;
 import com.campustribune.notifications.RegistrationIntentService;
 import com.google.android.gms.common.ConnectionResult;
@@ -67,11 +66,11 @@ public class LaunchActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                final Intent signUpIntent = new Intent(LaunchActivity.this, SignupActivity.class);
-                LaunchActivity.this.startActivity(signUpIntent);
+                final Intent loginIntent = new Intent(LaunchActivity.this, LoginActivity.class);
+                LaunchActivity.this.startActivity(loginIntent);
                 LaunchActivity.this.finish();
             }
-        }, 3000);
+        }, 2000);
     }
 
     @Override
