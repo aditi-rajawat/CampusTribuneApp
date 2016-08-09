@@ -31,7 +31,7 @@ import cz.msebera.android.httpclient.HttpStatus;
 
 public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPostByCategoriesAdapter.ViewPostInterface{
 
-    private static ArrayList<Post> listOfPosts = new ArrayList<>();
+    private static ArrayList<Post> listOfPostsSearch = new ArrayList<>();
     private static ViewPostByCategoriesAdapter adapter;
     private ListView postsListView;
     String token = null;
@@ -73,7 +73,7 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
                 int textlength = cs.length();
                 ArrayList<Post> tempArrayList = new ArrayList<Post>();
 
-                for (Post post : listOfPosts) {
+                for (Post post : listOfPostsSearch) {
                     if (post.getContent().toLowerCase().contains(cs.toString().toLowerCase())) {
                         tempArrayList.add(post);
                     }
@@ -109,6 +109,7 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
         System.out.println("URL is"+url);
         httpClient.get(Util.SERVER_URL + "post/getByCategory/"+category+"/"+university , new AsyncHttpResponseHandler() {
             Post[] postArray={};
+            private ArrayList<Post> listOfPosts = new ArrayList<>();
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (statusCode == 200) {
@@ -120,7 +121,7 @@ public class ViewPostsByCategoryActivity extends BaseActivity implements ViewPos
                         if (postArray.length > 0) {
                             for (Post each : postArray)
                                 listOfPosts.add(each);
-
+                                listOfPostsSearch =listOfPosts;
                             adapter = new ViewPostByCategoriesAdapter(ViewPostsByCategoryActivity.this.getApplicationContext(),
                                     listOfPosts, ViewPostsByCategoryActivity.this);
                             if (postsListView != null)
