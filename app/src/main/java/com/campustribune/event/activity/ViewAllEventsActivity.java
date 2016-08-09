@@ -182,7 +182,7 @@ public class ViewAllEventsActivity extends BaseActivity implements ViewEventAdap
         if(listOfEvents!=null && listOfEvents.size()>0) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(listOfEvents.get(0).getLatitude(), listOfEvents.get(0).getLongitude()))
-                    .zoom(8)
+                    .zoom(17)
                     .build();
             googleMap.clear();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

@@ -643,7 +643,7 @@ public class ViewEventActivity extends BaseActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(event.getLatitude(), event.getLongitude()))
-                .zoom(8)
+                .zoom(17)
                 .build();
         googleMap.clear();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

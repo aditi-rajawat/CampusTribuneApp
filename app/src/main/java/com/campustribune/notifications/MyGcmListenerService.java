@@ -88,8 +88,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 .setContentTitle("Campus Tribune")
                 .setContentText(message)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+                .setSound(defaultSoundUri);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
