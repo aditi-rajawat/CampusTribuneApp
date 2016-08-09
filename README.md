@@ -19,6 +19,11 @@ API keys to be added
 	Google API keys:
 			Set google_maps_key value to your google api key in google_maps_api.xml file.
 			File path: CampusTribuneApp/app/src/debug/res/values/google_maps_api.xml
+			
+	Google Cloud Messaging Key:
+			Generate google-services.json from the GCM client service.
+			Place the json file under the app folder of the application.
+			File path: CampusTribuneApp/app/
 
 	Amazon S3 keys:
 			Set MY_ACCESS_KEY_ID value to your amazon access key id.
